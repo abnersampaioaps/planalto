@@ -1,25 +1,23 @@
-# Rumo ao Planalto — v3
+# Rumo ao Planalto — v4
 
-Simulador independente de estratégia eleitoral brasileira para navegador e celular.
+Jogo independente de estratégia eleitoral brasileira para computador e celular.
 
-**Jogar:** https://abnersampaioaps.github.io/planalto/ (após ativar o GitHub Pages em Settings → Pages, usando `main` e `/(root)`).
+**Jogar:** https://abnersampaioaps.github.io/planalto/
 
-## Recursos
+## Mecânica
 
-- 6 candidatos no 1º turno: o jogador e 5 rivais controlados pelo computador.
-- Mapa geográfico real com as 27 unidades federativas, **incorporado no HTML** para funcionar sem buscar dados de outros servidores. Estado pintado pela cor de quem lidera.
-- Painel superior de barras horizontais, nomes, posições, percentuais e votos válidos simulados.
-- Influências iniciais distintas por candidato e estado e recursos de campanha diferentes para cada candidatura.
-- **Até 2 investimentos diretos por estado, por candidato e por rodada**. A IA obedece ao mesmo limite. Mobilização regional: 1 uso por região/rodada. Campanha nacional: 1 uso por turno eleitoral (1º ou 2º).
-- Mais de 50% dos votos válidos vence no 1º turno. Sem maioria absoluta, os dois primeiros disputam o 2º turno com nova distribuição simulada de preferências.
-- Salvamento de partida local no navegador (versão 3 independente do salvamento da versão anterior).
+- Seis candidatos no primeiro turno (jogador e cinco IAs).
+- Mapa interativo geográfico do Brasil com as 27 unidades federativas; estado pintado com a cor do líder, sem busca externa de contornos.
+- Forças eleitorais estaduais iniciais e orçamento por personagem; são ajustes de balanceamento fictícios inspirados, quando indicado, no histórico eleitoral.
+- **Investimento estadual de um clique:** custo próprio e fixo de cada estado calculado pelo tamanho do eleitorado simulado. Não há seletor de 1, 2 ou 3 níveis.
+- **Até 2 investimentos diretos em cada estado por candidato por rodada**, inclusive para a IA. Os investimentos acumulam ao longo das rodadas e são mostrados em barras por candidato no painel do estado.
+- No celular deitado (paisagem), o **mapa fica à esquerda e o painel de investimentos à direita**; há um layout vertical adaptável para o celular em pé.
+- Ações regionais e nacionais mantidas, assim como o caixa e a apuração.
+- Se ninguém ultrapassar metade dos votos válidos no primeiro turno, os dois mais votados disputam o segundo turno, sem transferências automáticas dos votos originais.
+- Salvamento no próprio navegador, com versão de dados v4 (as versões anteriores não são restauradas nesta edição).
 
-## Critérios de referência
+## Dados e avisos
 
-A força geográfica inicial de Lula e Jair Bolsonaro foi inspirada nas **proporções de votos válidos por UF no primeiro turno de 2022**; valores reescalados para um jogo com seis candidatos. Isso **não** é uma pesquisa, previsão da eleição atual ou percentual real dos candidatos no momento do jogo.
+Dados geográficos de [br-geojson (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson); referência de eleições de [Dados Abertos TSE — resultados de 2022](https://dadosabertos.tse.jus.br/dataset/resultados-2022).
 
-A força regional de Ciro Gomes, Marina Silva, Simone Tebet, Tarcísio de Freitas, Fernando Haddad e Geraldo Alckmin e todos os valores de orçamento são hipóteses de **balanceamento de jogo**, não dados oficiais.
-
-Dados consultados: [TSE — Eleições 2022](https://dadosabertos.tse.jus.br/dataset/resultados-2022), [apuração estadual de 2022](https://jc.uol.com.br/politica/2022/10/15092402-veja-em-quais-estados-lula-e-bolsonaro-se-sairam-melhor-no-primeiro-turno-das-eleicoes-2022.html) e [contornos estaduais br-geojson (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson).
-
-Este é um jogo fictício, sem vínculo com políticos, campanhas ou com o jogo proprietário *270*.
+Este protótipo é fictício, sem qualquer vínculo com políticos ou campanhas. Os valores iniciais não são pesquisas ou projeções da eleição presente. O projeto não utiliza nem reproduz o código proprietário do jogo *270*.
