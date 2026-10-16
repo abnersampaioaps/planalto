@@ -1,26 +1,23 @@
-# Rumo ao Planalto — versão 5
+# Rumo ao Planalto — v6
 
-Simulador eleitoral de estratégia para navegador e celular.
+Simulador brasileiro de estratégia eleitoral para navegador e celular. Inspirado na experiência de jogos de conquista eleitoral, mas sem vínculo com o TSE nem com o jogo comercial 270.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
 
-## Regras
+## Regras da versão 6
 
-- 6 candidatos no primeiro turno; se ninguém atingir a maioria absoluta de votos válidos, os dois mais votados disputam o segundo.
-- Mapa real das 27 unidades federativas incorporado no `index.html`; a cor de cada estado indica o líder da projeção simulada.
-- Um investimento direto por clique, até 2 investimentos por candidato, por estado, por rodada. As barras do painel estadual mostram investimentos acumulados de todas as candidaturas.
-- O custo de cada investimento é fixo por estado e varia com o eleitorado simulado, de aproximadamente R$ 33 mil (RR) a R$ 187 mil (SP).
-- **Todos os candidatos iniciam cada turno eleitoral com R$ 250 mil**.
-- **Bônus de R$ 12 mil por estado liderado**, creditado no início da próxima rodada. Não existem mobilizações regionais ou ações nacionais.
-- Saldo sempre visível no cabeçalho; projeção nacional em ranking de barras horizontais. No celular horizontal, mapa à esquerda e investimentos à direita.
-- Campanhas são salvas localmente no navegador (chave de dados v5).
+- **Mapa neutro:** as 27 unidades federativas começam sem investimentos e sem líder. Cinza indica estado sem liderança isolada ou empatado.
+- **Apoio bruto estadual:** se o candidato investiu `I` vezes e todos os candidatos somam `T` investimentos naquela UF, `apoio = I / max(10, T)`. A parcela restante até dez investimentos é uma reserva interna de votos ainda não atribuídos.
+- **Apenas votos válidos nos gráficos:** a parcela não atribuída nunca é exibida como candidato ou barra. O ranking nacional mostra `votos do candidato / soma dos votos atribuídos a todos os candidatos`. No início, todos estão com 0% porque ninguém recebeu votos; após um investimento isolado, o primeiro candidato tem 100% dos votos válidos, embora o apoio bruto daquela UF seja 10%.
+- **Eleitorado ponderado:** cada UF possui uma estimativa ilustrativa de eleitores; o apoio bruto determina o número de votos simulados atribuído a cada candidato. Não há vínculo com resultados eleitorais atuais.
+- **Investimento:** um clique equivale a um investimento estadual, com custo fixo por UF; cada candidato pode fazer até 2 por UF por rodada e acumular até 10 por UF.
+- **Dinheiro:** R$ 250 mil iniciais para todos; R$ 250 mil de renda-base por nova rodada, acrescidos de R$ 12 mil por UF liderada sem empate. Apenas campanha estadual, sem ações regionais ou nacionais.
+- **Dois turnos:** a maioria absoluta dos votos válidos simulados vence no primeiro turno; sem maioria, os dois mais votados disputam o segundo, que recomeça com mapa neutro e caixa inicial de R$ 250 mil para cada finalista.
+- **Salvamento:** separado das versões anteriores, em uma chave v6 no navegador.
 
-## Referências e transparência
+## Referências
 
-Os percentuais e orçamentos deste jogo são ficcionais, **não são pesquisas eleitorais e não prevêem eleições reais**. A influência territorial de Lula e Jair Bolsonaro foi inspirada nos resultados de 2022 e adaptada para jogabilidade; as lideranças de outros políticos em seus territórios são hipóteses de balanceamento, não percentuais ou vitórias reais.
+- [Regras eleitorais brasileiras (TSE)](https://www.tse.jus.br/comunicacao/noticias/2022/Outubro/entenda-como-e-eleito-o-presidente-da-republica)
+- [Contornos estaduais brasileiros, br-geojson (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson)
 
-- [Resultados eleitorais do TSE — 2022](https://dadosabertos.tse.jus.br/dataset/resultados-2022)
-- [Estados do Brasil, br-geojson (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson)
-- [Entenda a apuração de votos válidos — TSE](https://www.tse.jus.br/comunicacao/noticias/2022/Outubro/entenda-como-e-eleito-o-presidente-da-republica)
-
-A interface tem inspiração geral nos painéis institucionais de resultados eleitorais, mas o jogo é independente e **não é afiliado ao TSE** nem ao jogo comercial 270.
+**Importante:** os números, participações e candidatos são recursos de uma simulação fictícia. A reserva interna de apoio não atribuído não é uma classificação oficial de votos nulos ou brancos; trata-se de uma convenção de jogo.
