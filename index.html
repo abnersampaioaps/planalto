@@ -311,7 +311,7 @@ function render(){
  $('investBtn').disabled=game.done||game.pendingSecond||Boolean(lockOwner)||limitRound||limitTotal||game.cash[id]<cost;
  $('nextBtn').textContent=game.pendingSecond?'Iniciar 2º turno':game.done?'Eleição encerrada':game.round===game.maxRounds?'Apurar turno →':'Encerrar rodada →';
  $('nextBtn').disabled=game.done;
- $('costHint').textContent='Afinidade histórica ×'+fmtInvestment(multiplier)+' · '+who(id).spectrum+'. '+(game.round<5?'Até 2 ações/rodada.':'Sem limite por rodada.')+' Fecha aos 10 pontos de influência.';
+ $('costHint').textContent='Afinidade histórica ×'+fmtInvestment(multiplier)+' · '+(game.round<5?'Até 2 ações/rodada.':'Sem limite por rodada.')+' Fecha aos 10 pontos de influência.';
  $('turnHint').textContent='Nova rodada: R$ 250 mil + R$ 12 mil por estado liderado.';
  $('mapLegend').textContent='Cinza = sem liderança única';recolor();
 }
