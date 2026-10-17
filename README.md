@@ -1,4 +1,4 @@
-# Rumo ao Planalto — v6.1
+# Rumo ao Planalto — v6.2
 
 Simulador brasileiro de estratégia eleitoral para navegador e celular. Inspirado na experiência de jogos de conquista eleitoral, mas sem vínculo com o TSE nem com o jogo comercial 270.
 
@@ -14,7 +14,8 @@ Simulador brasileiro de estratégia eleitoral para navegador e celular. Inspirad
 - **Fechamento estadual:** quando qualquer candidato alcançar 10 investimentos acumulados em uma UF, ela se fecha permanentemente para novos investimentos de **todos os candidatos**, incluindo o que chegou a 10. As aplicações anteriores continuam válidas, os percentuais permanecem calculados pela mesma fórmula e a IA também respeita a trava. O bloqueio vale até o fim do turno eleitoral; no segundo turno, o mapa reinicia com investimentos zerados.
 - **Dinheiro:** R$ 250 mil iniciais para todos; R$ 250 mil de renda-base por nova rodada, acrescidos de R$ 12 mil por UF liderada sem empate. Apenas campanha estadual, sem ações regionais ou nacionais.
 - **Dois turnos:** a maioria absoluta dos votos válidos simulados vence no primeiro turno; sem maioria, os dois mais votados disputam o segundo, que recomeça com mapa neutro e caixa inicial de R$ 250 mil para cada finalista.
-- **Salvamento:** separado das versões anteriores, em uma chave v6 no navegador.
+- **Inteligência artificial:** os cinco adversários controlados pelo computador assumem perfis estratégicos distintos em cada partida: grandes colégios eleitorais, arrecadação por liderança, conquista e fechamento de estados, contestação de lideranças e defesa territorial. Esses estilos influenciam apenas a **escolha dos investimentos**, sem modificar votos, custos, limites ou renda inicial. Os estilos são exibidos na seleção de candidatos.
+- **Salvamento:** separado das versões anteriores, em uma chave v6 no navegador. A v6.2 continua compatível com partidas salvas da v6.
 
 ## Referências
 
