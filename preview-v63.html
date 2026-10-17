@@ -205,7 +205,8 @@ function aiPlay(id){
  let actions=0;
  const factor=game.difficulty==='easy'?.58:game.difficulty==='hard'?.95:.83;
  const reserveCash=game.cash[id]*(1-factor);
- while(actions<12){
+ // From round five, the AI also uses its available budget rather than a fixed action count.
+ while(actions<(game.round<5?12:MAX_LOCAL*STATES.length)){
   const choices=[];
   for(const state of STATES){
    const cost=localCost(state),uf=state.uf;
