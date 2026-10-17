@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V7.1
+# Rumo ao Planalto — V7.2
 
 Jogo independente de estratégia eleitoral brasileira, para navegador e celular (incluindo modo horizontal).
 
@@ -39,7 +39,7 @@ A reserva de apoio ainda não atribuída fica somente no cálculo, nunca no rank
 ## Regras gerais
 
 - O mapa começa neutro (sem investimentos nem votos atribuídos).
-- No **1º ao 4º turno de rodada** (rodadas 1 a 4), até **2 ações diretas por candidato e por UF a cada rodada**. **Da rodada 5 em diante**, sem limite por rodada.
+- **Até a penúltima rodada** de cada turno eleitoral, cada candidato pode fazer no máximo **2 ações pagas por UF em cada rodada**. **Somente na última rodada** (ex.: 10/10) é possível ultrapassar duas ações por estado, respeitando saldo, teto efetivo de 10 pontos e fechamento estadual. Essa regra também vale para a IA e recomeça no segundo turno.
 - Cada candidato pode fazer até dez ações pagas por UF, mas a **UF fecha assim que qualquer candidato atinge dez pontos efetivos de influência**. Todos os investimentos anteriores permanecem e ninguém mais pode investir naquela UF no mesmo turno eleitoral.
 - Caixa inicial igual de **R$ 250 mil** para todos; cada rodada seguinte rende **R$ 250 mil + R$ 50 mil por UF com liderança isolada**. Estados neutros e empatados não geram bônus.
 - Cinco adversários têm estratégias distintas: investir em grandes colégios eleitorais, arrecadar bônus, conquistar e fechar estados, disputar lideranças, defender território.
