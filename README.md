@@ -1,29 +1,52 @@
-# Rumo ao Planalto — V8.3
+# Rumo ao Planalto — V8.4
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
 
-## Novidade da V8.3 — perfis de campanha editáveis
+## V8.4 — perfis de campanha fixos dos 23 personagens
 
-A tela inicial oferece, para **cada um dos 21 personagens**, um seletor de perfil **Esquerda, Centro ou Direita**. É uma configuração estratégica fictícia e editável, e não um rótulo ideológico oficial atribuído à pessoa. Foram preenchidos os dois exemplos informados pelo usuário: **Lula — Esquerda** e **Flávio Bolsonaro — Direita**. Os outros personagens começam com a configuração **Centro** e podem ser alterados livremente antes da partida.
+A orientação de campanha é uma **regra fixa desta simulação, definida pelo usuário**, e não uma classificação ideológica oficial. Ela **não pode ser editada no formulário** nem alterada durante as partidas. A V8.4 adiciona os personagens históricos **Dilma Rousseff (PT)** e **Aécio Neves (PSDB)**, ambos identificados com os partidos de suas candidaturas presidenciais de 2014.
 
-A referência estadual é a **porcentagem de votos válidos de Lula no segundo turno de 2022 em cada UF**. O multiplicador de influência por ação segue esta regra simétrica:
+| Personagem | Partido | Perfil fixo no jogo |
+|---|---|---|
+| Lula | PT | Esquerda |
+| Flávio Bolsonaro | PL | Direita |
+| Ronaldo Caiado | PSD | Direita |
+| Rui Costa Pimenta | PCO | Esquerda |
+| Samara Martins | UP | Esquerda |
+| Romeu Zema | Novo | Direita |
+| Hertz Dias | PSTU | Esquerda |
+| Edmilson Costa | PCB | Esquerda |
+| Renan Santos | Missão | Direita |
+| Wilson Grassi | Democrata | Centro |
+| Clariana Barão | DC | Centro |
+| Augusto Cury | Avante | Centro |
+| Jair Bolsonaro | PL | Direita |
+| Marina Silva | REDE | Esquerda |
+| Ciro Gomes | PSDB | Centro |
+| Simone Tebet | PSB | Centro |
+| Tarcísio de Freitas | Republicanos | Direita |
+| Fernando Haddad | PT | Esquerda |
+| Geraldo Alckmin | PSB | Centro |
+| José Serra | PSDB | Centro |
+| Enéas Carneiro | PRONA (histórico) | Centro |
+| Dilma Rousseff | PT | Esquerda |
+| Aécio Neves | PSDB | Centro |
+
+### Bônus estadual conforme a votação de 2022
+
+A base histórica é a **porcentagem de votos válidos recebida por Lula no segundo turno presidencial de 2022, por UF**. Essa é uma regra de balanceamento fictícia, não uma medição da ideologia dos habitantes de cada estado.
 
 | Percentual de Lula em 2022 | Perfil Esquerda | Perfil Centro | Perfil Direita |
 |---|---:|---:|---:|
 | 65% ou mais | ×2 | ×1 | ×1 |
-| 55% até menos de 65% | ×1,5 | ×1,5 | ×1 |
-| 45% até menos de 55% | ×1 | ×2 | ×1 |
-| Mais de 35% até menos de 45% | ×1 | ×1,5 | ×1,5 |
+| 55% a menos de 65% | ×1,5 | ×1,5 | ×1 |
+| 45% a menos de 55% | ×1 | ×2 | ×1 |
+| Mais de 35% a menos de 45% | ×1 | ×1,5 | ×1,5 |
 | 35% ou menos | ×1 | ×1 | ×2 |
 
-**Observação:** a faixa central abrange de 45% (inclusive) até 55% (exclusive), porque o limite de 55% já pertence à faixa intermediária para a esquerda. Isso evita sobreposição nas regras.
-
-A escolha de perfil fica gravada na partida `game.profileById` e permanece durante o segundo turno. Mantivemos a chave de salvamento `rumo_ao_planalto_v8`; saves mais antigos que não tenham perfis explícitos recebem as configurações iniciais dos seletores.
-
-Esses dados descrevem o resultado de 2022 entre candidaturas presidenciais, não a ideologia individual de eleitores ou a classificação definitiva dos estados.
-
+O perfil é consultado diretamente no cadastro fixo dos personagens. Saves anteriores da V8 que contenham `profileById` não substituem os perfis agora fixos; a chave de salvamento continua `rumo_ao_planalto_v8`. Investimentos, regras da IA, escolha de 2 a 6 candidaturas, renda e continuidade para o segundo turno são preservados.
 
 ## Novidades da V8
 
@@ -48,13 +71,13 @@ O grupo de **12 candidaturas oficiais à Presidência em 2026** foi extraído do
 | Clariana Barão | DC |
 | Augusto Cury | Avante |
 
-Há ainda uma seção de **cenários alternativos e históricos** com Jair Bolsonaro, Marina Silva, Ciro Gomes, Simone Tebet, Tarcísio de Freitas, Fernando Haddad, Geraldo Alckmin, **José Serra (PSDB)** e **Enéas Carneiro (PRONA, partido histórico extinto)**. A presença deles nessa seção não significa candidatura à Presidência em 2026.
+Há ainda uma seção de **cenários alternativos e históricos** com Jair Bolsonaro, Marina Silva, Ciro Gomes, Simone Tebet, Tarcísio de Freitas, Fernando Haddad, Geraldo Alckmin, **José Serra (PSDB)**, **Enéas Carneiro (PRONA, partido histórico extinto)**, **Dilma Rousseff (PT)** e **Aécio Neves (PSDB)**. A presença deles nessa seção não significa candidatura à Presidência em 2026.
 
-**Histórico da configuração:** na V8.2, personagens sem perfil configurado usavam multiplicador ×1. A V8.3 substituiu essa ausência de perfil por opções editáveis no início de cada partida: Esquerda, Centro ou Direita. Os multiplicadores são exclusivamente regras de jogo; não são medidas da ideologia de políticos nem de habitantes dos estados.
+**Histórico da configuração:** a V8.2 utilizava perfis neutros (×1), e a V8.3 permitia escolher perfis editáveis. Na V8.4, todos os personagens receberam configurações fixas indicadas pelo usuário. São regras de jogo, não medições de ideologia política.
 
 ### Segundo turno com continuidade
 
-Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. Em partidas com apenas duas candidaturas, a regra é a mesma: o segundo turno só acontece se ninguém superar 50%. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos quatro eliminados são retiradas**; votos e percentuais são recalculados somente com os finalistas.
+Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. Em partidas com apenas duas candidaturas, a regra é a mesma: o segundo turno só acontece se ninguém superar 50%. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos candidatos eliminados são retiradas**; votos e percentuais são recalculados somente com os finalistas.
 
 Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e o caixa de cada finalista recomeça com R$ 250 mil; o investimento estadual acumulado não recomeça.
 
