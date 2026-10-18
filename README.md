@@ -50,7 +50,7 @@ O grupo de **12 candidaturas oficiais à Presidência em 2026** foi extraído do
 
 Há ainda uma seção de **cenários alternativos e históricos** com Jair Bolsonaro, Marina Silva, Ciro Gomes, Simone Tebet, Tarcísio de Freitas, Fernando Haddad, Geraldo Alckmin, **José Serra (PSDB)** e **Enéas Carneiro (PRONA, partido histórico extinto)**. A presença deles nessa seção não significa candidatura à Presidência em 2026.
 
-**Revisão V8.2:** quando a categoria de afinidade do personagem é `neutral`, seu multiplicador é **sempre ×1** em todas as 27 UFs, conforme descrito originalmente. Havia um erro de implementação que aplicava a esses personagens as regras reservadas à categoria `center`. A correção não redefine a ideologia de nenhuma pessoa. O resultado presidencial de 2022 é um dado histórico, não uma classificação ideológica definitiva de um estado ou de seus eleitores. Personagens com categorias de afinidade configuradas mantêm os multiplicadores fictícios já existentes.
+**Histórico da configuração:** na V8.2, personagens sem perfil configurado usavam multiplicador ×1. A V8.3 substituiu essa ausência de perfil por opções editáveis no início de cada partida: Esquerda, Centro ou Direita. Os multiplicadores são exclusivamente regras de jogo; não são medidas da ideologia de políticos nem de habitantes dos estados.
 
 ### Segundo turno com continuidade
 
