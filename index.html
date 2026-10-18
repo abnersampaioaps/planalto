@@ -439,7 +439,7 @@ function addCandidateChoices(container,profiles){
   label.appendChild(input);label.appendChild(logo);label.appendChild(info);
   const profile=document.createElement('span');
   profile.className='candidate-profile-fixed';
-  profile.textContent=GAME_PROFILE_NAMES[campaignProfile(person.id)]+' · perfil fixo do jogo';
+  profile.textContent=GAME_PROFILE_NAMES[campaignProfile(person.id)];
   card.appendChild(label);card.appendChild(profile);host.appendChild(card);
   input.addEventListener('change',renderCandidateChoices);
  }
