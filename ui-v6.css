@@ -228,3 +228,17 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 /* V8.1: botão de início não sobrepõe os campos do formulário */
 .setup-modal .actions{position:static!important;bottom:auto!important;padding:10px 0 0}
 .setup-modal{scroll-padding-bottom:24px}
+
+/* V8.3: profile choices for fictional campaign rules */
+.profile-help{font-size:11px!important;line-height:1.45!important;border-left:3px solid #4d9b9b;padding-left:10px}
+.candidate-choice{display:flex;flex-direction:column;align-items:stretch;gap:5px;min-height:0}
+.candidate-main{display:flex;align-items:center;gap:7px;min-height:35px;cursor:pointer;min-width:0}
+.candidate-choice .candidate-profile{font-size:11px;width:100%;min-width:0;padding:6px 7px;border-radius:5px;background:#eef5f9;color:#284f70;border:1px solid #bdcedb;min-height:30px}
+.candidate-choice.chosen .candidate-profile{background:#fff}
+.candidate-choice .candidate-profile:focus-visible{outline:2px solid #397aa6;outline-offset:2px}
+.candidate-choice:has(.candidate-main input:disabled):not(.chosen){opacity:.65}
+@media(orientation:landscape) and (max-height:500px){
+.candidate-choice{gap:2px}
+.candidate-main{min-height:27px}
+.candidate-choice .candidate-profile{min-height:28px;padding:3px 4px;font-size:10px}
+}
