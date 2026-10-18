@@ -176,3 +176,51 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
  .standing-meta{gap:5px}
  .party-short{font-size:9px}
 }
+
+/* V8 — chooser for a fixed six-person ballot, optimized for phones in landscape */
+.setup-modal{max-width:900px!important;width:min(900px,100%)!important;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;padding:16px 18px!important}
+.setup-modal h1{font-size:22px!important;margin:6px 0!important}
+.setup-modal>p{margin:5px 0;font-size:12px!important}
+.setup-stats{display:flex;align-items:center;justify-content:space-between;gap:8px;color:#526e87;font-size:11px;padding:9px 0}
+.candidate-count{font-size:12px;background:#e8f4f0;border:1px solid #b9d9cd;color:#165f51;padding:5px 9px;border-radius:5px;font-weight:700;white-space:nowrap}
+.candidate-count.invalid{background:#fff0e8;border-color:#f0c4a5;color:#9b5631}
+.candidate-picker-title{font-size:12px;font-weight:800;color:#244766;padding:7px 0 5px;display:flex;align-items:center;justify-content:space-between}
+.candidate-picker-title small{font-size:10px;color:#72869b;font-weight:500}
+.candidate-picker{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.candidate-choice{display:flex;align-items:center;gap:7px;min-height:51px;min-width:0;border:1px solid #d7e0e9;background:#fff;border-radius:6px;padding:6px;cursor:pointer}
+.candidate-choice.chosen{border-color:#3478aa;background:#eef6fb}
+.candidate-choice:has(input:focus-visible){outline:2px solid #286ea7;outline-offset:2px}
+.candidate-choice:has(input:disabled):not(.chosen){opacity:.57}
+.candidate-choice input{accent-color:#17678f;flex:0 0 auto;width:15px;height:15px;margin:0}
+.candidate-choice-logo{flex:0 0 auto}.candidate-choice-logo .party-logo{width:25px;height:25px;min-width:25px;padding:2px}
+.candidate-choice-info{display:flex;flex-direction:column;gap:2px;min-width:0}
+.candidate-choice-info strong{font-size:11px;line-height:1.15;color:#1d405f;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.candidate-choice-info small{font-size:9px;color:#6d8396}
+.party-initials{font-size:10px;font-weight:800;color:#225676;line-height:1}
+.candidate-extras{border-top:1px solid #dce4ec;border-bottom:1px solid #dce4ec;margin:10px 0;padding:7px 0}
+.candidate-extras summary{cursor:pointer;color:#1f557e;font-size:12px;font-weight:700;padding:3px 0}
+.candidate-extras .candidate-picker{margin:9px 0 3px}
+.setup-fields{margin:10px 0!important;gap:8px!important}
+.setup-fields .field label{font-size:10px!important;letter-spacing:.2px!important}
+.setup-fields .field .input{min-height:33px;font-size:12px}
+.setup-modal .actions{position:sticky;bottom:-16px;padding:10px 0;background:#fff;border-top:1px solid #e3e9ef;z-index:1}
+.setup-modal .actions .button{min-height:40px}
+.setup-modal .actions .button:disabled{opacity:.5;cursor:not-allowed}
+@media(max-width:650px){
+.setup-modal{padding:12px!important}
+.candidate-picker{grid-template-columns:repeat(2,minmax(0,1fr))}
+.candidate-choice{min-height:45px}
+.setup-modal .actions{bottom:-12px}
+.setup-stats{align-items:flex-start;flex-wrap:wrap}
+}
+@media(orientation:landscape) and (max-height:500px){
+.overlay:has(.setup-modal){align-items:start}
+.setup-modal{max-height:calc(100dvh - 12px);padding:9px 12px!important}
+.setup-modal h1{font-size:17px!important;margin:3px 0!important}
+.setup-modal>p{font-size:11px!important}
+.candidate-picker{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.candidate-choice{min-height:39px;padding:4px}
+.candidate-picker-title{padding:4px 0}
+.setup-stats{padding:5px 0}
+.setup-fields{margin:6px 0!important}
+}
