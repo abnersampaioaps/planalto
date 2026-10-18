@@ -56,7 +56,7 @@
 <div class="overlay" id="setupOverlay"><section class="modal setup-modal" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
 <div class="eyebrow">Nova eleição · edição Brasil</div>
 <h1 id="setupTitle">Monte sua disputa presidencial</h1>
-<p>Escolha <strong>6 participantes</strong> e depois qual candidato você controlará. Os outros cinco serão controlados pela IA.</p>
+<p>Escolha <strong>6 participantes</strong> e depois qual candidato você controlará. Os outros cinco serão controlados pela IA. Desmarque alguém para liberar outra opção.</p>
 <div class="setup-stats"><span id="candidateCount" class="candidate-count">6 de 6 selecionados</span><span>Partidas alternativas com dois turnos</span></div>
 <div class="candidate-picker-title">Candidatos registrados em 2026 <small>Fonte: TSE · 12 candidaturas</small></div>
 <div class="candidate-picker" id="officialCandidates" role="group" aria-label="Candidatos presidenciais de 2026"></div>
@@ -429,7 +429,15 @@ function begin(){
  selectedUF='SP';$('setupOverlay').classList.add('hidden');$('resultOverlay').classList.add('hidden');
  if(geo)showGeo();else showCartogram();render();persist();toast('Primeiro turno iniciado!');
 }
-function newPrompt(){if(!game||game.done||window.confirm('Descartar o progresso atual e iniciar uma nova eleição?')){$('resultOverlay').classList.add('hidden');$('setupOverlay').classList.remove('hidden')}}
+function newPrompt(){
+ if(!game||game.done||window.confirm('Descartar o progresso atual e iniciar uma nova eleição?')){
+  if(game&&Array.isArray(game.all)&&game.all.length===6){
+   for(const input of document.querySelectorAll('input[name="candidate-entry"]'))input.checked=game.all.includes(input.value);
+   renderCandidateChoices();$('chooseP').value=game.player;updatePreview();
+  }
+  $('resultOverlay').classList.add('hidden');$('setupOverlay').classList.remove('hidden');
+ }
+}
 addCandidateChoices('officialCandidates',PEOPLE_2026);addCandidateChoices('alternativeCandidates',PEOPLE_ALTERNATE);$('chooseP').addEventListener('change',updatePreview);renderCandidateChoices();for(const s of [...STATES].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'))){let o=document.createElement('option');o.value=s.uf;o.textContent=s.name+' ('+s.uf+')';$('stateSelect').appendChild(o)}
 $('startBtn').addEventListener('click',begin);$('newBtn').addEventListener('click',newPrompt);$('rulesBtn').addEventListener('click',()=>$('rulesOverlay').classList.remove('hidden'));$('closeRules').addEventListener('click',()=>$('rulesOverlay').classList.add('hidden'));$('reviewBtn').addEventListener('click',()=>$('resultOverlay').classList.add('hidden'));$('resultMainBtn').addEventListener('click',()=>{if(afterResult==='second')makeSecondRound();else newPrompt()});$('investBtn').addEventListener('click',investLocal);$('nextBtn').addEventListener('click',nextTurn);$('stateSelect').addEventListener('change',e=>selectUF(e.target.value));$('mapToggle').addEventListener('click',()=>{if(mapMode==='geo')showCartogram();else loadGeo();persist()});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesOverlay').classList.add('hidden')});
 if(geo)showGeo();else showCartogram();if(restore()){$('setupOverlay').classList.add('hidden');if(mapMode==='carto')showCartogram();else if(geo)showGeo();if(game.pendingSecond){showOutcome('Apuração do 1º turno','Você avançou ao 2º turno!',game.firstResult,'Ninguém superou metade dos votos válidos. Avançam os dois mais votados.',true)}else if(game.done&&game.secondResult){showOutcome('Apuração do 2º turno','Eleição encerrada!',game.secondResult,'Segundo turno: venceu quem conquistou mais votos válidos nesta nova votação.',false)}else if(game.done&&game.firstResult){showOutcome('Apuração do 1º turno',majority(game.firstResult)?'Eleição decidida no 1º turno!':'Você não avançou ao 2º turno',game.firstResult,majority(game.firstResult)?'O primeiro colocado obteve maioria absoluta dos votos válidos.':'Ninguém obteve maioria absoluta e sua candidatura não avançou.',false)}}else{game=newGame(PEOPLE[0].id,'normal',10)}render();
