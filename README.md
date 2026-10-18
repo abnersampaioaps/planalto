@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8
+# Rumo ao Planalto — V8.1
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
@@ -8,7 +8,7 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 
 ### Seleção de candidatos
 
-A tela inicial permite **escolher exatamente seis candidatos** e, entre eles, quem você controlará. Os demais cinco são controlados pela IA, com estratégias distintas. Para trocar uma opção, desmarque um nome e escolha outro.
+A tela inicial permite escolher **de 2 a 6 participantes** e definir qual deles você controlará. Os demais, de um a cinco, serão controlados pela IA. Para trocar um nome quando houver seis selecionados, desmarque outro antes. Com apenas dois participantes, a partida geralmente se encerra no primeiro turno, se alguém superar 50% dos votos válidos simulados.
 
 O grupo de **12 candidaturas oficiais à Presidência em 2026** foi extraído do [TSE, 11/09/2026](https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/eleicoes-2026-tem-12-candidaturas-na-disputa-pela-presidencia-da-republica):
 
@@ -27,13 +27,13 @@ O grupo de **12 candidaturas oficiais à Presidência em 2026** foi extraído do
 | Clariana Barão | DC |
 | Augusto Cury | Avante |
 
-Há ainda uma seção de **cenários alternativos** com Jair Bolsonaro, Marina Silva, Ciro Gomes, Simone Tebet, Tarcísio de Freitas, Fernando Haddad e Geraldo Alckmin. A presença deles nessa seção não significa candidatura à Presidência em 2026.
+Há ainda uma seção de **cenários alternativos e históricos** com Jair Bolsonaro, Marina Silva, Ciro Gomes, Simone Tebet, Tarcísio de Freitas, Fernando Haddad, Geraldo Alckmin, **José Serra (PSDB)** e **Enéas Carneiro (PRONA, partido histórico extinto)**. A presença deles nessa seção não significa candidatura à Presidência em 2026.
 
 Para as novas figuras de 2026 sem uma classificação ideológica verificada individualmente no jogo, a **afinidade de campanha é neutra (×1)**. Isso evita atribuir automaticamente preferências ideológicas ou desempenhos eleitorais. Os personagens da versão anterior mantêm os multiplicadores de balanceamento que já possuíam.
 
 ### Segundo turno com continuidade
 
-Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos quatro eliminados são retiradas**; votos e percentuais são recalculados somente com os finalistas.
+Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. Em partidas com apenas duas candidaturas, a regra é a mesma: o segundo turno só acontece se ninguém superar 50%. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos quatro eliminados são retiradas**; votos e percentuais são recalculados somente com os finalistas.
 
 Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e o caixa de cada finalista recomeça com R$ 250 mil; o investimento estadual acumulado não recomeça.
 
@@ -47,7 +47,18 @@ Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir
 - Uma UF fecha para todos quando qualquer candidato chega a **10 pontos efetivos de influência**. Os investimentos existentes permanecem.
 - **R$ 250 mil iniciais e R$ 250 mil de renda-base a cada nova rodada**, mais **R$ 50 mil por UF liderada sem empate**.
 - Todos obedecem às mesmas regras de saldo, investimento, fechamento e turnos.
-- O salvamento da V8 utiliza a chave local `rumo_ao_planalto_v8`, independente da V7. Uma partida anterior não é sobrescrita, mas não é migrada automaticamente.
+- O salvamento das versões V8/V8.1 utiliza a chave local `rumo_ao_planalto_v8`, independente da V7. Uma partida anterior não é sobrescrita, mas não é migrada automaticamente.
+
+
+### Logotipos e personagens históricos (V8.1)
+
+Foram adicionados à pasta `assets/` os símbolos SVG do PSD, PCO, UP, Novo, PSTU, PCB, Missão e Avante. Também há símbolos carregados diretamente da Wikimedia Commons para os seguintes casos:
+
+- [Democracia Cristã (DC)](https://commons.wikimedia.org/wiki/File:Logomarca_Democracia_Crist%C3%A3.svg)
+- [Democrata 35](https://commons.wikimedia.org/wiki/File:Logomarca_O_Democrata_35.png)
+- [PRONA — símbolo histórico](https://commons.wikimedia.org/wiki/File:PRONA_2004_2006.png)
+
+O [TSE registra Enéas Carneiro como candidato do PRONA em 1994](https://www.tse.jus.br/eleicoes/eleicoes-anteriores/eleicoes-1994/relacao-do-candidatos-a-presidencia-da-republica-eleicoes-1994), e o [PSDB documenta a candidatura presidencial de José Serra em 2002](https://www.psdb.org.br/pe/nota-oficial-sobre-a-candidatura-de-jose-serra/). Esses personagens históricos aparecem somente na seção de partidas alternativas e não são apresentados como candidatos registrados em 2026.
 
 ## Fontes e licenças
 
@@ -56,4 +67,4 @@ Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir
 - [br-geojson: contornos estaduais (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson)
 - [partidos-brasil-svg: logotipos disponíveis (MIT)](https://github.com/avoarpj/partidos-brasil-svg), com atribuição em [assets/LICENSE-ATTRIBUTION.txt](assets/LICENSE-ATTRIBUTION.txt)
 
-Os partidos sem SVG local são exibidos por siglas textuais. **Este jogo não é afiliado ao TSE nem a candidatos ou partidos políticos.** Os resultados, percentuais, afinidades e orçamentos são fictícios, não representando pesquisa eleitoral, recomendação de voto ou projeção real.
+Os logotipos disponíveis no próprio repositório aparecem em SVG. Para **DC, Democrata e PRONA**, o jogo carrega imagens da Wikimedia Commons e mostra as siglas caso não seja possível obtê-las. **Este jogo não é afiliado ao TSE nem a candidatos ou partidos políticos.** Os resultados, percentuais, afinidades e orçamentos são fictícios, não representando pesquisa eleitoral, recomendação de voto ou projeção real.
