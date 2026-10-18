@@ -1,8 +1,29 @@
-# Rumo ao Planalto — V8.2
+# Rumo ao Planalto — V8.3
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## Novidade da V8.3 — perfis de campanha editáveis
+
+A tela inicial oferece, para **cada um dos 21 personagens**, um seletor de perfil **Esquerda, Centro ou Direita**. É uma configuração estratégica fictícia e editável, e não um rótulo ideológico oficial atribuído à pessoa. Foram preenchidos os dois exemplos informados pelo usuário: **Lula — Esquerda** e **Flávio Bolsonaro — Direita**. Os outros personagens começam com a configuração **Centro** e podem ser alterados livremente antes da partida.
+
+A referência estadual é a **porcentagem de votos válidos de Lula no segundo turno de 2022 em cada UF**. O multiplicador de influência por ação segue esta regra simétrica:
+
+| Percentual de Lula em 2022 | Perfil Esquerda | Perfil Centro | Perfil Direita |
+|---|---:|---:|---:|
+| 65% ou mais | ×2 | ×1 | ×1 |
+| 55% até menos de 65% | ×1,5 | ×1,5 | ×1 |
+| 45% até menos de 55% | ×1 | ×2 | ×1 |
+| Mais de 35% até menos de 45% | ×1 | ×1,5 | ×1,5 |
+| 35% ou menos | ×1 | ×1 | ×2 |
+
+**Observação:** a faixa central abrange de 45% (inclusive) até 55% (exclusive), porque o limite de 55% já pertence à faixa intermediária para a esquerda. Isso evita sobreposição nas regras.
+
+A escolha de perfil fica gravada na partida `game.profileById` e permanece durante o segundo turno. Mantivemos a chave de salvamento `rumo_ao_planalto_v8`; saves mais antigos que não tenham perfis explícitos recebem as configurações iniciais dos seletores.
+
+Esses dados descrevem o resultado de 2022 entre candidaturas presidenciais, não a ideologia individual de eleitores ou a classificação definitiva dos estados.
+
 
 ## Novidades da V8
 
