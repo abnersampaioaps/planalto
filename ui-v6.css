@@ -224,3 +224,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .setup-stats{padding:5px 0}
 .setup-fields{margin:6px 0!important}
 }
+
+/* V8.1: botão de início não sobrepõe os campos do formulário */
+.setup-modal .actions{position:static!important;bottom:auto!important;padding:10px 0 0}
+.setup-modal{scroll-padding-bottom:24px}
