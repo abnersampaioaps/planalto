@@ -1,58 +1,59 @@
-# Rumo ao Planalto — V7.2
+# Rumo ao Planalto — V8
 
-Jogo independente de estratégia eleitoral brasileira, para navegador e celular (incluindo modo horizontal).
+Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
 
-## Candidaturas e filiações (referência: outubro/2026)
+## Novidades da V8
 
-| Personagem | Partido | Espectro aproximado | Afinidade utilizada |
-|---|---|---|---|
-| Lula | PT | Centro-esquerda | Esquerda |
-| Jair Bolsonaro | PL | Direita | Direita |
-| Marina Silva | REDE | Centro-esquerda | Esquerda |
-| Ciro Gomes | PSDB | Centro | Centro |
-| Simone Tebet | PSB | Centro | Centro |
-| Tarcísio de Freitas | Republicanos | Direita | Direita |
-| Fernando Haddad | PT | Centro-esquerda | Esquerda |
-| Geraldo Alckmin | PSB | Centro-direita | Direita |
+### Seleção de candidatos
 
-A classificação ideológica é uma aproximação didática; não representa autodeclaração de cada político, nem consenso acadêmico. A filiação partidária é a referência utilizada no jogo e pode mudar com o tempo. Os sete valores disponíveis para a variável de espectro são **extrema esquerda, esquerda, centro-esquerda, centro, centro-direita, direita e extrema direita**. Nenhuma candidatura atual foi obrigatoriamente colocada nos extremos.
+A tela inicial permite **escolher exatamente seis candidatos** e, entre eles, quem você controlará. Os demais cinco são controlados pela IA, com estratégias distintas. Para trocar uma opção, desmarque um nome e escolha outro.
 
-## Afinidade eleitoral — regra V7
+O grupo de **12 candidaturas oficiais à Presidência em 2026** foi extraído do [TSE, 11/09/2026](https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/eleicoes-2026-tem-12-candidaturas-na-disputa-pela-presidencia-da-republica):
 
-A afinidade estadual usa exclusivamente as **porcentagens de votos válidos de Lula no segundo turno presidencial de 2022** como uma referência histórica de balanceamento (não previsão da eleição atual). São três grupos lúdicos: mais favorável à esquerda, competitivo e mais favorável à direita. A regra é simétrica para candidatos de esquerda e direita; os candidatos de centro recebem afinidade maior nos estados mais equilibrados.
+| Candidato | Partido |
+|---|---|
+| Lula | PT |
+| Flávio Bolsonaro | PL |
+| Ronaldo Caiado | PSD |
+| Rui Costa Pimenta | PCO |
+| Samara Martins | UP |
+| Romeu Zema | Novo |
+| Hertz Dias | PSTU |
+| Edmilson Costa | PCB |
+| Renan Santos | Missão |
+| Wilson Grassi | Democrata |
+| Clariana Barão | DC |
+| Augusto Cury | Avante |
 
-**Multiplicadores usados:**
+Há ainda uma seção de **cenários alternativos** com Jair Bolsonaro, Marina Silva, Ciro Gomes, Simone Tebet, Tarcísio de Freitas, Fernando Haddad e Geraldo Alckmin. A presença deles nessa seção não significa candidatura à Presidência em 2026.
 
-- Candidato de esquerda/centro-esquerda: ×2 em UFs onde Lula obteve **pelo menos 65%** em 2022; ×1,5 de **55% a menos de 65%**; ×1 nos demais estados.
-- Candidato de direita/centro-direita: ×2 onde Lula obteve **até 35%**; ×1,5 onde obteve **mais de 35% e até 45%**; ×1 nos demais estados.
-- Candidato de centro: ×2 onde Lula obteve **de 45% a 55%, inclusive**; ×1,5 entre **40–45% (45 excluído)** ou **55–60% (55 excluído)**; ×1 nos demais estados.
+Para as novas figuras de 2026 sem uma classificação ideológica verificada individualmente no jogo, a **afinidade de campanha é neutra (×1)**. Isso evita atribuir automaticamente preferências ideológicas ou desempenhos eleitorais. Os personagens da versão anterior mantêm os multiplicadores de balanceamento que já possuíam.
 
-**Ações ≠ influência.** Cada ação é paga normalmente. Em uma UF com multiplicador ×2, duas ações pagas geram quatro pontos de influência. A barra estadual exibe os pontos efetivos, enquanto o jogo guarda separadamente as ações reais executadas.
+### Segundo turno com continuidade
 
-**Fórmula de apoio de um candidato na UF:**
-`influência efetiva do candidato / max(10, soma da influência efetiva de todos na UF)`.
+Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos quatro eliminados são retiradas**; votos e percentuais são recalculados somente com os finalistas.
 
-A reserva de apoio ainda não atribuída fica somente no cálculo, nunca no ranking. O ranking nacional e a apuração do vencedor utilizam os **votos válidos simulados** atribuídos aos candidatos, ponderados pelo eleitorado de cada UF.
+Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e o caixa de cada finalista recomeça com R$ 250 mil; o investimento estadual acumulado não recomeça.
 
-## Regras gerais
+## Regras principais
 
-- O mapa começa neutro (sem investimentos nem votos atribuídos).
-- **Até a penúltima rodada** de cada turno eleitoral, cada candidato pode fazer no máximo **2 ações pagas por UF em cada rodada**. **Somente na última rodada** (ex.: 10/10) é possível ultrapassar duas ações por estado, respeitando saldo, teto efetivo de 10 pontos e fechamento estadual. Essa regra também vale para a IA e recomeça no segundo turno.
-- Cada candidato pode fazer até dez ações pagas por UF, mas a **UF fecha assim que qualquer candidato atinge dez pontos efetivos de influência**. Todos os investimentos anteriores permanecem e ninguém mais pode investir naquela UF no mesmo turno eleitoral.
-- Caixa inicial igual de **R$ 250 mil** para todos; cada rodada seguinte rende **R$ 250 mil + R$ 50 mil por UF com liderança isolada**. Estados neutros e empatados não geram bônus.
-- Cinco adversários têm estratégias distintas: investir em grandes colégios eleitorais, arrecadar bônus, conquistar e fechar estados, disputar lideranças, defender território.
-- Ninguém precisa obter vantagem inicial; as vantagens só existem quando há ação de campanha.
-- Primeiro turno com seis candidaturas; mais de 50% dos votos válidos simulados encerra a disputa. Caso contrário, os dois mais votados disputam segundo turno, reiniciando o mapa e o orçamento da etapa.
-- Os arquivos HTML, CSS, mapa e logotipos estão no próprio repositório; sem depender de chamadas remotas para desenho do mapa.
-- A versão 7 inicia um **novo salvamento (`rumo_ao_planalto_v7`)**. Versões anteriores ficam intactas no armazenamento do navegador.
+- Mapa neutro ao iniciar uma eleição, com 27 unidades federativas.
+- Percentual bruto por UF = influência efetiva do candidato / `max(10, soma das influências efetivas na UF)`. A parcela ainda não atribuída não aparece no gráfico.
+- Ranking nacional e apuração utilizam apenas votos válidos simulados atribuídos aos candidatos, ponderados pelo eleitorado ilustrativo de cada UF.
+- Cada ação estadual tem um custo fixo relacionado ao tamanho do eleitorado. As afinidades históricas dão multiplicadores de ×1, ×1,5 ou ×2 para personagens com esse recurso configurado.
+- **Até duas ações por candidato e estado por rodada, exceto na última rodada de cada turno eleitoral**, em que não há limite por rodada.
+- Uma UF fecha para todos quando qualquer candidato chega a **10 pontos efetivos de influência**. Os investimentos existentes permanecem.
+- **R$ 250 mil iniciais e R$ 250 mil de renda-base a cada nova rodada**, mais **R$ 50 mil por UF liderada sem empate**.
+- Todos obedecem às mesmas regras de saldo, investimento, fechamento e turnos.
+- O salvamento da V8 utiliza a chave local `rumo_ao_planalto_v8`, independente da V7. Uma partida anterior não é sobrescrita, mas não é migrada automaticamente.
 
-## Fontes e licenciamento
+## Fontes e licenças
 
-- [TSE — Dados Abertos das Eleições 2022](https://dadosabertos.tse.jus.br/dataset/resultados-2022)
-- [Resultado por estado, segundo turno de 2022 (UOL/TSE)](https://noticias.uol.com.br/eleicoes/2022/analise/presidente-2-turno/resultado-da-eleicao-para-presidente-no-2-turno-em-todos-os-estados/)
-- [Contornos geográficos, br-geojson (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson)
-- [Símbolos partidários SVG, avoarpj/partidos-brasil-svg (MIT)](https://github.com/avoarpj/partidos-brasil-svg). A atribuição e o texto da licença estão em [assets/LICENSE-ATTRIBUTION.txt](assets/LICENSE-ATTRIBUTION.txt).
+- [TSE — Relação de candidaturas de 2026](https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/eleicoes-2026-tem-12-candidaturas-na-disputa-pela-presidencia-da-republica)
+- [TSE — Dados Abertos das eleições de 2022](https://dadosabertos.tse.jus.br/dataset/resultados-2022)
+- [br-geojson: contornos estaduais (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson)
+- [partidos-brasil-svg: logotipos disponíveis (MIT)](https://github.com/avoarpj/partidos-brasil-svg), com atribuição em [assets/LICENSE-ATTRIBUTION.txt](assets/LICENSE-ATTRIBUTION.txt)
 
-Os símbolos e nomes dos partidos são utilizados para identificação informativa no simulador. Seu uso **não representa apoio, vínculo institucional ou autorização dos partidos**. As classificações ideológicas e as regras de bônus são hipóteses simplificadoras de um jogo, não pesquisas de intenção de voto, previsões ou alegações sobre toda a população de um estado.
+Os partidos sem SVG local são exibidos por siglas textuais. **Este jogo não é afiliado ao TSE nem a candidatos ou partidos políticos.** Os resultados, percentuais, afinidades e orçamentos são fictícios, não representando pesquisa eleitoral, recomendação de voto ou projeção real.
