@@ -1,8 +1,17 @@
-# Rumo ao Planalto — V8.6
+# Rumo ao Planalto — V8.7
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## V8.7 — de 2 a 10 participantes em todas as dificuldades
+
+- A tela inicial permite escolher **de 2 a 10 personagens**, sendo um controlado pelo jogador e de **1 a 9 pela IA**, independentemente da dificuldade (Iniciante, Normal ou Experiente).
+- O limite de dez é aplicado à seleção, às validações da partida, ao carregamento de salvamentos e ao botão de nova eleição. Partidas anteriores de 2 a 6 participantes continuam válidas.
+- Os adversários contam com **9 estratégias de IA**, preservando as cinco anteriores e acrescentando custo-benefício, estados em aberto, pressão nos rivais e consolidação de base.
+- Para 7 a 10 participantes, o ranking ganha rolagem em telas menores para não deslocar excessivamente o mapa.
+- Os **dois mais votados** continuam avançando ao segundo turno de **4 rodadas**, quando necessário. Os investimentos dos finalistas permanecem, e as ações pagas dos eliminados são descartadas.
+- Orçamento, limite de influência, perfil de campanha e multiplicadores históricos (inclusive os reduzidos no Experiente) continuam iguais.
 
 ## V8.6 — bônus reduzidos na dificuldade Experiente
 
@@ -68,13 +77,13 @@ A base histórica é a **porcentagem de votos válidos recebida por Lula no segu
 | Mais de 35% a menos de 45% | ×1 | ×1,5 | ×1,5 |
 | 35% ou menos | ×1 | ×1 | ×2 |
 
-O perfil é consultado diretamente no cadastro fixo dos personagens. Saves anteriores da V8 que contenham `profileById` não substituem os perfis agora fixos; a chave de salvamento continua `rumo_ao_planalto_v8`. Investimentos, regras da IA, escolha de 2 a 6 candidaturas, renda e continuidade para o segundo turno são preservados.
+O perfil é consultado diretamente no cadastro fixo dos personagens. Saves anteriores da V8 que contenham `profileById` não substituem os perfis agora fixos; a chave de salvamento continua `rumo_ao_planalto_v8`. Investimentos, regras da IA, escolha de 2 a 10 candidaturas, renda e continuidade para o segundo turno são preservados.
 
 ## Novidades da V8
 
 ### Seleção de candidatos
 
-A tela inicial permite escolher **de 2 a 6 participantes** e definir qual deles você controlará. Os demais, de um a cinco, serão controlados pela IA. Para trocar um nome quando houver seis selecionados, desmarque outro antes. Com apenas dois participantes, a partida geralmente se encerra no primeiro turno, se alguém superar 50% dos votos válidos simulados.
+A tela inicial permite escolher **de 2 a 10 participantes** e definir qual deles você controlará. Os demais, de um a nove, serão controlados pela IA. Para trocar um nome quando houver dez selecionados, desmarque outro antes. Com apenas dois participantes, a partida geralmente se encerra no primeiro turno, se alguém superar 50% dos votos válidos simulados.
 
 O grupo de **12 candidaturas oficiais à Presidência em 2026** foi extraído do [TSE, 11/09/2026](https://www.tse.jus.br/comunicacao/noticias/2026/Setembro/eleicoes-2026-tem-12-candidaturas-na-disputa-pela-presidencia-da-republica):
 
