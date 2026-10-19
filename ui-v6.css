@@ -241,3 +241,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .candidate-main{min-height:27px}
 .candidate-profile-fixed{padding:3px 4px;font-size:10px}
 }
+
+/* V8.7: keep the map accessible when 7-10 candidates share the ballot */
+.standings.crowded{max-height:min(42dvh,350px);overflow-y:auto;overscroll-behavior:contain;padding-right:5px;scrollbar-gutter:stable}
+@media(orientation:landscape) and (max-height:680px){.standings.crowded{max-height:max(102px,min(32dvh,260px))}}
