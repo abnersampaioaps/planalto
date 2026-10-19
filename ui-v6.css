@@ -127,7 +127,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .mapfoot{font-size:9px}
 .right .panel{padding:8px;max-height:max(220px,calc(100dvh - 194px));overflow-y:auto;overscroll-behavior:contain}
 .right h2{font-size:12px;margin-bottom:4px}.right .input{min-height:28px;font-size:11px;padding:4px}
-.right #regionTag,.right #weightText{display:none}
+.right #regionTag{display:none}.right #weightText{display:block;font-size:10px;line-height:1.35;margin:2px 0 4px}
 .statename{font-size:14px;margin:2px 0}
 .statepercent{font-size:19px}
 .state-summary{margin:4px 0 5px;padding-bottom:5px;font-size:9px}
