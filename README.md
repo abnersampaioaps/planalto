@@ -1,8 +1,15 @@
-# Rumo ao Planalto — V8.7
+# Rumo ao Planalto — V8.8
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## V8.8 — nome completo e partido no ranking
+
+- O gráfico de projeção nacional sempre exibe o **nome completo cadastrado do candidato e a sigla do partido entre parênteses**, por exemplo `Flávio Bolsonaro (PL)`.
+- O CSS permite quebra de linha em vez de cortar o nome com reticências, inclusive no celular com dez participantes.
+- A grade do ranking foi adaptada para acomodar nomes mais longos, preservando a barra e os percentuais.
+- Não houve mudanças em investimentos, cálculo de votos, bônus, dificuldades, segundo turno ou partidas salvas.
 
 ## V8.7 — de 2 a 10 participantes em todas as dificuldades
 
