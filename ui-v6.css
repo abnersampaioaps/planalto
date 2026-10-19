@@ -245,3 +245,33 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 /* V8.7: keep the map accessible when 7-10 candidates share the ballot */
 .standings.crowded{max-height:min(42dvh,350px);overflow-y:auto;overscroll-behavior:contain;padding-right:5px;scrollbar-gutter:stable}
 @media(orientation:landscape) and (max-height:680px){.standings.crowded{max-height:max(102px,min(32dvh,260px))}}
+
+/* V8.8: display the entire candidate name and party, without ellipsis, at every screen size */
+.standing{
+ grid-template-columns:minmax(200px,290px) minmax(28px,1fr) 77px!important;
+ min-height:40px!important;height:auto!important;
+}
+.standing-meta{min-width:0}
+.standing-meta>div{min-width:0;flex:1}
+.standing-name{
+ white-space:normal!important;
+ overflow:visible!important;
+ text-overflow:clip!important;
+ overflow-wrap:anywhere;
+ line-height:1.25;
+}
+.standing-name .party-short{display:inline-block;white-space:nowrap;margin-left:3px}
+@media(max-width:720px) and (orientation:portrait){
+ .standing{grid-template-columns:minmax(0,1.45fr) minmax(24px,.65fr) 66px!important;gap:6px!important;padding:6px!important}
+ .standing-name{font-size:11px;line-height:1.23}
+ .standing-pct{font-size:18px}
+ .standing-meta{gap:5px}
+}
+@media(orientation:landscape) and (max-height:680px){
+ .standing{grid-template-columns:minmax(155px,1.4fr) minmax(24px,1fr) 64px!important;min-height:33px!important;padding:4px 7px!important;gap:6px!important}
+ .standing-name{font-size:10px;line-height:1.2}
+}
+@media(max-width:370px) and (orientation:portrait){
+ .standing{grid-template-columns:minmax(0,1.4fr) minmax(18px,.6fr) 58px!important;gap:4px!important;padding:5px!important}
+ .standing-pct{font-size:16px}
+}
