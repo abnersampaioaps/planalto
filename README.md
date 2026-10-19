@@ -1,8 +1,16 @@
-# Rumo ao Planalto — V8.4
+# Rumo ao Planalto — V8.5
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## V8.5 — eleitorado visível e segundo turno de 4 rodadas
+
+- O texto **“Eleitorado simulado · N pessoas”** aparece também em telas horizontais de pouca altura, inclusive monitores de computador.
+- A duração selecionada de **6, 10 ou 14 rodadas** vale somente para o **primeiro turno**.
+- Quando houver segundo turno, ele sempre terá **4 rodadas**. As regras de até duas ações pagas por candidato e UF valem até a terceira rodada; a quarta é a última e libera mais ações, respeitando o teto de influência, o caixa e os estados fechados.
+- Os investimentos estaduais dos dois finalistas continuam acumulados; as ações dos eliminados são retiradas. A duração de quatro rodadas se aplica aos segundos turnos iniciados após esta atualização.
+- O salvamento continua na chave `rumo_ao_planalto_v8`. Partidas já iniciadas no segundo turno antes da atualização não são reiniciadas automaticamente.
 
 ## V8.4 — perfis de campanha fixos dos 23 personagens
 
@@ -79,7 +87,7 @@ Há ainda uma seção de **cenários alternativos e históricos** com Jair Bolso
 
 Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. Em partidas com apenas duas candidaturas, a regra é a mesma: o segundo turno só acontece se ninguém superar 50%. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos candidatos eliminados são retiradas**; votos e percentuais são recalculados somente com os finalistas.
 
-Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e o caixa de cada finalista recomeça com R$ 250 mil; o investimento estadual acumulado não recomeça.
+Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e o caixa de cada finalista recomeça com R$ 250 mil; o investimento estadual acumulado não recomeça. A partir da V8.5, novos segundos turnos duram exatamente **4 rodadas**.
 
 ## Regras principais
 
