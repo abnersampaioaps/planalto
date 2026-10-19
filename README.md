@@ -1,8 +1,18 @@
-# Rumo ao Planalto — V8.8
+# Rumo ao Planalto — V8.9
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## V8.9 — encerramento antecipado quando todos os estados estão fechados
+
+- O **primeiro ou segundo turno** é concluído e apurado assim que as 27 UFs estiverem fechadas (algum candidato atingiu 10 pontos efetivos em cada uma), mesmo que ainda restem rodadas.
+- Se o último estado for fechado pelo jogador, a apuração ocorre **imediatamente após o investimento**, sem precisar encerrar a rodada.
+- Se o último estado for fechado durante ações da IA, a apuração ocorre **na mesma rodada**, antes de distribuir renda ou avançar a rodada. Nenhum outro adversário investe depois de todos os estados fecharem.
+- O **aviso de apuração**, tanto do primeiro quanto do segundo turno, informa explicitamente que a disputa terminou antecipadamente porque todos os 27 estados foram fechados.
+- No primeiro turno, seguem valendo a vitória por maioria absoluta dos votos válidos e, quando aplicável, a classificação dos dois finalistas. No segundo, ganha quem tiver mais votos válidos.
+- Os investimentos dos finalistas continuam preservados. Se o segundo turno iniciar com os 27 estados ainda fechados, sua apuração também ocorre imediatamente.
+- O motivo do encerramento é armazenado no salvamento, preservando a informação do aviso após recarregar a página. Salvamentos anteriores seguem compatíveis.
 
 ## V8.8 — nome completo e partido no ranking
 
