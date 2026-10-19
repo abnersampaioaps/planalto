@@ -1,8 +1,22 @@
-# Rumo ao Planalto — V8.5
+# Rumo ao Planalto — V8.6
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## V8.6 — bônus reduzidos na dificuldade Experiente
+
+A dificuldade **Experiente** (hard) mantém as mesmas faixas históricas estaduais e os perfis fixos dos personagens, mas reduz os multiplicadores para **todos os participantes, incluindo o jogador e a IA**:
+
+| Bônus por afinidade | Iniciante / Normal | Experiente |
+|---|---:|---:|
+| Forte | ×2 | ×1,5 |
+| Moderada | ×1,5 | ×1,25 |
+| Sem afinidade | ×1 | ×1 |
+
+A influência efetiva utiliza agora **precisão de 0,25 ponto** (como 1,25 e 3,75), sem arredondar para 0,5. O teto estadual de 10 pontos e o fechamento do estado seguem inalterados. A IA continua utilizando até 95% do caixa disponível no nível Experiente (83% no Normal e 58% no Iniciante); todos os candidatos usam os mesmos multiplicadores reduzidos nesse nível.
+
+A nova regra afeta a influência da partida de acordo com a dificuldade escolhida, inclusive partidas salvas: o salvamento continua utilizando a chave `rumo_ao_planalto_v8`. No modo Normal/Iniciante, os multiplicadores permanecem inalterados.
 
 ## V8.5 — eleitorado visível e segundo turno de 4 rodadas
 
