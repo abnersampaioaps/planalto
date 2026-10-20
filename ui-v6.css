@@ -65,11 +65,12 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .invest-header h3{font-size:12px;font-weight:800;margin:0;color:#1c4268}
 .invest-header span{font-size:10px}
 .investment-roster{display:grid;gap:8px}
-.investment-row{display:grid;grid-template-columns:minmax(84px,102px) minmax(40px,1fr) 17px;gap:8px;align-items:center;font-size:11px}
+.investment-row{display:grid;grid-template-columns:minmax(84px,102px) minmax(40px,1fr) minmax(52px,86px);gap:8px;align-items:center;font-size:11px}
 .invest-name{display:flex;gap:6px;align-items:center;min-width:0}.invest-name span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .invest-name small{font-size:9px;color:#74869a}.invest-track{height:9px;border-radius:2px;background:#e7ebef;overflow:hidden}
 .invest-track>span{display:block;height:100%;border-radius:2px}
-.investment-row b{font-variant-numeric:tabular-nums;text-align:right}
+.investment-row b{font-variant-numeric:tabular-nums;text-align:right;line-height:1.05}
+.support-earned{display:block;margin-top:3px;color:#287069;font-size:8px;line-height:1.22;font-weight:700}
 .usage{background:none;color:#58708c;font-size:10px;font-weight:650;padding:0;margin:8px 0 0}
 .invest-actions{display:flex;gap:8px;align-items:center;margin:9px 0 0}
 .button{background:#fff;color:#14588c;border:1px solid #97b3ce;border-radius:4px;min-height:40px;padding:9px 11px;font-weight:750}
@@ -132,7 +133,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .statepercent{font-size:19px}
 .state-summary{margin:4px 0 5px;padding-bottom:5px;font-size:9px}
 .invest-header{margin-bottom:4px}.invest-header h3{font-size:11px}.invest-header span{font-size:8px}
-.investment-roster{gap:4px}.investment-row{grid-template-columns:minmax(73px,80px) minmax(30px,1fr) 14px;font-size:10px;gap:4px}
+.investment-roster{gap:4px}.investment-row{grid-template-columns:minmax(73px,80px) minmax(30px,1fr) minmax(47px,62px);font-size:10px;gap:4px}.support-earned{margin-top:2px;font-size:7.5px}
 .invest-track{height:6px}
 .usage{margin:5px 0 0;font-size:9px}
 .invest-actions{position:sticky;bottom:0;background:#fff;padding:5px 0 0;margin-top:4px;border-top:1px solid #e1e7ee;z-index:1;gap:5px}

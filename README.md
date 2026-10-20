@@ -9,9 +9,12 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 No segundo turno, o painel de investimento estadual passa a exibir o botão **Apoios do 1º turno**. Ele abre uma janela separada para manter o mapa e o ranking limpos, especialmente em telas menores.
 
 - Cada finalista pode investir **R$ 1 milhão**, uma vez por candidatura eliminada. A IA pode fazer as mesmas negociações.
-- A afinidade entre os perfis fixos define a parcela transferível: **50%** para a mesma orientação, **35%** quando um dos perfis é Centro e **20%** entre Esquerda e Direita.
-- O apoio é distribuído por UF a partir das ações que o eliminado realizou no primeiro turno. Por exemplo, 6 ações em São Paulo geram até 3 pontos de influência para uma afinidade de 50%.
+- A duração escolhida no menu — 6, 10 ou 14 rodadas — vale tanto para o primeiro quanto para o segundo turno. A apuração antecipada continua acontecendo quando todas as UFs fecham.
+- Quando o finalista conquistar o apoio de um eliminado com o mesmo perfil de campanha, esse apoio fica exclusivo: o outro finalista não pode mais comprá-lo.
+- A afinidade entre os perfis fixos define a parcela transferível: **70%** para a mesma orientação, **50%** quando um dos perfis é Centro e **30%** entre Esquerda e Direita.
+- O apoio é distribuído por UF a partir das ações que o eliminado realizou no primeiro turno. Por exemplo, 6 ações em São Paulo geram até 4,2 pontos de influência para uma afinidade de 70%.
 - A janela informa antes da compra os votos estimados, o custo, o percentual de afinidade e todos os estados em que o eliminado investiu. Em cada UF, a transferência respeita o teto de 10 pontos; a parcela que não couber não é reaproveitada em outro estado.
+- Na lista estadual, cada ponto recebido por apoio mostra sua origem logo abaixo da influência efetiva, como `+1,5 de apoio de Nome do candidato`.
 - Os candidatos eliminados continuam fora da apuração do segundo turno. O apoio adiciona influência estadual aos finalistas, e os votos são recalculados a partir desse novo mapa; portanto, não há soma duplicada de votos.
 - Se as 27 UFs fecharem cedo no segundo turno, a apuração antecipada aguarda enquanto ainda houver algum apoio capaz de gerar influência. A rodada final continua sendo o limite normal da disputa.
 
@@ -50,7 +53,7 @@ Os dois finalistas conservam o **saldo financeiro restante ao fim do primeiro tu
 - O limite de dez é aplicado à seleção, às validações da partida, ao carregamento de salvamentos e ao botão de nova eleição. Partidas anteriores de 2 a 6 participantes continuam válidas.
 - Os adversários contam com **9 estratégias de IA**, preservando as cinco anteriores e acrescentando custo-benefício, estados em aberto, pressão nos rivais e consolidação de base.
 - Para 7 a 10 participantes, o ranking ganha rolagem em telas menores para não deslocar excessivamente o mapa.
-- Os **dois mais votados** continuam avançando ao segundo turno de **4 rodadas**, quando necessário. Os investimentos dos finalistas permanecem, e as ações pagas dos eliminados são descartadas.
+- Os **dois mais votados** continuam avançando ao segundo turno, quando necessário. Os investimentos dos finalistas permanecem, e as ações pagas dos eliminados são descartadas.
 - Orçamento, limite de influência, perfil de campanha e multiplicadores históricos (inclusive os reduzidos no Experiente) continuam iguais.
 
 ## V8.6 — bônus reduzidos na dificuldade Experiente
@@ -67,12 +70,12 @@ A influência efetiva utiliza agora **precisão de 0,25 ponto** (como 1,25 e 3,7
 
 A nova regra afeta a influência da partida de acordo com a dificuldade escolhida, inclusive partidas salvas: o salvamento continua utilizando a chave `rumo_ao_planalto_v8`. No modo Normal/Iniciante, os multiplicadores permanecem inalterados.
 
-## V8.5 — eleitorado visível e segundo turno de 4 rodadas
+## V8.5 — eleitorado visível e duração de turno
 
 - O texto **“Eleitorado simulado · N pessoas”** aparece também em telas horizontais de pouca altura, inclusive monitores de computador.
-- A duração selecionada de **6, 10 ou 14 rodadas** vale somente para o **primeiro turno**.
-- Quando houver segundo turno, ele sempre terá **4 rodadas**. As regras de até duas ações pagas por candidato e UF valem até a terceira rodada; a quarta é a última e libera mais ações, respeitando o teto de influência, o caixa e os estados fechados.
-- Os investimentos estaduais dos dois finalistas continuam acumulados; as ações dos eliminados são retiradas. A duração de quatro rodadas se aplica aos segundos turnos iniciados após esta atualização.
+- A duração selecionada de **6, 10 ou 14 rodadas** vale para cada turno da eleição.
+- Quando houver segundo turno, ele herda a duração selecionada. As regras de até duas ações pagas por candidato e UF valem até a última rodada, que libera mais ações, respeitando o teto de influência, o caixa e os estados fechados.
+- Os investimentos estaduais dos dois finalistas continuam acumulados, e as ações dos eliminados são retiradas.
 - O salvamento continua na chave `rumo_ao_planalto_v8`. Partidas já iniciadas no segundo turno antes da atualização não são reiniciadas automaticamente.
 
 ## V8.4 — perfis de campanha fixos dos 23 personagens
@@ -150,7 +153,7 @@ Há ainda uma seção de **cenários alternativos e históricos** com Jair Bolso
 
 Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. Em partidas com apenas duas candidaturas, a regra é a mesma: o segundo turno só acontece se ninguém superar 50%. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos candidatos eliminados saem do mapa**; votos e percentuais são recalculados somente com os finalistas. A partir da V8.11, elas ficam registradas apenas como base para os apoios que cada finalista decidir negociar.
 
-Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e cada finalista mantém o saldo que tinha no fim do primeiro turno, recebendo ainda R$ 250 mil e o bônus de R$ 50 mil por estado liderado no mapa recalculado; o investimento estadual acumulado não recomeça. A partir da V8.5, novos segundos turnos duram exatamente **4 rodadas**.
+Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e cada finalista mantém o saldo que tinha no fim do primeiro turno, recebendo ainda R$ 250 mil e o bônus de R$ 50 mil por estado liderado no mapa recalculado; o investimento estadual acumulado não recomeça. O segundo turno usa a mesma duração escolhida para o primeiro.
 
 ## Regras principais
 
