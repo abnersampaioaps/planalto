@@ -121,7 +121,8 @@ const PEOPLE_ALTERNATE=[
 ['Eduardo Leite','Eduardo Leite','Centro','PSD','center'],
 ['Tabata Amaral','Tabata','Centro','PSB','center'],
 ['Michelle Bolsonaro','Michelle Bolsonaro','Direita','PL','right'],
-['Pablo Marçal','Pablo Marçal','Direita','PRTB','right']
+['Pablo Marçal','Pablo Marçal','Direita','PRTB','right'],
+['Cabo Daciolo','Cabo Daciolo','Direita','MOBILIZA','right']
 ].map(([id,short,spectrum,party,axis])=>({id,short,spectrum,party,axis,group:'alternativo'}));
 const PEOPLE=[...PEOPLE_2026,...PEOPLE_ALTERNATE].map((p,index)=>({...p,index}));
 const MAX_CANDIDATES=10;
@@ -141,7 +142,7 @@ function stateBand(uf){
 }
 
 const KNOWN_PARTY_LOGOS=new Set([
-'PT','PL','PSB','PSDB','REDE','REPUBLICANOS','PSD','PCO','UP','NOVO','PSTU','PCB','MISSAO','AVANTE','PSOL','PRTB'
+'PT','PL','PSB','PSDB','REDE','REPUBLICANOS','PSD','PCO','UP','NOVO','PSTU','PCB','MISSAO','AVANTE','PSOL','PRTB','MOBILIZA'
 ]);
 const EXTERNAL_PARTY_LOGOS={
  DC:'https://upload.wikimedia.org/wikipedia/commons/e/ed/Logomarca_Democracia_Crist%C3%A3.svg',
