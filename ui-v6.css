@@ -51,7 +51,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .state-label{font-size:11px;font-weight:750;fill:#fff;stroke:#253b55;stroke-width:2.3;paint-order:stroke}
 .mapfoot{border-top:1px solid #e1e7ec;padding-top:6px;font-size:10px;color:#617990}
 .mapfoot .linkbtn{font-size:10px}
-.right{grid-column:2;grid-row:1;display:flex;gap:0;width:auto!important;order:unset}
+.right{grid-column:2;grid-row:1;display:flex;flex-direction:column;gap:11px;width:auto!important;order:unset}
 .right .panel{padding:13px;width:100%}
 .right h2{font-size:15px;color:#1b3e60;margin:0 0 6px}
 .right .eyebrow{color:#527997}
@@ -158,6 +158,34 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .state-lock-note[hidden]{display:none!important}
 .territory.locked{stroke:#143c61;stroke-width:2;stroke-dasharray:5 2;vector-effect:non-scaling-stroke}
 .territory.locked.selected{stroke:#103a64;stroke-width:3.5;stroke-dasharray:none}
+
+/* V8.11 — apoios negociados no segundo turno, isolados do mapa e dos investimentos locais. */
+.support-panel{margin:0;padding:12px;border:1px solid #c8d8e6!important;border-radius:6px;background:linear-gradient(135deg,#f6fbff,#f0f8f6)!important}
+.support-panel[hidden]{display:none!important}
+.support-panel-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:10px}
+.support-panel-heading h3{font-size:13px;color:#17466f;margin:0 0 2px;font-weight:800}
+.support-panel-heading p{margin:0;color:#60788f;font-size:10px;line-height:1.35}
+.support-panel-heading span{flex:none;border-radius:999px;background:#e3eef8;color:#28577f;padding:3px 7px;font-size:9px;font-weight:800;white-space:nowrap}
+.support-panel-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:37px;padding:7px 10px;border-color:#2b699c;color:#14568a;background:#fff;font-size:11px}
+.support-panel-button b{font-size:22px;line-height:.5;font-weight:500}
+.support-modal{max-width:760px!important;max-height:calc(100dvh - 32px);overflow-y:auto;overscroll-behavior:contain}
+.support-modal h1{font-size:25px!important;margin:5px 0 7px!important}.support-modal>p,.support-modal p{font-size:12px;line-height:1.5}
+.support-rules{display:flex;flex-wrap:wrap;gap:6px;margin:13px 0;padding:9px;background:#f1f6fa;border:1px solid #dae5ee;border-radius:6px;color:#587087;font-size:10px}
+.support-rules span{padding-right:7px;border-right:1px solid #cad8e4}.support-rules span:last-child{border:0}.support-rules b{color:#155b86}
+.support-list{display:grid;gap:8px}
+.support-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px;border:1px solid #d7e2ec;border-radius:7px;background:#fff}
+.support-card-main{min-width:0}.support-card-title{display:flex;align-items:center;gap:8px;color:#193f63;font-size:13px;font-weight:800}.support-card-title .party-logo{width:27px;height:27px;min-width:27px;padding:3px}
+.support-card-meta{margin:5px 0;color:#60798f;font-size:10px}.support-card-stats{display:flex;flex-wrap:wrap;gap:5px 13px;color:#49667f;font-size:11px}.support-card-stats b{color:#145b87}
+.support-card-status{margin-top:7px;color:#176c5e;font-size:10px;font-weight:800}.support-card-status.unavailable{color:#8a6472}
+.support-card .button{min-height:35px;padding:6px 9px;white-space:nowrap;font-size:11px}
+.support-back{padding-left:0;margin-bottom:8px;color:#1b5d8f!important;font-weight:700}
+.support-detail-head{display:flex;gap:10px;align-items:center;margin-bottom:5px}.support-detail-head .party-logo{width:38px;height:38px;min-width:38px}
+.support-detail-head h1{margin:0!important;font-size:23px!important}.support-detail-head p{margin:2px 0 0!important;font-size:11px!important}
+.support-overview{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin:14px 0}.support-overview div{padding:9px;border:1px solid #dce6ee;border-radius:6px;background:#f7fafc;color:#587087;font-size:10px}.support-overview b{display:block;margin-top:3px;color:#174c74;font-size:14px}
+.support-detail-copy{margin:11px 0!important}.support-state-note{margin:0 0 7px;color:#536f87;font-size:11px;font-weight:700}.support-state-list{border:1px solid #dbe5ed;border-radius:6px;overflow:hidden;max-height:min(35dvh,310px);overflow-y:auto}
+.support-state-row{display:grid;grid-template-columns:minmax(90px,1.15fr) minmax(76px,1fr) minmax(80px,1fr);gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid #e3eaf0;color:#597187;font-size:10px}.support-state-row:last-child{border-bottom:0}.support-state-row strong{display:block;color:#1c466d;font-size:11px}.support-state-row b{color:#176b61}.support-state-row em{font-style:normal;color:#8a6472}
+@media(max-width:520px){.support-card{grid-template-columns:1fr;gap:9px}.support-card .button{width:100%}.support-overview{grid-template-columns:1fr}.support-state-row{grid-template-columns:minmax(72px,1fr) minmax(68px,1fr) minmax(75px,1fr);gap:4px;padding:8px}.support-rules{display:grid;grid-template-columns:1fr;gap:4px}.support-rules span{border:0;padding:0}}
+@media(orientation:landscape) and (max-height:680px){.support-panel{margin:0;padding:8px}.support-panel-heading{margin-bottom:5px}.support-panel-heading h3{font-size:11px}.support-panel-heading p{font-size:9px}.support-panel-button{min-height:30px;font-size:10px}.support-modal{max-height:calc(100dvh - 14px)}.support-card{padding:8px}.support-state-list{max-height:170px}}
 
 /* v7 — visualização partidária e espectro político */
 .party-logo{width:33px;height:33px;min-width:33px;display:grid;place-items:center;border:1px solid #d9e2ea;border-radius:6px;background:#fff;padding:4px;overflow:hidden}

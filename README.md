@@ -1,8 +1,19 @@
-# Rumo ao Planalto — V8.10
+# Rumo ao Planalto — V8.11
 
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## V8.11 — Apoios do 1º turno
+
+No segundo turno, o painel de investimento estadual passa a exibir o botão **Apoios do 1º turno**. Ele abre uma janela separada para manter o mapa e o ranking limpos, especialmente em telas menores.
+
+- Cada finalista pode investir **R$ 1 milhão**, uma vez por candidatura eliminada. A IA pode fazer as mesmas negociações.
+- A afinidade entre os perfis fixos define a parcela transferível: **50%** para a mesma orientação, **35%** quando um dos perfis é Centro e **20%** entre Esquerda e Direita.
+- O apoio é distribuído por UF a partir das ações que o eliminado realizou no primeiro turno. Por exemplo, 6 ações em São Paulo geram até 3 pontos de influência para uma afinidade de 50%.
+- A janela informa antes da compra os votos estimados, o custo, o percentual de afinidade e todos os estados em que o eliminado investiu. Em cada UF, a transferência respeita o teto de 10 pontos; a parcela que não couber não é reaproveitada em outro estado.
+- Os candidatos eliminados continuam fora da apuração do segundo turno. O apoio adiciona influência estadual aos finalistas, e os votos são recalculados a partir desse novo mapa; portanto, não há soma duplicada de votos.
+- Se as 27 UFs fecharem cedo no segundo turno, a apuração antecipada aguarda enquanto ainda houver algum apoio capaz de gerar influência. A rodada final continua sendo o limite normal da disputa.
 
 ## V8.10 — saldo acumulado do primeiro para o segundo turno
 
@@ -137,7 +148,7 @@ Há ainda uma seção de **cenários alternativos e históricos** com Jair Bolso
 
 ### Segundo turno com continuidade
 
-Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. Em partidas com apenas duas candidaturas, a regra é a mesma: o segundo turno só acontece se ninguém superar 50%. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos candidatos eliminados são retiradas**; votos e percentuais são recalculados somente com os finalistas.
+Se ninguém alcançar mais de 50% dos votos válidos simulados no primeiro turno, os dois mais votados avançam. Em partidas com apenas duas candidaturas, a regra é a mesma: o segundo turno só acontece se ninguém superar 50%. **Todas as ações pagas acumuladas pelos dois finalistas são preservadas por estado**, inclusive sua influência multiplicada pelo perfil de afinidade. **As ações dos candidatos eliminados saem do mapa**; votos e percentuais são recalculados somente com os finalistas. A partir da V8.11, elas ficam registradas apenas como base para os apoios que cada finalista decidir negociar.
 
 Um estado que estava fechado porque um eliminado chegou a 10 pontos pode reabrir após a retirada dos investimentos desse personagem. Um estado fechado por um finalista permanece fechado. Os contadores **por rodada** são zerados, a rodada volta a 1 e cada finalista mantém o saldo que tinha no fim do primeiro turno, recebendo ainda R$ 250 mil e o bônus de R$ 50 mil por estado liderado no mapa recalculado; o investimento estadual acumulado não recomeça. A partir da V8.5, novos segundos turnos duram exatamente **4 rodadas**.
 
