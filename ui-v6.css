@@ -308,3 +308,53 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
  .standing{grid-template-columns:minmax(0,1.4fr) minmax(18px,.6fr) 58px!important;gap:4px!important;padding:5px!important}
  .standing-pct{font-size:16px}
 }
+
+/* Configuração: hierarquia e cores do painel de apuração. */
+.setup-modal.setup-config{width:min(640px,100%)!important;max-width:640px!important;padding:28px!important;border-top:4px solid #165b93;border-radius:8px}
+.setup-config #setupStepLabel{color:#59738c;font-size:10px;letter-spacing:1.2px}
+.setup-config #setupTitle{font-size:25px!important;line-height:1.25;margin:8px 0!important;color:#173e65}
+#setupTitle:focus{outline:none}
+.setup-config .setup-intro{margin:0 0 22px;color:#63758a;font-size:13px;line-height:1.5}
+.setup-config .setup-summary{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:0 0 24px;padding:14px 0;border:0;border-top:1px solid #e1e8ef;border-bottom:1px solid #e1e8ef;border-radius:0;background:transparent}
+.setup-player{display:flex;align-items:center;gap:10px;min-width:0}
+.setup-player>span{min-width:0}
+.setup-player small{display:block;color:#64788d;font-size:11px;margin-bottom:3px}
+.setup-player strong{display:block;color:#203f5e;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.setup-player strong span{color:#64788d;font-weight:500}
+.setup-player .party-logo{width:36px;height:36px;min-width:36px;border:0;padding:2px}
+.setup-participants{flex-shrink:0;color:#64788d;font-size:11px}
+.setup-config .setup-fields{gap:20px!important;margin:0 0 22px!important}
+.setup-config .setup-fields .field>label{font-size:12px!important;font-weight:650;text-transform:none;letter-spacing:0!important;color:#284968;margin:0 0 8px}
+.setup-config .setup-fields .input{width:100%;height:44px;min-height:44px;padding:10px 12px;border:1px solid #bdcddd;border-radius:5px;background:#fff;color:#203f5e;font-size:13px;box-shadow:0 1px 2px #173e6505;color-scheme:light}
+.setup-field-hint{display:block;margin-top:7px;font-size:11px;color:#6a7d90;line-height:1.45}
+.setup-config .support-choice{display:flex;align-items:flex-start;gap:12px;padding:16px;margin:0;border:1px solid #dbe5ed;border-radius:6px;background:#f5f8fb}
+.setup-config .support-choice input{flex:0 0 18px;width:18px;height:18px;margin:1px 0 0;accent-color:#165b93}
+.setup-config .support-choice strong{font-size:13px;font-weight:650;color:#244767;line-height:1.5}
+.setup-config .support-choice small{font-size:12px;line-height:1.5;margin-top:4px;color:#63788c}
+.setup-details{margin:18px 0 0;color:#60778c;font-size:12px}
+.setup-details summary{cursor:pointer;padding:6px 0;color:#32648c;font-weight:600;font-size:12px}
+.setup-details p{font-size:12px;line-height:1.6;margin:12px 0;color:#60778c}
+.setup-details h3{margin:16px 0 8px;font-size:12px;color:#284968}
+.setup-details ul{list-style:none;padding:0;margin:0}
+.setup-details li{display:flex;justify-content:space-between;gap:12px;padding:8px 0;border-bottom:1px solid #edf1f5;line-height:1.5}
+.setup-details li span:first-child{color:#284968;font-weight:600}
+.setup-details li span:last-child{text-align:right}
+.setup-details li small{font-weight:400;color:#6a7d90}
+.setup-config .setup-options-actions{margin:22px 0 0;padding:20px 0 0!important;gap:12px;align-items:center}
+.setup-config .setup-options-actions .button{min-height:44px;padding:10px 18px;border-radius:5px;font-size:13px}
+.setup-config #backSetupBtn{background:#fff;border-color:#c6d5e2;color:#265a83}
+.setup-config #startBtn{background:#165b93;border-color:#165b93;color:#fff}
+@media(max-width:520px){
+ .setup-modal.setup-config{padding:20px!important}
+ .setup-config #setupTitle{font-size:22px!important}
+ .setup-config .setup-fields{grid-template-columns:1fr;gap:16px!important}
+ .setup-config .setup-summary{gap:10px;flex-wrap:wrap;margin-bottom:20px}
+ .setup-details li{flex-direction:column;gap:2px}
+ .setup-details li span:last-child{text-align:left}
+ .setup-config .setup-options-actions .button{padding:10px 12px}
+}
+@media(orientation:landscape) and (max-height:500px){
+ .setup-modal.setup-config{padding:18px 24px!important}
+ .setup-config .setup-intro{margin-bottom:12px}
+ .setup-config .setup-summary{padding:10px 0;margin-bottom:16px}
+}

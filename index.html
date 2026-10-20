@@ -24,7 +24,7 @@
 @media(max-width:720px){.standing{grid-template-columns:minmax(95px,119px) minmax(55px,1fr) 74px;gap:8px;padding:10px}.standing-pct{font-size:22px}.standing-name{font-size:12px}.standing-small{font-size:9px}.mapbox{height:440px}.map-head{display:block}.legend{justify-content:flex-start;margin:7px 0 8px;font-size:10px}.state-label{font-size:11px}}
 @media(max-width:390px){.mapbox{height:390px}.standing{grid-template-columns:90px minmax(35px,1fr) 67px}.standing-pct{font-size:20px}}
 </style>
-<link rel="stylesheet" href="./ui-v6.css?v=89"></head><body>
+<link rel="stylesheet" href="./ui-v6.css?v=90"></head><body>
 <div class="shell">
 <header class="header">
 <div class="brand"><div class="symbol">★</div><div><div class="eyebrow">Simulador de estratégia eleitoral</div><div class="brandname">Rumo ao Planalto<span>.</span></div></div></div>
@@ -60,7 +60,7 @@
 <details class="panel campaign-log"><summary>Detalhes e histórico de campanha</summary><div id="activity" class="log"></div></details></main><footer class="footer">Simulador independente, sem vínculo com o TSE ou com os partidos. Filiações partidárias consideradas em outubro de 2026; perfis de campanha fixos, definidos para esta simulação exclusivamente como mecânica de jogo. A afinidade histórica usa a votação presidencial de 2022 para balanceamento, não como pesquisa ou previsão atual. Cada estado começa sem votos atribuídos, e o ranking usa somente votos válidos simulados. Os pontos de influência podem superar o número de ações pagas por causa do bônus, até o teto de 10. Orçamento inicial de R$ 250 mil, mais R$ 250 mil por rodada e R$ 50 mil por estado liderado. Cartografia: <a href="https://github.com/henriquemalvar/br-geojson" target="_blank" rel="noopener">br-geojson</a>; logos partidários: <a href="https://github.com/avoarpj/partidos-brasil-svg" target="_blank" rel="noopener">partidos-brasil-svg (MIT)</a>.</footer></div>
 <div class="overlay" id="setupOverlay"><section class="modal setup-modal" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
 <div class="eyebrow" id="setupStepLabel">Etapa 1 de 2 · sua disputa</div>
-<h1 id="setupTitle">Escolha os candidatos</h1>
+<h1 id="setupTitle" tabindex="-1">Escolha os candidatos</h1>
 <div id="setupStepCandidates">
 <p>Escolha <strong>de 2 a 10 participantes</strong> e defina qual candidatura você controlará. Os demais serão controlados pela IA.</p>
 <div class="setup-stats"><span id="candidateCount" class="candidate-count">6 de 10 selecionados</span><span>2º turno apenas se ninguém vencer no 1º</span></div>
@@ -71,14 +71,14 @@
 <div class="actions"><button class="button primary" id="continueSetupBtn">Continuar para configurações →</button></div>
 </div>
 <div id="setupStepOptions" hidden>
-<p>Defina as regras desta partida antes de começar.</p>
+<p class="setup-intro">Ajuste as regras e comece sua campanha.</p>
 <div class="setup-summary" id="setupSummary"></div>
 <div class="fields setup-fields">
-<div class="field"><label for="chooseDiff">Dificuldade</label><select class="input" id="chooseDiff"><option value="easy">Iniciante</option><option value="normal" selected>Normal</option><option value="hard">Experiente</option></select><div class="muted micro" style="margin-top:5px">Experiente: bônus ×2 → ×1,5 e ×1,5 → ×1,25 para todos.</div></div>
-<div class="field"><label for="chooseTime">Rodadas por turno</label><select class="input" id="chooseTime"><option value="6">Rápida · 6 rodadas</option><option value="10" selected>Clássica · 10 rodadas</option><option value="14">Longa · 14 rodadas</option></select><div class="muted micro" style="margin-top:5px">A duração escolhida vale para os dois turnos.</div></div>
-<label class="support-choice"><input type="checkbox" id="chooseSupports" checked><span><strong>Permitir apoios do 1º turno</strong><small>No segundo turno, os finalistas poderão negociar influência dos candidatos eliminados.</small></span></label>
-<div class="field"><label>Adversários controlados pela IA</label><div class="muted small" id="opponentPreview"></div></div>
-</div><p class="micro" id="perksDesc"></p>
+<div class="field"><label for="chooseDiff">Dificuldade</label><select class="input" id="chooseDiff" aria-describedby="difficultyHint"><option value="easy">Iniciante</option><option value="normal" selected>Normal</option><option value="hard">Experiente</option></select><small class="setup-field-hint" id="difficultyHint">Define o desafio da disputa.</small></div>
+<div class="field"><label for="chooseTime">Rodadas por turno</label><select class="input" id="chooseTime" aria-describedby="roundsHint"><option value="6">Rápida · 6 rodadas</option><option value="10" selected>Clássica · 10 rodadas</option><option value="14">Longa · 14 rodadas</option></select><small class="setup-field-hint" id="roundsHint">Mesma duração nos dois turnos.</small></div>
+</div>
+<label class="support-choice"><input type="checkbox" id="chooseSupports" checked aria-describedby="supportsHint"><span><strong>Permitir compra de apoios</strong><small id="supportsHint">Você e a IA podem negociar apoios dos eliminados no 2º turno.</small></span></label>
+<details class="setup-details"><summary>Detalhes da disputa</summary><p id="perksDesc"></p><p>No Experiente, os bônus ×2 e ×1,5 passam a ×1,5 e ×1,25 para todos.</p><h3>Adversários e estratégias</h3><ul id="opponentPreview"></ul></details>
 <div class="actions setup-options-actions"><button class="button" id="backSetupBtn">← Voltar</button><button class="button primary" id="startBtn">Começar eleição →</button></div>
 </div>
 </section></div>
@@ -712,9 +712,9 @@ function addCandidateChoices(container,profiles){
 function updatePreview(){
  const p=$('chooseP').value;
  const chosen=getSelectedCandidates(),opponents=opponentIDs(p,chosen);
- $('opponentPreview').textContent=opponents.map((id,i)=>who(id).short+' ('+who(id).party+') · '+AI_TACTICS[i%AI_TACTICS.length].name).join(' | ');
+ $('opponentPreview').innerHTML=opponents.map((id,i)=>'<li><span>'+esc(who(id).short)+' <small>('+esc(who(id).party)+')</small></span><span>'+esc(AI_TACTICS[i%AI_TACTICS.length].name)+'</span></li>').join('');
  $('perksDesc').textContent=p&&who(p)?who(p).short+' · '+who(p).party+' · Perfil fixo '+GAME_PROFILE_NAMES[campaignProfile(p)]+'. Os multiplicadores seguem as faixas de votação de 2022.':'Selecione os participantes para continuar.';
- $('setupSummary').textContent=p&&who(p)?'Você controlará '+who(p).short+' ('+who(p).party+'). '+chosen.length+' candidaturas participarão desta disputa.':'Defina sua candidatura para continuar.';
+ $('setupSummary').innerHTML=p&&who(p)?'<div class="setup-player">'+partyIcon(p)+'<span><small>Seu candidato</small><strong>'+esc(who(p).short)+' <span>· '+esc(who(p).party)+'</span></strong></span></div><span class="setup-participants">'+chosen.length+' participantes</span>':'Defina sua candidatura para continuar.';
 }
 function setSetupStep(step){
  if(step===2&&!validateCandidates($('chooseP').value,getSelectedCandidates())){toast('Selecione de 2 a 10 participantes, incluindo seu candidato.');return}
@@ -724,6 +724,10 @@ function setSetupStep(step){
  $('setupStepOptions').hidden=candidates;
  $('setupStepLabel').textContent=candidates?'Etapa 1 de 2 · sua disputa':'Etapa 2 de 2 · configurações';
  $('setupTitle').textContent=candidates?'Escolha os candidatos':'Configure a partida';
+ const modal=$('setupOverlay').querySelector('.setup-modal');
+ modal.classList.toggle('setup-config',!candidates);
+ modal.scrollTop=0;
+ if(!$('setupOverlay').classList.contains('hidden'))$('setupTitle').focus({preventScroll:true});
  updatePreview();
 }
 function continueSetup(){setSetupStep(2)}
