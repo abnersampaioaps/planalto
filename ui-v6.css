@@ -173,6 +173,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .support-modal h1{font-size:25px!important;margin:5px 0 7px!important}.support-modal>p,.support-modal p{font-size:12px;line-height:1.5}
 .support-rules{display:flex;flex-wrap:wrap;gap:6px;margin:13px 0;padding:9px;background:#f1f6fa;border:1px solid #dae5ee;border-radius:6px;color:#587087;font-size:10px}
 .support-rules span{padding-right:7px;border-right:1px solid #cad8e4}.support-rules span:last-child{border:0}.support-rules b{color:#155b86}
+.support-summary{display:flex;flex-wrap:wrap;gap:5px 12px;margin:-4px 0 12px;color:#526f87;font-size:10px}.support-summary b{color:#175b87}.support-summary span:last-child{flex-basis:100%;color:#6e6471}
 .support-list{display:grid;gap:8px}
 .support-card{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px;border:1px solid #d7e2ec;border-radius:7px;background:#fff}
 .support-card-main{min-width:0}.support-card-title{display:flex;align-items:center;gap:8px;color:#193f63;font-size:13px;font-weight:800}.support-card-title .party-logo{width:27px;height:27px;min-width:27px;padding:3px}

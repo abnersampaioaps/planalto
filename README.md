@@ -8,7 +8,8 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 
 No segundo turno, o painel de investimento estadual passa a exibir o botão **Apoios do 1º turno**. Ele abre uma janela separada para manter o mapa e o ranking limpos, especialmente em telas menores.
 
-- Cada finalista pode investir **R$ 1 milhão**, uma vez por candidatura eliminada. A IA pode fazer as mesmas negociações.
+- Cada finalista pode conquistar no máximo **três apoios**: o primeiro custa **R$ 1 milhão**, o segundo **R$ 2 milhões** e o terceiro **R$ 4 milhões**. Um finalista só pode negociar um apoio por rodada, e a IA segue as mesmas regras.
+- No início de cada rodada do segundo turno, o finalista que estiver atrás na votação nacional recebe a primeira oportunidade de negociação. Quando for a IA, ela exerce essa prioridade antes das ações do jogador na rodada.
 - A duração escolhida no menu — 6, 10 ou 14 rodadas — vale tanto para o primeiro quanto para o segundo turno. A apuração antecipada continua acontecendo quando todas as UFs fecham.
 - Quando o finalista conquistar o apoio de um eliminado com o mesmo perfil de campanha, esse apoio fica exclusivo: o outro finalista não pode mais comprá-lo.
 - A afinidade entre os perfis fixos define a parcela transferível: **70%** para a mesma orientação, **50%** quando um dos perfis é Centro e **30%** entre Esquerda e Direita.
