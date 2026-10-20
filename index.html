@@ -116,7 +116,12 @@ const PEOPLE_ALTERNATE=[
 ['José Serra','José Serra','Centro','PSDB','center'],
 ['Enéas Carneiro','Enéas','Centro','PRONA','center'],
 ['Dilma Rousseff','Dilma Rousseff','Esquerda','PT','left'],
-['Aécio Neves','Aécio Neves','Centro','PSDB','center']
+['Aécio Neves','Aécio Neves','Centro','PSDB','center'],
+['Guilherme Boulos','Boulos','Esquerda','PSOL','left'],
+['Eduardo Leite','Eduardo Leite','Centro','PSD','center'],
+['Tabata Amaral','Tabata','Centro','PSB','center'],
+['Michelle Bolsonaro','Michelle','Direita','PL','right'],
+['Pablo Marçal','Pablo Marçal','Direita','UNIÃO','right']
 ].map(([id,short,spectrum,party,axis])=>({id,short,spectrum,party,axis,group:'alternativo'}));
 const PEOPLE=[...PEOPLE_2026,...PEOPLE_ALTERNATE].map((p,index)=>({...p,index}));
 const MAX_CANDIDATES=10;
