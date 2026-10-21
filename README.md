@@ -1,8 +1,27 @@
 # Rumo ao Planalto — V8.11
 
+Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
+
 Simulador independente de estratégia eleitoral brasileira para navegador e celular, com layout horizontal.
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
+
+## Seleção por eleição — 2002 a 2026
+
+- Na primeira etapa, **Selecionar por eleição** marca os candidatos de 2002, 2006, 2010, 2014, 2018, 2022 ou os 12 personagens de 2026 já cadastrados. Trocar o ano substitui a seleção anterior; alterar as caixas permite personalizar a disputa.
+- Cada pessoa tem um único cadastro e uma única caixa. Quem já está na lista de 2026 não se repete em **Outros personagens para partidas alternativas**.
+- Os históricos e personagens alternativos permanecem nessa seção, com busca por nome/partido e filtro **Só selecionados**. Ao aplicar um ano histórico, a seção abre mostrando apenas os selecionados; desmarque o filtro para explorar os demais.
+- O candidato controlado é preservado se participar do novo grupo; caso contrário, é selecionado o primeiro nome do atalho. A escolha continua editável.
+- O limite passa a **13 participantes**, para acomodar 2018 sem cortar nomes. Contagens dos atalhos: 2002 (6), 2006 (7), 2010 (9), 2014 (11), 2018 (13), 2022 (11), 2026 (12).
+- Os atalhos históricos consideram candidatos com votos válidos no primeiro turno: em 2006, Rui Costa Pimenta não entra no atalho; em 2014 entra Marina Silva, em 2018 Fernando Haddad e em 2022 Padre Kelmon, após as substituições de candidatura. Os personagens já existentes continuam disponíveis para seleção manual.
+- O ano seleciona **participantes e partidos daquela eleição**. Personalizada usa o cadastro atual. Ajustar caixas depois de escolher um ano mantém o contexto daquele ano; quem não disputou essa eleição usa o partido atual, conforme aviso na tela. Para retornar aos partidos atuais sem perder as marcações, escolha Personalizada.
+- Os partidos aparecem nos cartões, busca, seletor do jogador, resumo, ranking e apoios. A partida salva uma cópia das siglas de todos os participantes, inclusive os eliminados: novas configurações ou atualizações do cadastro não alteram uma partida em andamento. Salvamentos antigos preservam as siglas usadas antes dessa funcionalidade.
+- O ano não altera regras, resultados, afinidades de 2022 ou perfis de jogo. Perfis são convenções de jogo, não classificações oficiais. Todos os partidos cadastrados têm imagem local, inclusive os históricos, sem substituí-los pelos sucessores. “Sem partido” e “A confirmar” usam marcadores neutros; o emblema de sigla permanece como proteção em caso de falha de carregamento.
+- Filiações revisadas em outubro de 2026. Falecidos usam o último partido conhecido; casos incertos aparecem como **A confirmar**, sem inventar filiações. Fontes e critérios em [docs/parties.md](docs/parties.md).
+
+Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
+
+Validação: `node --test tests/election-presets.test.cjs`.
 
 ## V8.11 — Apoios do 1º turno
 
@@ -186,4 +205,4 @@ O [TSE registra Enéas Carneiro como candidato do PRONA em 1994](https://www.tse
 - [br-geojson: contornos estaduais (CC0/IBGE)](https://github.com/henriquemalvar/br-geojson)
 - [partidos-brasil-svg: logotipos disponíveis (MIT)](https://github.com/avoarpj/partidos-brasil-svg), com atribuição em [assets/LICENSE-ATTRIBUTION.txt](assets/LICENSE-ATTRIBUTION.txt)
 
-Os logotipos disponíveis no próprio repositório aparecem em SVG. Para **DC, Democrata e PRONA**, o jogo carrega imagens da Wikimedia Commons e mostra as siglas caso não seja possível obtê-las. **Este jogo não é afiliado ao TSE nem a candidatos ou partidos políticos.** Os resultados, percentuais, afinidades e orçamentos são fictícios, não representando pesquisa eleitoral, recomendação de voto ou projeção real.
+Os logotipos de todos os partidos cadastrados estão no próprio repositório, em SVG, PNG ou JPG, e não dependem de conexão. Fontes e licenças dos logos adicionais estão em [assets/PARTY-LOGO-SOURCES.md](assets/PARTY-LOGO-SOURCES.md). **Este jogo não é afiliado ao TSE nem a candidatos ou partidos políticos.** Os resultados, percentuais, afinidades e orçamentos são fictícios, não representando pesquisa eleitoral, recomendação de voto ou projeção real.

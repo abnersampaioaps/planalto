@@ -1,5 +1,20 @@
 /* Planalto v6 — visual inspirado em painéis institucionais de resultados eleitorais.
    Identidade independente; não é produto ou site oficial do TSE. */
+.continuation-modal{max-width:620px;max-height:calc(100dvh - 32px);overflow-y:auto}
+.continuation-modal h1{font-size:26px}
+.trajectory-benefits{padding:12px 14px;margin:12px 0;border-left:3px solid #176f67;background:#f0f7f6;border-radius:4px;color:#193f63;font-size:13px}
+.trajectory-benefits p{margin:5px 0 0;font-size:12px;line-height:1.45}
+.continuation-modal p{margin:8px 0;font-size:12px;line-height:1.4}
+.continuation-player{display:flex;align-items:center;gap:10px;margin-top:6px}
+.continuation-modal .input{background:#fff;color:#163751;border-color:#c9d6e2}
+.continuation-modal h2{margin-top:18px}
+#continuationRoster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+.continuation-entry{display:flex;align-items:center;gap:7px;padding:8px;border:1px solid #dce3eb;border-radius:5px;font-size:12px;cursor:pointer;min-width:0}
+.continuation-entry input{accent-color:#176f67;flex-shrink:0}
+.continuation-entry>span:last-child{min-width:0;overflow-wrap:anywhere}
+.continuation-note{display:block;color:#63748a;font-size:10px;margin-top:2px}
+.continuation-entry .party-logo{width:25px;height:25px;min-width:25px;padding:2px}
+@media(max-width:520px){#continuationRoster{grid-template-columns:1fr}.continuation-modal{padding:18px}.continuation-modal .actions{flex-direction:column-reverse}}
 :root{--bg:#f4f6f9;--surface:#fff;--panel:#fff;--line:#dce3eb;--fg:#162f4e;--muted:#63748a;--accent:#176f67;--gold:#d1a339;--red:#b44b60}
 *{box-sizing:border-box}
 html,body{background:#f4f6f9!important;color:#182e49!important;font:14px/1.36 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif!important}
@@ -190,6 +205,16 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 @media(orientation:landscape) and (max-height:680px){.support-panel{margin:0;padding:8px}.support-panel-heading{margin-bottom:5px}.support-panel-heading h3{font-size:11px}.support-panel-heading p{font-size:9px}.support-panel-button{min-height:30px;font-size:10px}.support-modal{max-height:calc(100dvh - 14px)}.support-card{padding:8px}.support-state-list{max-height:170px}}
 
 /* v7 — visualização partidária e espectro político */
+.election-history-row{display:flex;align-items:center;gap:14px;padding:9px 0;border-top:1px solid #e1e7ed;color:#193f63;font-size:13px}.election-history-row strong{flex:0 0 38px}.election-history-row small{color:#586f86}
+.election-history-candidate{display:flex;align-items:center;gap:7px;min-width:0}
+.election-history-candidate>span:last-child{overflow-wrap:anywhere}
+.election-history-candidate .party-logo{width:25px;height:25px;min-width:25px;flex:0 0 25px;padding:2px}
+@media(min-width:901px){
+ .map-panel{align-self:stretch;display:flex;flex-direction:column;min-height:0}
+ .map-panel .mapbox{flex:1;min-height:0;height:auto;max-height:none;position:relative}
+ .map-panel .mapbox svg{position:absolute;inset:0;width:100%;height:100%}
+ .map-panel .map-head,.map-panel .mapfoot{flex-shrink:0}
+}
 .party-logo{width:33px;height:33px;min-width:33px;display:grid;place-items:center;border:1px solid #d9e2ea;border-radius:6px;background:#fff;padding:4px;overflow:hidden}
 .party-logo img{max-width:100%;max-height:100%;width:100%;height:100%;object-fit:contain;display:block}
 .party-short{font-size:10px;color:#6a7d90;font-weight:700;margin-left:4px}
@@ -207,7 +232,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
  .party-short{font-size:9px}
 }
 
-/* V8 — chooser for a fixed six-person ballot, optimized for phones in landscape */
+/* Candidate chooser, optimized for phones in landscape */
 .setup-modal{max-width:900px!important;width:min(900px,100%)!important;max-height:calc(100dvh - 24px);overflow-y:auto;overscroll-behavior:contain;padding:16px 18px!important}
 .setup-modal h1{font-size:22px!important;margin:6px 0!important}
 .setup-modal>p{margin:5px 0;font-size:12px!important}
@@ -356,5 +381,25 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 @media(orientation:landscape) and (max-height:500px){
  .setup-modal.setup-config{padding:18px 24px!important}
  .setup-config .setup-intro{margin-bottom:12px}
- .setup-config .setup-summary{padding:10px 0;margin-bottom:16px}
+.setup-config .setup-summary{padding:10px 0;margin-bottom:16px}
+}
+
+/* Election shortcuts share the same cards; extras can be searched without duplication. */
+.election-preset{display:grid;grid-template-columns:1fr 150px;align-items:center;gap:6px 16px;padding:12px 14px;margin:14px 0 4px;border:1px solid #dce5ed;border-radius:6px;background:#f5f8fb}
+.election-preset>label{font-size:13px;font-weight:700;color:#244766}
+.election-preset .input,.candidate-tools .input{background:#fff;color:#203f5e;border:1px solid #bdcddd;border-radius:5px;min-height:40px;padding:8px 10px;font-size:13px;color-scheme:light;width:100%}
+.election-preset p{grid-column:1/-1;margin:2px 0 0;font-size:11px;line-height:1.5;color:#60788e}
+.election-note{font-size:11px;line-height:1.5;color:#60788e;margin:10px 0}
+#extrasCount{color:#60788e;font-weight:500;white-space:nowrap}
+.candidate-tools{display:grid;grid-template-columns:auto minmax(120px,1fr) auto;align-items:center;gap:10px;margin:12px 0}
+.candidate-tools>label{font-size:12px;color:#365875}
+.candidate-tools .selected-filter{display:flex;align-items:center;gap:7px;cursor:pointer;white-space:nowrap}
+.selected-filter input{width:16px;height:16px;accent-color:#165b93}
+.candidate-empty{font-size:12px;color:#60788e;margin:14px 0}
+.candidate-choice[hidden]{display:none!important}
+.candidate-choice-info strong{white-space:normal;overflow-wrap:anywhere;line-height:1.3}
+@media(max-width:520px){
+ .election-preset{grid-template-columns:1fr 110px;gap:8px;padding:12px}
+ .candidate-tools{grid-template-columns:1fr}
+ .candidate-extras summary{line-height:1.6}
 }
