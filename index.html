@@ -74,7 +74,7 @@
 <p>Escolha uma eleição como ponto de partida ou monte sua disputa com <strong>2 a 13 participantes</strong>.</p>
 <div class="election-preset"><label for="chooseElection">Selecionar por eleição</label><select class="input" id="chooseElection" aria-describedby="electionPresetHint"><option value="">Personalizada</option><option value="2002">2002</option><option value="2006">2006</option><option value="2010">2010</option><option value="2014">2014</option><option value="2018">2018</option><option value="2022">2022</option><option value="2026">2026</option></select><p id="electionPresetHint">O ano substitui as marcações. Depois, você pode ajustar a lista.</p></div>
 <div class="setup-stats"><span id="candidateCount" class="candidate-count" aria-live="polite">6 de 13 selecionados</span><span>2º turno apenas se ninguém vencer no 1º</span></div>
-<div class="candidate-picker-title">Candidatos registrados em 2026 <small>Fonte: TSE · 12 candidaturas</small></div>
+<div class="candidate-picker-title" id="candidateListTitle">Candidatos registrados em 2026 <small>Fonte: TSE · 12 candidaturas</small></div>
 <div class="candidate-picker" id="officialCandidates" role="group" aria-label="Candidatos presidenciais de 2026"></div>
 <details class="candidate-extras" id="candidateExtras"><summary>Outros personagens para partidas alternativas <span id="extrasCount"></span></summary><div class="candidate-tools"><label for="candidateSearch">Buscar personagem</label><input class="input" type="search" id="candidateSearch" placeholder="Nome ou partido" autocomplete="off"><label class="selected-filter"><input type="checkbox" id="onlySelectedCandidates"> Só selecionados</label></div><p class="candidate-empty" id="candidateEmpty" hidden>Nenhum personagem encontrado. Ajuste a busca ou o filtro.</p><div class="candidate-picker" id="alternativeCandidates" role="group" aria-label="Outros personagens políticos"></div></details>
 <p class="election-note" id="partyContextHint">Partidos atuais conforme o cadastro de outubro de 2026. Regras e perfis de jogo permanecem iguais.</p>
@@ -865,18 +865,31 @@ function applyElectionPreset(){
  if(setupCampaign)return;
  const year=$('chooseElection').value,ids=ELECTION_PRESETS[year];
  setupElectionYear=ids?year:null;
+ $('candidateSearch').value='';$('onlySelectedCandidates').checked=false;$('candidateExtras').open=false;
  if(!ids){renderCandidateChoices();return}
  const previousPlayer=$('chooseP').value;
  for(const input of document.querySelectorAll('input[name="candidate-entry"]'))input.checked=ids.includes(input.value);
- const hasExtras=ids.some(id=>who(id).group==='alternativo');
- $('candidateExtras').open=hasExtras;
- $('candidateSearch').value='';
- $('onlySelectedCandidates').checked=hasExtras;
  renderCandidateChoices();
  $('chooseP').value=ids.includes(previousPlayer)?previousPlayer:ids[0];
  updatePreview();
 }
+function initialCandidateGroups(year){
+ const primary=ELECTION_PRESETS[year]||PEOPLE_2026.map(person=>person.id);
+ return {primary,other:PEOPLE.map(person=>person.id).filter(id=>!primary.includes(id))};
+}
+function arrangeCandidateChoices(){
+ const groups=initialCandidateGroups(setupElectionYear);
+ const cards=new Map([...document.querySelectorAll('input[name="candidate-entry"]')].map(input=>[input.value,input.closest('.candidate-choice')]));
+ for(const [container,ids] of [['officialCandidates',groups.primary],['alternativeCandidates',groups.other]]){
+  for(const id of ids){const card=cards.get(id);if(card){card.hidden=false;$(container).appendChild(card)}}
+ }
+ const year=setupElectionYear||'2026';
+ $('candidateListTitle').innerHTML='Candidatos registrados em '+esc(year)+' <small>'+groups.primary.length+' candidaturas</small>';
+ $('officialCandidates').setAttribute('aria-label','Candidatos presidenciais de '+year);
+ $('candidateExtras').hidden=Boolean(setupElectionYear);
+}
 function renderCandidateChoices(){
+ arrangeCandidateChoices();
  const picked=getSelectedCandidates();
  const playerBefore=$('chooseP').value;
  const select=$('chooseP');
@@ -912,7 +925,7 @@ function renderCandidateChoices(){
  const year=setupElectionYear,custom=year&&matchingElection(picked)!==year;
  $('chooseElection').value=year||'';
  $('electionPresetHint').textContent=year?year+' · '+picked.length+' selecionados'+(custom?' · seleção personalizada':'')+'. Você pode retirar participantes deste ano. Para misturar anos, escolha Personalizada.':'Seleção livre de candidatos, com o último partido registrado no jogo.';
-$('partyContextHint').textContent=setupCampaign?'Seu candidato anterior e o vencedor mantêm suas filiações nesta trajetória. Para trocar de candidato, marque outro integrante de '+setupCampaign.party+' na lista; somente candidatos desse partido aparecem no seletor.':!year?'Último partido registrado no jogo para cada candidato. Onde a filiação atual é incerta ou houve desfiliação, usamos o registro anterior, sem afirmar filiação atual.':year!=='2026'?'Partidos da eleição de '+year+'. Personagens que não disputaram esse ano usam o cadastro atual. Regras e perfis não mudam.':'Partidos atuais conforme o cadastro de outubro de 2026. Falecidos usam o último partido; filiações incertas estão sinalizadas. Regras e perfis não mudam.';
+$('partyContextHint').textContent=setupCampaign?'Seu candidato anterior e o vencedor mantêm suas filiações nesta trajetória. Para trocar de candidato, marque outro integrante de '+setupCampaign.party+' na lista; somente candidatos desse partido aparecem no seletor.':!year?'Último partido registrado no jogo para cada candidato. Onde a filiação atual é incerta ou houve desfiliação, usamos o registro anterior, sem afirmar filiação atual.':year!=='2026'?'Partidos da eleição de '+year+'. Regras e perfis não mudam.':'Partidos atuais conforme o cadastro de outubro de 2026. Falecidos usam o último partido; filiações incertas estão sinalizadas. Regras e perfis não mudam.';
  const extras=picked.filter(id=>who(id).group==='alternativo').length;
  $('extrasCount').textContent=extras?'· '+extras+' selecionados':'';
  filterAlternativeCandidates();

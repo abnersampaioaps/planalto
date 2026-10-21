@@ -270,6 +270,18 @@ test('incumbents use the next official party, including the human winner, withou
  assert.equal(run("continuationPerson(absentPlan,'Ciro Gomes').party"),'PPS');
 });
 
+test('the primary candidate list follows the year and custom restores the 2026 grouping', () => {
+ for(const year of Object.keys(plain('ELECTION_PRESETS'))) {
+  const groups=plain(`initialCandidateGroups(${JSON.stringify(year)})`);
+  assert.deepEqual(groups.primary,plain(`ELECTION_PRESETS[${year}]`));
+  assert.equal(new Set([...groups.primary,...groups.other]).size,53);
+  assert.equal(groups.primary.length+groups.other.length,53);
+ }
+ const custom=plain('initialCandidateGroups(null)');
+ assert.deepEqual(custom.primary,plain('PEOPLE_2026.map(p=>p.id)'));
+ assert.deepEqual(custom.other,plain('PEOPLE_ALTERNATE.map(p=>p.id)'));
+});
+
 test('missing snapshots use the saved year; local logo references exist', () => {
   run("game=newGame('Marina Silva','normal',10,ELECTION_PRESETS[2010],true,'2010'); delete game.candidateParties; normalizePartyContext(game)");
   assert.equal(run("who('Marina Silva').party"),'PV');
