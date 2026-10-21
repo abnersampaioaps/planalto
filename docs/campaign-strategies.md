@@ -8,6 +8,9 @@ Opção desativada por padrão, preservada nos salvamentos e na continuidade. Jo
 | Ataque ao candidato | R$ 600 mil | Retira até 2 pontos, sem transferência. |
 | Mobilização de base | R$ 300 mil | Recupera até 1 ponto perdido por estratégias. |
 | Defesa de campanha | R$ 250 mil | Bloqueia uma ofensiva até o fim da rodada seguinte. |
+| Interferência nas eleições | R$ 1,5 milhão | Exclusiva do representante da presidência: antecipa ou adia a apuração do turno atual em quatro rodadas. |
+
+A interferência respeita os limites normais de uso. A antecipação nunca move o prazo para antes da rodada atual; a apuração ocorre ao encerrá-la. O adiamento não concede dinheiro imediatamente nem impede o encerramento por todos os estados fechados. O próximo turno e a próxima eleição mantêm a duração configurada. A IA presidencial pode antecipar quando lidera ou adiar quando está atrás. O resumo identifica o alcance nacional e o prazo anterior e novo.
 
 Ações bloqueadas ou debates sem sucesso também consomem dinheiro e limite. O mesmo alvo/estado não pode sofrer ofensivas na mesma rodada nem na seguinte. Investimentos normais podem recuperar influência perdida, inclusive onde o candidato já tinha dez ações. O painel estadual mostra o saldo de influência por estratégias e a proteção ativa.
 

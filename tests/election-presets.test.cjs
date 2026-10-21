@@ -106,6 +106,59 @@ test('strategy summaries are conditional, scoped to a round and preserve actual 
  assert.equal(run('queueStrategySummary(1,2)'),false);
 });
 
+test('ranking heading includes election year in both rounds without inventing a custom year', () => {
+ run("game=newGame('Lula','normal',6,ELECTION_PRESETS[2002],true,'2002')");
+ assert.equal(run('projectionHeading()'),'2002 · Projeção nacional · votos válidos');
+ run('game.phase=2');
+ assert.equal(run('projectionHeading()'),'2002 · Segundo turno · votos válidos');
+ run('game.electionYear=null');
+ assert.equal(run('projectionHeading()'),'Segundo turno · votos válidos');
+});
+
+test('third consecutive attempt reduces fixed income, not state income or same-party successors', () => {
+ run("game=newGame('Lula','normal',6,ELECTION_PRESETS[2006],true,'2006');game.done=true;game.electionHistory=[{year:'2002',winner:'Lula',party:'PT'},{year:'2006',winner:'Lula',party:'PT'}];var thirdPlan=continuationPlan(game);var thirdPrevious=game;game=continuationGame(game,thirdPlan,'Lula',thirdPlan.ids)");
+ assert.equal(run('game.cash.Lula'),150000);
+ assert.equal(run("income('Lula')"),150000);
+ run('game.localTotal.SP.Lula=1');
+ assert.equal(run("income('Lula')"),200000);
+ run("game.firstResult={ranked:[{id:'Lula'},{id:'José Serra'}]};var thirdCash=game.cash.Lula;makeSecondRound(true)");
+ assert.equal(run('game.cash.Lula-thirdCash'),200000);
+ run("game=continuationGame(thirdPrevious,thirdPlan,'Dilma Rousseff',uniquePartyRoster(thirdPlan,'Dilma Rousseff',['Dilma Rousseff',...thirdPlan.ids]))");
+ assert.equal(run("income('Dilma Rousseff')"),350000);
+ assert.equal(run("thirdConsecutiveAttempt('Lula','2014',[{year:'2002',winner:'Lula'},{year:'2006',winner:'Lula'},{year:'2010',winner:'José Serra'}])"),false);
+ run("game=JSON.parse(JSON.stringify(game));normalizePartyContext(game)");
+ assert.equal(run("income('Dilma Rousseff')"),350000);
+});
+
+test('presidential interference charges 1.5m, changes only this turn and is exclusive', () => {
+ run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.incumbent='Lula';game.cash.Lula=5000000;game.cash['Jair Bolsonaro']=5000000");
+ assert.equal(run("buyCampaignStrategy('Jair Bolsonaro','interference','SP','delay')"),false);
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','bad')"),false);
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','advance')"),true);
+ assert.equal(run('game.maxRounds'),6);
+ assert.equal(run('game.cash.Lula'),3500000);
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','delay')"),false);
+ run('game.round=5');
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','advance')"),true);
+ assert.equal(run('game.maxRounds'),5);
+ run('game.round=6;game.maxRounds=10');
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','delay')"),true);
+ assert.equal(run('game.maxRounds'),14);
+ assert.equal(run('game.roundsPerTurn'),10);
+ run('game=JSON.parse(JSON.stringify(game));normalizePartyContext(game)');
+ assert.equal(run('game.maxRounds'),14);
+ assert.equal(run('game.strategyEvents[0].effects.length'),0);
+ assert.ok(run('strategySummaryRows(game.strategyEvents)').includes('Todo o país'));
+ run("game.firstResult={ranked:[{id:'Lula'},{id:'Jair Bolsonaro'}]};makeSecondRound(true)");
+ assert.equal(run('game.maxRounds'),10);
+});
+
+test('presidential AI can choose interference under the same rules', () => {
+ run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.incumbent='Jair Bolsonaro';game.cash['Jair Bolsonaro']=2000000;aiCampaignStrategy('Jair Bolsonaro')");
+ assert.equal(run('game.maxRounds'),14);
+ assert.equal(run("game.cash['Jair Bolsonaro']"),500000);
+});
+
 test('full script parses; each person has one canonical ID and one group', () => {
   new vm.Script(script);
   const people = plain('PEOPLE');
