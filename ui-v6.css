@@ -315,6 +315,12 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .strategy-active-tab{padding:11px 14px;border-bottom:3px solid #176b65;color:#176b65;font-weight:700}
 #strategyPreview{background:#f3f7fb;border:1px solid #d9e4ef;border-radius:6px;padding:14px}
 #strategyNotice{margin-top:14px}
+#strategySummaryOverlay{z-index:15}
+#strategySummaryList{max-height:50dvh;overflow-y:auto;overscroll-behavior:contain}
+.strategy-summary-row{padding:13px 0;border-bottom:1px solid #d9e4ef;color:#153454}
+.strategy-summary-row>div{font-size:12px;margin-top:4px}
+.strategy-summary-row p{margin:6px 0}
+.strategy-summary-effects{display:flex;flex-direction:column;gap:3px}
 #resultsList{display:flex;flex-direction:column;gap:7px}
 #resultsList .standing{grid-template-columns:minmax(0,1fr) 72px!important;gap:7px 12px!important;padding:12px!important}
 #resultsList .standing-meta{grid-column:1;grid-row:1}

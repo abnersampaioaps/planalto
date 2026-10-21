@@ -83,6 +83,29 @@ test('debate outcomes and saved campaign strategy state preserve influence bound
  run('Math.random=oldRandom');
 });
 
+test('strategy summaries are conditional, scoped to a round and preserve actual effects', () => {
+ run("game=newGame('Lula','normal',6,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.cash.Lula=10000000;game.cash['Jair Bolsonaro']=10000000");
+ assert.equal(run('queueStrategySummary(1,1)'),false);
+ run("game.localTotal.SP['Jair Bolsonaro']=.5;var oldSummaryRandom=Math.random;Math.random=()=>0;buyCampaignStrategy('Lula','debate','SP','Jair Bolsonaro');Math.random=oldSummaryRandom;buyCampaignStrategy('Jair Bolsonaro','defend','RJ')");
+ const events=plain('strategyRoundEvents(1,1)');
+ assert.equal(events.length,2);
+ assert.equal(events[0].effects[0].id,'Lula');
+ assert.equal(events[0].effects[0].points,-events[0].effects[1].points);
+ assert.ok(events[0].effects[0].points<=1);
+ assert.deepEqual(events[1].effects,[]);
+ assert.equal(run('queueStrategySummary(1,1)'),true);
+ assert.equal(run('queueStrategySummary(1,1)'),false);
+ assert.equal(run('queueStrategySummary(2,1)'),false);
+ const markup=run('strategySummaryRows(game.strategySummary.events)');
+ assert.ok(markup.includes('São Paulo'));
+ assert.ok(markup.includes('Rio de Janeiro'));
+ assert.ok(markup.includes('Sem alteração de pontos'));
+ run('game=JSON.parse(JSON.stringify(game));normalizePartyContext(game)');
+ assert.equal(run('game.strategySummary.events.length'),2);
+ run('delete game.strategySummary;game.round=2');
+ assert.equal(run('queueStrategySummary(1,2)'),false);
+});
+
 test('full script parses; each person has one canonical ID and one group', () => {
   new vm.Script(script);
   const people = plain('PEOPLE');
@@ -436,6 +459,24 @@ test('same-party candidacies remain valid initially but continuation replaces th
  assert.equal(run('nominationGame.electionHistory[0].winner'),'Lula');
  run("changeContinuationPlayer(nominationPlan,'Lula')");
  assert.ok(run("nominationPlan.selected.includes('Lula')&&!nominationPlan.selected.includes('Dilma Rousseff')"));
+});
+
+test('continuation bonus label follows the chosen successor and returns to the president', () => {
+ const elements={};
+ const isolated=vm.createContext({document:{getElementById:id=>elements[id]??(elements[id]={})}});
+ vm.runInContext(definitions,isolated);
+ const evaluate=code=>vm.runInContext(code,isolated);
+ evaluate("game=newGame('Lula','normal',6,ELECTION_PRESETS[2006],true,'2006');game.done=true;game.electionHistory=[{year:'2006',winner:'Lula',party:'PT'}];setupCampaign=continuationPlan(game);setupCampaign.selected=[...setupCampaign.ids];setupCampaign.controlled='Lula';renderContinuation()");
+ assert.ok(elements.continuationRoster.innerHTML.includes('Atual presidente · +R$ 100 mil/rodada'));
+ evaluate("changeContinuationPlayer(setupCampaign,'Dilma Rousseff');renderContinuation()");
+ assert.ok(elements.continuationRoster.innerHTML.includes('Bônus da presidência · +R$ 100 mil/rodada'));
+ assert.equal((elements.continuationRoster.innerHTML.match(/100 mil\/rodada/g)||[]).length,1);
+ assert.equal(evaluate('continuationIncumbent(setupCampaign,setupCampaign.controlled,setupCampaign.selected)'),'Dilma Rousseff');
+ evaluate("changeContinuationPlayer(setupCampaign,'Lula');renderContinuation()");
+ assert.ok(elements.continuationRoster.innerHTML.includes('Atual presidente · +R$ 100 mil/rodada'));
+ assert.ok(!elements.continuationRoster.innerHTML.includes('Bônus da presidência'));
+ evaluate("setupCampaign.winner='José Serra';renderContinuation()");
+ assert.ok(!elements.continuationRoster.innerHTML.includes('Bônus da presidência'));
 });
 
 test('AI strategies persist through saves and runoff, with legacy fallback', () => {
