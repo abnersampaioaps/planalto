@@ -2,6 +2,9 @@
    Identidade independente; não é produto ou site oficial do TSE. */
 .continuation-modal{max-width:620px;max-height:calc(100dvh - 32px);overflow-y:auto}
 .continuation-modal h1{font-size:26px}
+.optional-rules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.optional-rules .support-choice{margin:0;height:100%}
+@media(max-width:600px){.optional-rules{grid-template-columns:1fr}}
 .trajectory-benefits{padding:12px 14px;margin:12px 0;border-left:3px solid #176f67;background:#f0f7f6;border-radius:4px;color:#193f63;font-size:13px}
 .trajectory-benefits p{margin:5px 0 0;font-size:12px;line-height:1.45}
 .continuation-modal p{margin:8px 0;font-size:12px;line-height:1.4}
@@ -207,6 +210,8 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 /* v7 — visualização partidária e espectro político */
 .election-history-row{display:flex;align-items:center;gap:14px;padding:9px 0;border-top:1px solid #e1e7ed;color:#193f63;font-size:13px}.election-history-row strong{flex:0 0 38px}.election-history-row small{color:#586f86}
 .election-history-candidate{display:flex;align-items:center;gap:7px;min-width:0}
+#electionHistoryList{max-height:220px;overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable}
+#electionHistoryList:focus-visible{outline:2px solid #317bb6;outline-offset:3px}
 .election-history-candidate>span:last-child{overflow-wrap:anywhere}
 .election-history-candidate .party-logo{width:25px;height:25px;min-width:25px;flex:0 0 25px;padding:2px}
 @media(min-width:901px){

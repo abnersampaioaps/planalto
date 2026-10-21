@@ -1,5 +1,25 @@
 # Continuidade entre eleições
 
+## Um candidato por partido na continuidade
+
+A trava vale apenas ao preparar e iniciar a próxima eleição, inclusive histórica: cada partido tem uma única candidatura. O menu inicial e a partida personalizada continuam permitindo vários candidatos do mesmo partido.
+
+O elenco inicial da continuidade prioriza o candidato controlado, depois o presidente e depois os demais nomes. Duplicatas de partido ficam desmarcadas. Trocar pelo seletor substitui o representante do partido, em vez de acrescentar outro; o nome anterior só pode voltar pela troca no seletor. Nos demais partidos, é necessário desmarcar o representante selecionado antes de marcar outra opção disponível.
+
+Se o presidente ocupar a vaga do partido do jogador e for substituído, não participa da nova eleição, mas transfere os R$ 100 mil extras por rodada ao substituto do mesmo partido, incluindo a primeira rodada e o segundo turno. O histórico de sua vitória é preservado. A mesma regra vale para celebridades escolhidas para representar esse partido. A validação de início também rejeita partidos repetidos, independentemente do estado dos controles.
+
+## Continuidade opcional após 2026
+
+O checkbox “Poder continuar após 2026” fica desligado por padrão, ao lado da compra de apoios. Ativado, preserva a sequência histórica até 2026 e prossegue indefinidamente em intervalos de quatro anos. Uma partida Personalizada com essa opção começa em 2026, preservando o elenco e os partidos personalizados.
+
+A partir de 2030, são sorteados 2–10 participantes únicos, incluindo o jogador e o presidente atual. O sorteio pode trazer zero, uma ou duas celebridades: no máximo uma no partido do jogador e outra em partido diferente. Celebridades já mantidas como jogador ou presidente contam nesse limite e não são removidas à força. O elenco mistura personagens históricos e novos políticos. Os novos nomes ficam exclusivos do modo futuro, sem alterar listas históricas. Todas as novas filiações e perfis são convenções fictícias de jogo, não declarações sobre filiação real ou apoio político.
+
+O jogador pode manter o candidato, escolher qualquer político cadastrado do próprio partido ou escolher **até uma celebridade convidada por eleição**, quando sorteada. A celebridade convidada representa o partido do jogador na nova eleição, mesmo se representou outro anteriormente. Se o jogador já controla uma celebridade, ela ocupa essa vaga. A celebridade sorteada para outro partido não entra no seletor do jogador.
+
+As filiações das celebridades adversárias são sorteadas na entrada e preservadas enquanto presentes na trajetória; uma posterior escolha pelo jogador é a exceção. O histórico nunca muda retroativamente. O presidente mantém a presença garantida e o bônus individual. A troca pode substituir um participante para respeitar o limite de oito. É permitido desmarcar participantes até o mínimo de seis.
+
+O sorteio da próxima eleição é salvo ao abrir o modal: fechar, voltar ou recarregar não sorteia outra celebridade. Anos futuros, filiações, opção de continuidade e histórico são salvos. Sem a opção, continua valendo o encerramento em 2026; salvamentos antigos permanecem com a opção desligada.
+
 No menu inicial, um ano específico limita a seleção aos seus participantes: pode-se retirar ou remarcar nomes daquele ano, mas não adicionar personagens externos. Personalizada mantém seleção livre. Um aviso explica a sequência, histórico, revanches e bônus antes de começar.
 
 ## Presidência e revanches

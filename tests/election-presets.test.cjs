@@ -17,7 +17,7 @@ test('full script parses; each person has one canonical ID and one group', () =>
   new vm.Script(script);
   const people = plain('PEOPLE');
   assert.equal(new Set(people.map(p => p.id)).size, people.length);
-  assert.equal(people.length, 53);
+  assert.equal(people.length, 68);
   assert.equal(people.filter(p => p.group === '2026').length, 12);
   assert.ok(people.every(p => ['left', 'center', 'right'].includes(p.axis)));
 });
@@ -280,6 +280,92 @@ test('the primary candidate list follows the year and custom restores the 2026 g
  const custom=plain('initialCandidateGroups(null)');
  assert.deepEqual(custom.primary,plain('PEOPLE_2026.map(p=>p.id)'));
  assert.deepEqual(custom.other,plain('PEOPLE_ALTERNATE.map(p=>p.id)'));
+});
+
+test('endless election plans persist and draw 2–10 people with at most one invited celebrity', () => {
+ assert.equal(run("nextElectionYear('2026',false)"),null);
+ assert.equal(run("nextElectionYear('2026',true)"),'2030');
+ run("game=newGame('Lula','normal',6,ELECTION_PRESETS[2026],true,'2026');game.endless=true;game.done=true;game.electionHistory=[{year:'2026',winner:'Flávio Bolsonaro',party:'PL'}]");
+ const first=plain('continuationPlan(game)');
+ assert.deepEqual(plain('continuationPlan(game)'),first);
+ assert.ok(first.ids.length>=2&&first.ids.length<=10);
+ assert.equal(new Set(first.ids).size,first.ids.length);
+ assert.ok(first.ids.includes('Lula')&&first.ids.includes('Flávio Bolsonaro'));
+ assert.ok(run("continuationChoices(continuationPlan(game)).filter(isCelebrity).length<=1"));
+ run('game=JSON.parse(JSON.stringify(game));normalizePartyContext(game)');
+ assert.deepEqual(plain('continuationPlan(game)'),first);
+ run("var futurePlan=continuationPlan(game);var chosenFuturePlayer=futurePlan.celebrity||game.player;game=continuationGame(game,futurePlan,chosenFuturePlayer,uniquePartyRoster(futurePlan,chosenFuturePlayer,[chosenFuturePlayer,...futurePlan.ids]))");
+ assert.equal(run('game.candidateParties[game.player]'),'PT');
+ assert.equal(run('game.electionYear'),'2030');
+ assert.equal(run('game.endless'),true);
+ assert.equal(run('game.electionHistory[0].party'),'PL');
+ for(let i=0;i<20;i++) {
+  run("game.done=true;game.electionHistory.push({year:game.electionYear,winner:game.player,party:game.candidateParties[game.player]});var laterPlan=continuationPlan(game);game=continuationGame(game,laterPlan,game.player,laterPlan.ids);game=JSON.parse(JSON.stringify(game));normalizePartyContext(game)");
+  assert.equal(run('game.electionYear'),String(2034+4*i));
+  assert.ok(run('game.all.length>=2&&game.all.length<=10'));
+  assert.equal(run('game.electionHistory.length'),i+2);
+ }
+});
+
+test('future mode permits same-party newcomers but rejects outsiders and invalid roster sizes', () => {
+ run("game=newGame('Jair Bolsonaro','normal',6,ELECTION_PRESETS[2022],false,'2026');game.endless=true;game.done=true;var restrictedPlan=continuationPlan(game)");
+ assert.ok(run("continuationChoices(restrictedPlan).includes('Nikolas Ferreira')"));
+ assert.equal(run("continuationChoices(restrictedPlan).includes('Erika Hilton')"),false);
+ assert.throws(()=>run("continuationGame(game,restrictedPlan,'Erika Hilton',[...restrictedPlan.ids.filter(id=>id!==game.player),'Erika Hilton'])"));
+ assert.throws(()=>run("continuationGame(game,restrictedPlan,game.player,[game.player])"));
+});
+
+test('future draws cap all celebrities at two and separate their parties', () => {
+ run("game=newGame('Lula','normal',6,ELECTION_PRESETS[2026],true,'2026')");
+ for(let i=0;i<200;i++) {
+  const plan=plain("futureElectionPlan(game,'2030')");
+  const celebrities=plan.ids.filter(id=>run(`isCelebrity(${JSON.stringify(id)})`));
+  assert.ok(celebrities.length<=2);
+  assert.ok(celebrities.filter(id=>plan.parties[id]===plan.party).length<=1);
+  assert.ok(celebrities.filter(id=>plan.parties[id]!==plan.party).length<=1);
+  assert.ok(plan.ids.length>=2&&plan.ids.length<=10);
+  assert.equal(new Set(plan.ids.map(id=>plan.parties[id])).size,plan.ids.length);
+ }
+ run("game=newGame('Felipe Neto','normal',6,['Felipe Neto','Monark'],true,'2026');game.candidateParties={'Felipe Neto':'PT',Monark:'PL'};game.electionHistory=[{year:'2026',winner:'Monark',party:'PL'}]");
+ for(let i=0;i<20;i++)assert.equal(run("futureElectionPlan(game,'2030').ids.filter(isCelebrity).length"),2);
+});
+
+test('same-party candidacies remain valid initially but continuation replaces the party nominee', () => {
+ assert.ok(run("validateCandidates('Lula',['Lula','Dilma Rousseff'])"));
+ assert.equal(run("newGame('Lula','normal',6,['Lula','Dilma Rousseff']).all.length"),2);
+ run("game=newGame('Lula','normal',6,ELECTION_PRESETS[2006],true,'2006');game.done=true;game.electionHistory=[{year:'2006',winner:'Lula',party:'PT'}];var nominationPlan=continuationPlan(game);nominationPlan.selected=[...nominationPlan.ids];nominationPlan.controlled='Lula'");
+ assert.ok(run("!nominationPlan.ids.includes('Dilma Rousseff')"));
+ assert.ok(run("continuationChoices(nominationPlan).includes('Dilma Rousseff')"));
+ run("changeContinuationPlayer(nominationPlan,'Dilma Rousseff')");
+ assert.ok(run("nominationPlan.selected.includes('Dilma Rousseff')&&!nominationPlan.selected.includes('Lula')"));
+ assert.throws(()=>run("continuationGame(game,nominationPlan,'Dilma Rousseff',[...nominationPlan.selected,'Lula'])"));
+ run("var nominationGame=continuationGame(game,nominationPlan,'Dilma Rousseff',nominationPlan.selected)");
+ assert.equal(run('nominationGame.incumbent'),'Dilma Rousseff');
+ assert.equal(run("nominationGame.cash['Dilma Rousseff']"),350000);
+ run('var originalNominationGame=game;game=nominationGame');
+ assert.equal(run("presidentBonus('Dilma Rousseff')"),100000);
+ assert.equal(run("presidentBonus('Lula')"),0);
+ assert.equal(run("income('Dilma Rousseff')"),350000);
+ run('game=originalNominationGame');
+ assert.equal(run('nominationGame.electionHistory[0].winner'),'Lula');
+ run("changeContinuationPlayer(nominationPlan,'Lula')");
+ assert.ok(run("nominationPlan.selected.includes('Lula')&&!nominationPlan.selected.includes('Dilma Rousseff')"));
+});
+
+test('AI strategies persist through saves and runoff, with legacy fallback', () => {
+ run("game=newGame('Lula','normal',6,ELECTION_PRESETS[2026],true,'2026')");
+ const assigned=plain('game.aiStrategies');
+ assert.equal(Object.keys(assigned).length,11);
+ const valid=plain('AI_TACTICS.map(t=>t.id)');
+ assert.ok(Object.values(assigned).every(id=>valid.includes(id)));
+ assert.equal(new Set(Object.values(assigned).slice(0,9)).size,9);
+ run('game=JSON.parse(JSON.stringify(game));normalizePartyContext(game)');
+ assert.deepEqual(plain('game.aiStrategies'),assigned);
+ run("game.firstResult={ranked:[{id:'Lula'},{id:game.all[1]}]};makeSecondRound(true)");
+ assert.deepEqual(plain('game.aiStrategies'),assigned);
+ assert.equal(run('aiTactic(game.active[1]).id'),assigned[run('game.active[1]')]);
+ run('delete game.aiStrategies');
+ assert.equal(run('aiTactic(game.all[1]).id'),'popular');
 });
 
 test('missing snapshots use the saved year; local logo references exist', () => {
