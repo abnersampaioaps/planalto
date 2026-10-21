@@ -310,6 +310,18 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 @media(orientation:landscape) and (max-height:680px){.standings.crowded{max-height:max(102px,min(32dvh,260px))}}
 
 /* V8.8: display the entire candidate name and party, without ellipsis, at every screen size */
+#strategiesOverlay .input{background:#fff;color:#153454;border:1px solid #b9cce0;border-radius:5px}
+#strategyTabs{justify-content:flex-start;margin-bottom:16px}
+.strategy-active-tab{padding:11px 14px;border-bottom:3px solid #176b65;color:#176b65;font-weight:700}
+#strategyPreview{background:#f3f7fb;border:1px solid #d9e4ef;border-radius:6px;padding:14px}
+#strategyNotice{margin-top:14px}
+#resultsList{display:flex;flex-direction:column;gap:7px}
+#resultsList .standing{grid-template-columns:minmax(0,1fr) 72px!important;gap:7px 12px!important;padding:12px!important}
+#resultsList .standing-meta{grid-column:1;grid-row:1}
+#resultsList .standing-pct{grid-column:2;grid-row:1;font-size:22px}
+#resultsList .bar{grid-column:1/-1;grid-row:2;height:8px}
+#resultsList .standing-name{font-size:13px}
+.outcome-detail{display:block;margin-top:3px;font-size:10px;color:#73859a}
 .standing{
  grid-template-columns:minmax(200px,290px) minmax(28px,1fr) 77px!important;
  min-height:40px!important;height:auto!important;
