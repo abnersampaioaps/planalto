@@ -24,7 +24,7 @@
 @media(max-width:720px){.standing{grid-template-columns:minmax(95px,119px) minmax(55px,1fr) 74px;gap:8px;padding:10px}.standing-pct{font-size:22px}.standing-name{font-size:12px}.standing-small{font-size:9px}.mapbox{height:440px}.map-head{display:block}.legend{justify-content:flex-start;margin:7px 0 8px;font-size:10px}.state-label{font-size:11px}}
 @media(max-width:390px){.mapbox{height:390px}.standing{grid-template-columns:90px minmax(35px,1fr) 67px}.standing-pct{font-size:20px}}
 </style>
-<link rel="stylesheet" href="./ui-v6.css?v=101"></head><body>
+<link rel="stylesheet" href="./ui-v6.css?v=102"></head><body>
 <div class="shell">
 <header class="header">
 <div class="brand"><div class="symbol">★</div><div><div class="eyebrow">Simulador de estratégia eleitoral</div><div class="brandname">Rumo ao Planalto<span>.</span></div></div></div>
@@ -68,28 +68,27 @@
 <div class="overlay" id="setupOverlay"><section class="modal setup-modal" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
 <div class="eyebrow" id="setupStepLabel">Etapa 1 de 2 · sua disputa</div>
 <h1 id="setupTitle" tabindex="-1">Escolha os candidatos</h1>
-<p id="campaignHint" class="election-note" hidden></p>
-<div class="trajectory-benefits"><strong>Inicie uma partida personalizada, ou escolha um ano e construa uma trajetória até 2026!</strong><p>Avance entre eleições com seu partido, acompanhe os vencedores no histórico e enfrente ex-presidentes em revanches. Quem vence recebe R$ 100 mil extras por rodada na eleição seguinte. Em Personalizada, você monta uma disputa livre. Ative “Poder continuar após 2026” nas configurações para seguir com eleições a cada quatro anos, sem limite.</p></div>
 <div id="setupStepCandidates">
-<p>Escolha uma eleição como ponto de partida ou monte sua disputa com <strong>2 a 13 participantes</strong>.</p>
-<div class="election-preset"><label for="chooseElection">Selecionar por eleição</label><select class="input" id="chooseElection" aria-describedby="electionPresetHint"><option value="">Personalizada</option><option value="2026">2026</option><option value="2022">2022</option><option value="2018">2018</option><option value="2014">2014</option><option value="2010">2010</option><option value="2006">2006</option><option value="2002">2002</option></select><p id="electionPresetHint">O ano substitui as marcações. Depois, você pode ajustar a lista.</p></div>
-<div class="setup-stats"><span id="candidateCount" class="candidate-count" aria-live="polite">6 de 13 selecionados</span><span>2º turno apenas se ninguém vencer no 1º</span></div>
+<p class="setup-opening">Escolha o tipo de disputa, ajuste os participantes e defina quem você vai controlar.</p>
+<div class="election-preset"><label for="chooseElection">Tipo de disputa</label><select class="input" id="chooseElection" aria-describedby="electionPresetHint"><option value="">Personalizada</option><option value="2026">2026</option><option value="2022">2022</option><option value="2018">2018</option><option value="2014">2014</option><option value="2010">2010</option><option value="2006">2006</option><option value="2002">2002</option></select><p id="electionPresetHint">O ano substitui as marcações. Depois, você pode ajustar a lista.</p></div>
+<div class="setup-stats"><span id="candidateCount" class="candidate-count" aria-live="polite">6 de 13 selecionados</span><span>Selecione de 2 a 13 participantes</span></div>
 <div class="candidate-picker-title" id="candidateListTitle">Candidatos registrados em 2026 <small>Fonte: TSE · 12 candidaturas</small></div>
 <div class="candidate-picker" id="officialCandidates" role="group" aria-label="Candidatos presidenciais de 2026"></div>
 <details class="candidate-extras" id="candidateExtras"><summary>Outros personagens para partidas alternativas <span id="extrasCount"></span></summary><div class="candidate-tools"><label for="candidateSearch">Buscar personagem</label><input class="input" type="search" id="candidateSearch" placeholder="Nome ou partido" autocomplete="off"><label class="selected-filter"><input type="checkbox" id="onlySelectedCandidates"> Só selecionados</label></div><p class="candidate-empty" id="candidateEmpty" hidden>Nenhum personagem encontrado. Ajuste a busca ou o filtro.</p><div class="candidate-picker" id="alternativeCandidates" role="group" aria-label="Outros personagens políticos"></div></details>
-<p class="election-note" id="partyContextHint">Partidos atuais conforme o cadastro de outubro de 2026. Regras e perfis de jogo permanecem iguais.</p>
+<details class="setup-party-details"><summary>Sobre os partidos deste elenco</summary><p class="election-note" id="partyContextHint">Partidos atuais conforme o cadastro de outubro de 2026. Regras e perfis de jogo permanecem iguais.</p></details>
 <div class="fields setup-fields"><div class="field"><label for="chooseP">Candidato que você controlará</label><select class="input" id="chooseP"></select></div></div>
 <div class="actions"><button class="button primary" id="continueSetupBtn">Continuar para configurações →</button></div>
 </div>
 <div id="setupStepOptions" hidden>
 <p class="setup-intro">Ajuste as regras e comece sua campanha.</p>
 <div class="setup-summary" id="setupSummary"></div>
+<p id="campaignHint" class="election-note" hidden></p>
 <div class="fields setup-fields">
 <div class="field"><label for="chooseDiff">Dificuldade</label><select class="input" id="chooseDiff" aria-describedby="difficultyHint"><option value="easy">Iniciante</option><option value="normal" selected>Normal</option><option value="hard">Experiente</option></select><small class="setup-field-hint" id="difficultyHint">Define o desafio da disputa.</small></div>
 <div class="field"><label for="chooseTime">Rodadas por turno</label><select class="input" id="chooseTime" aria-describedby="roundsHint"><option value="6">Rápida · 6 rodadas</option><option value="10" selected>Clássica · 10 rodadas</option><option value="14">Longa · 14 rodadas</option></select><small class="setup-field-hint" id="roundsHint">Mesma duração nos dois turnos.</small></div>
 </div>
 <div class="optional-rules"><label class="support-choice"><input type="checkbox" id="chooseSupports" checked aria-describedby="supportsHint"><span><strong>Permitir compra de apoios</strong><small id="supportsHint">Você e a IA podem negociar apoios dos eliminados no 2º turno.</small></span></label><label class="support-choice"><input type="checkbox" id="chooseEndless"><span><strong>Poder continuar após 2026</strong><small>Após 2026 tudo pode acontecer, quem irá se manter no poder?</small></span></label><label class="support-choice"><input type="checkbox" id="chooseStrategies"><span><strong>Permitir estratégias de campanha</strong><small>Use ações especiais para atacar adversários, defender estados e mudar a disputa.</small></span></label></div>
-<details class="setup-details"><summary>Detalhes da disputa</summary><p id="perksDesc"></p><p>No Experiente, os bônus ×2 e ×1,5 passam a ×1,5 e ×1,25 para todos.</p><h3>Adversários e estratégias</h3><ul id="opponentPreview"></ul></details>
+<details class="setup-details"><summary>Detalhes da disputa</summary><p id="perksDesc"></p><p>No Experiente, os bônus ×2 e ×1,5 passam a ×1,5 e ×1,25 para todos.</p><h3>Como funciona a continuidade?</h3><p>Ao escolher um ano, você pode avançar pelas eleições com seu partido e acompanhar os vencedores no histórico. A opção “Poder continuar após 2026” libera eleições a cada quatro anos, sem limite, inclusive para partidas personalizadas.</p><p>O partido vencedor recebe R$ 100 mil extras por rodada na eleição seguinte. Se o mesmo candidato tentar um terceiro mandato consecutivo, sua renda fixa cai para R$ 150 mil por rodada, além dos bônus por estados, e todos os seus multiplicadores ficam em 1×. O segundo turno acontece apenas se ninguém vencer no primeiro.</p><h3>Adversários e estratégias</h3><ul id="opponentPreview"></ul></details>
 <div class="actions setup-options-actions"><button class="button" id="backSetupBtn">← Voltar</button><button class="button primary" id="startBtn">Começar eleição →</button></div>
 </div>
 </section></div>
@@ -192,8 +191,9 @@ const FUTURE_PEOPLE=[
  ['Nikolas Ferreira','PL','right'],['Lucas Pavanato','PL','right'],['Erika Hilton','PSOL','left'],
  ['Arthur do Val','MISSAO','right'],['Amanda Vettorazzo','MISSAO','right'],['Kim Kataguiri','MISSAO','right'],
  ...['Gusttavo Lima','Luciano Huck','Neymar Junior','Virginia Fonseca','Danilo Gentili','Monark','Nando Moura','Felipe Neto','Raiam Santos'].map(id=>[id,'MDB','center',true]),
- ['Lulinha','PT','left'],['Janja','PT','left'],['Jair Renan Bolsonaro','PL','right']
-].map(([id,party,axis,celebrity=false])=>({id,short:id,party,axis,celebrity,future:true,group:'alternativo',spectrum:'Perfil fictício'}));
+ ['Lulinha','PT','left'],['Janja','PT','left'],['Jair Renan Bolsonaro','PL','right'],
+ ['Luladroid da Silva','PT','left',false,2080]
+].map(([id,party,axis,celebrity=false,unlockYear=null])=>({id,short:id,party,axis,celebrity,unlockYear,future:true,group:'alternativo',spectrum:'Perfil fictício'}));
 const PEOPLE=[...PEOPLE_2026,...PEOPLE_ALTERNATE,...FUTURE_PEOPLE].map((p,index)=>({...p,index,party:CURRENT_PARTY_UPDATES[p.id]||p.party,partyNote:p.future?'Filiação e perfil fictícios para o modo futuro':CURRENT_PARTY_NOTES[p.id]||''}));
 // One canonical ID per person; presets refer to that ID, never duplicate cards.
 // Historical presets use the final first-round candidates with valid votes.
@@ -269,7 +269,7 @@ function futureElectionPlan(saved,year){
  const history=saved.electionHistory||[],winner=history.find(entry=>entry.year===String(saved.electionYear))?.winner||null;
  const party=saved.candidateParties[saved.player],required=[...new Set([saved.player,winner].filter(Boolean))];
  const parties={...saved.futureParties,...saved.candidateParties};
- const political=PEOPLE.filter(p=>!p.celebrity);
+ const political=PEOPLE.filter(p=>!p.celebrity&&(!p.unlockYear||Number(year)>=p.unlockYear));
  for(const person of political)if(!parties[person.id])parties[person.id]=personForElection(person.id).party;
  const partyPool=['PT','PL','PSB','PSDB','PDT','PSOL','MDB','UNIAO','NOVO','REDE'];
  const size=2+Math.floor(Math.random()*9),celebrities=required.filter(isCelebrity);
@@ -330,7 +330,7 @@ function normalizePartyContext(saved){
 }
 const MAX_CANDIDATES=13;
 function continuationCandidates(plan){return plan.future?[...new Set([...plan.ids,...(plan.selected||[]),plan.controlled||plan.player])]:[...new Set([plan.player,plan.winner,...ELECTION_PRESETS[plan.year],...(plan.formerWinners||[])].filter(Boolean))]}
-function validInitialRoster(player,selected,year){return validateCandidates(player,selected)&&(!year||selected.every(id=>ELECTION_PRESETS[year]?.includes(id)))}
+function validInitialRoster(player,selected,year){return validateCandidates(player,selected)&&selected.every(id=>!PEOPLE.find(p=>p.id===id)?.unlockYear)&&(!year||selected.every(id=>ELECTION_PRESETS[year]?.includes(id)))}
 function continuationPerson(plan,id){
  const person=personForElection(id,plan.year);
  return person&&plan.parties[id]?{...person,party:plan.parties[id]}:person;
@@ -398,6 +398,7 @@ const LULA_2022_BY_UF={
  RS:43.65,RO:29.34,RR:23.92,SC:30.73,SP:44.76,SE:67.21,TO:51.36
 };
 function affinityMultiplier(id,uf){
+ if(game&&thirdConsecutiveAttempt(id,game.electionYear,game.electionHistory))return 1;
  const profile=campaignProfile(id),band=stateBand(uf);
  let base=1;
  if(profile==='left')base=band==='leftStrong'?2:band==='leftModerate'?1.5:1;
@@ -466,14 +467,15 @@ cash:Object.fromEntries(active.map(id=>[id,START_CASH])),localUsed:makeUses(acti
 log:['Mapa neutro: ninguém investiu ainda.'],done:false,pendingSecond:false,firstResult:null,secondResult:null,
 firstRoundLevels:null,eliminatedCandidates:[],supportInfluence:null,supportDeals:{},supportLocks:{},supportRoundPurchases:{},supportPriority:null,supportPriorityResolved:true};
 }
-function shares(state,active=game.active,levels=game.localTotal,supportLevels=game?.supportInfluence){
-const total=active.reduce((a,id)=>a+totalInfluence(id,state.uf,levels,supportLevels),0),denom=Math.max(RESERVE,total);
-const s=Object.fromEntries(active.map(id=>[id,totalInfluence(id,state.uf,levels,supportLevels)/denom]));
+function shares(state,active=game.active,levels=game.localTotal,supportLevels=game?.supportInfluence,scale=null){
+const influence=id=>totalInfluence(id,state.uf,levels,supportLevels)*(scale?.id===id?scale.factor:1);
+const total=active.reduce((a,id)=>a+influence(id),0),denom=Math.max(RESERVE,total);
+const s=Object.fromEntries(active.map(id=>[id,influence(id)/denom]));
 s.undecided=Math.max(0,RESERVE-total)/denom;return s;
 }
-function nationalResult(active=game.active,levels=game.localTotal,supportLevels=game?.supportInfluence){
+function nationalResult(active=game.active,levels=game.localTotal,supportLevels=game?.supportInfluence,scale=null){
 const tally=Object.fromEntries(active.map(id=>[id,0]));let indecisos=0;const perUF={};
-for(const state of STATES){const part=shares(state,active,levels,supportLevels);perUF[state.uf]=part;
+for(const state of STATES){const part=shares(state,active,levels,supportLevels,scale);perUF[state.uf]=part;
 const entries=[...active,'undecided'].map((id,i)=>({id,i,raw:state.valid*part[id]}));
 let remain=state.valid;for(const e of entries){e.votes=Math.floor(e.raw);remain-=e.votes}
 const sorted=[...entries].sort((a,b)=>(b.raw-b.votes)-(a.raw-a.votes)||a.i-b.i);
@@ -741,6 +743,8 @@ function strategyReason(id,type,uf,target){
   if(id!==game.incumbent)return 'Apenas o atual representante da presidência pode usar esta estratégia.';
   if(!['advance','delay'].includes(target))return 'Escolha antecipar ou adiar a apuração.';
   if(target==='advance'&&game.maxRounds<=game.round)return 'A apuração já está prevista para esta rodada.';
+  const projection=nationalResult();
+  if(projection.tally[id]>0&&projection.totalValid===projection.tally[id])return 'Aguarde votos atribuídos a adversários para calcular a perda nacional.';
  }
  if(type==='attack'||type==='debate'){
   if(!game.active.includes(target)||target===id||totalInfluence(target,uf)<=0)return 'Escolha um adversário com influência neste estado.';
@@ -757,13 +761,34 @@ function changeStrategyInfluence(id,uf,amount){
  if(delta<0)game.strategyLosses[uf][id]=(game.strategyLosses[uf][id]||0)-delta;
  return Math.abs(delta);
 }
+function interferencePenalty(id){
+ const result=nationalResult(),before=result.ranked.find(row=>row.id===id)?.pct||0,target=Math.max(0,before-2);
+ if(!before)return {before,after:before,loss:0,allocations:[]};
+ if(result.totalValid===result.tally[id])return {before,after:before,loss:0,allocations:[]};
+ let low=0,high=1;
+ for(let i=0;i<40;i++){
+  const factor=(low+high)/2,pct=nationalResult(game.active,game.localTotal,game.supportInfluence,{id,factor}).ranked.find(row=>row.id===id).pct;
+  if(pct<target)low=factor;else high=factor;
+ }
+ const factor=target===0?0:(low+high)/2;
+ const after=nationalResult(game.active,game.localTotal,game.supportInfluence,{id,factor}).ranked.find(row=>row.id===id).pct;
+ const allocations=STATES.map(state=>({uf:state.uf,points:totalInfluence(id,state.uf)*(1-factor)})).filter(item=>item.points>0);
+ return {before,after,loss:Math.max(0,before-after),allocations};
+}
 function buyCampaignStrategy(id,type,uf,target){
  if(strategyReason(id,type,uf,target))return false;
  const before=Object.fromEntries(game.active.map(candidate=>[candidate,totalInfluence(candidate,uf)]));
  game.strategyUses??={};game.strategyRounds??={};game.strategyDefenses??={};game.strategyAttacks??={};
  game.cash[id]-=campaignStrategyCost(type,target);game.strategyUses[id]=(game.strategyUses[id]||0)+1;game.strategyRounds[id]=game.round;
- let outcome='';
- if(type==='interference'){const previous=game.maxRounds;game.maxRounds=interferenceDeadline(target);outcome='apuração '+(target==='advance'?'antecipada':'adiada')+' da rodada '+previous+' para a rodada '+game.maxRounds;}
+ let outcome='',nationalPenalty=null;
+ if(type==='interference'){
+  nationalPenalty=interferencePenalty(id);
+  for(const item of nationalPenalty.allocations)changeStrategyInfluence(id,item.uf,-item.points);
+  nationalPenalty.after=nationalResult().ranked.find(row=>row.id===id).pct;
+  nationalPenalty.loss=Math.max(0,nationalPenalty.before-nationalPenalty.after);
+  const previous=game.maxRounds;game.maxRounds=interferenceDeadline(target);
+  outcome='apuração '+(target==='advance'?'antecipada':'adiada')+' da rodada '+previous+' para a rodada '+game.maxRounds+'; projeção de '+percent(nationalPenalty.before)+' para '+percent(nationalPenalty.after)+' (−'+fmtInvestment(nationalPenalty.loss)+' p.p.)';
+ }
  else if(type==='defend'){game.strategyDefenses[strategyKey(id,uf)]=game.round+1;outcome='proteção ativada';}
  else if(type==='mobilize'){const restored=changeStrategyInfluence(id,uf,Math.min(1,game.strategyLosses[uf][id]));game.strategyLosses[uf][id]-=restored;outcome='recuperou '+restored+' ponto(s)';}
  else{
@@ -774,7 +799,7 @@ function buyCampaignStrategy(id,type,uf,target){
  }
  addLog(id+' · '+CAMPAIGN_STRATEGIES[type].name+(type==='interference'?' em todo o país':' em '+byUF[uf].name)+': '+outcome+'.');
  game.strategyEvents??=[];
- game.strategyEvents.push({phase:game.phase,round:game.round,id,type,uf,target,outcome,effects:game.active.map(candidate=>({id:candidate,points:totalInfluence(candidate,uf)-before[candidate]})).filter(effect=>effect.points!==0)});
+ game.strategyEvents.push({phase:game.phase,round:game.round,id,type,uf,target,outcome,nationalPenalty,effects:nationalPenalty?nationalPenalty.allocations.map(item=>({id,uf:item.uf,points:-item.points})):game.active.map(candidate=>({id:candidate,points:totalInfluence(candidate,uf)-before[candidate]})).filter(effect=>effect.points!==0)});
  return true;
 }
 function strategyRoundEvents(phase,round){return (game.strategyEvents||[]).filter(event=>event.phase===phase&&event.round===round)}
@@ -786,7 +811,7 @@ function queueStrategySummary(phase,round){
  game.strategySummary={phase,round,events};return true;
 }
 function strategySummaryRows(events){
-return events.map(event=>'<article class="strategy-summary-row"><strong>'+esc(event.id)+(event.id===game.player?' · você':'')+'</strong><div>'+esc(CAMPAIGN_STRATEGIES[event.type].name)+' · '+(event.type==='interference'?'Todo o país':esc(byUF[event.uf].name)+' ('+esc(event.uf)+')')+'</div><p>'+esc(event.outcome)+'.</p><div class="strategy-summary-effects">'+(event.effects.length?event.effects.map(effect=>'<span>'+esc(effect.id)+': <b>'+(effect.points>0?'+':'')+fmtInvestment(effect.points)+' ponto(s)</b></span>').join(''):'<span>Sem alteração de pontos.</span>')+'</div></article>').join('');
+return events.map(event=>'<article class="strategy-summary-row"><strong>'+esc(event.id)+(event.id===game.player?' · você':'')+'</strong><div>'+esc(CAMPAIGN_STRATEGIES[event.type].name)+' · '+(event.type==='interference'?'Todo o país':esc(byUF[event.uf].name)+' ('+esc(event.uf)+')')+'</div><p>'+esc(event.outcome)+'.</p><div class="strategy-summary-effects">'+(event.effects.length?event.effects.map(effect=>'<span>'+esc(effect.id)+(effect.uf?' · '+esc(byUF[effect.uf].name)+' ('+esc(effect.uf)+')':'')+': <b>'+(effect.points>0?'+':'')+fmtInvestment(effect.points)+' ponto(s)</b></span>').join(''):'<span>Sem alteração de pontos.</span>')+'</div></article>').join('');
 }
 function renderStrategySummary(){
  const summary=game.strategySummary;
@@ -848,6 +873,8 @@ function renderStrategyPreview(){
   const direction=$('strategyDirection').value,reason=strategyReason(game.player,type,uf,direction);
   $('strategyPreview').textContent=a.description+' Apuração: rodada '+game.maxRounds+' → '+interferenceDeadline(direction)+'. Rodada atual: '+game.round+'. Nunca retrocede além da rodada atual; nesse caso, encerre a rodada para apurar. O fechamento de todos os estados ainda pode encerrar o turno antes. Saldo: '+money(game.cash[game.player])+'. '+reason;
   $('strategyConfirm').disabled=Boolean(reason);
+  const penalty=interferencePenalty(game.player);
+  $('strategyPreview').textContent+=' Consequência: perda de até 2 pontos percentuais. Projeção: '+percent(penalty.before)+' → '+percent(penalty.after)+'. Redução proporcional da influência em '+penalty.allocations.length+' estado(s), podendo reabrir estados. Sem votos atribuídos a você, não há influência para retirar.';
  }
 }
 function nextTurn(){
@@ -1090,7 +1117,7 @@ function render(){
  $('nextBtn').textContent=game.pendingSecond?'Iniciar 2º turno':game.done?'Eleição encerrada':game.round===game.maxRounds?'Apurar turno →':'Encerrar rodada →';
  $('nextBtn').disabled=game.done;
  $('costHint').textContent='Afinidade histórica ×'+fmtInvestment(multiplier)+' · '+(game.round===game.maxRounds?'Última rodada: ações livres.':'Até 2 ações por estado nesta rodada.')+' Fecha aos 10 pontos de influência.';
- $('turnHint').textContent='Nova rodada: R$ 250 mil + R$ 50 mil por estado liderado.'+(game.incumbent?(presidentBonus(game.incumbent)<0?' '+who(game.incumbent).short+' tem renda fixa reduzida a R$ 150 mil/rodada pela tentativa de terceiro mandato consecutivo.':' '+who(game.incumbent).short+' recebe +R$ 100 mil por rodada como atual presidente.'):'');
+ $('turnHint').textContent='Nova rodada: R$ 250 mil + R$ 50 mil por estado liderado.'+(game.incumbent?(presidentBonus(game.incumbent)<0?' '+who(game.incumbent).short+' tem renda fixa reduzida a R$ 150 mil/rodada pela tentativa de terceiro mandato consecutivo, com multiplicadores de 1× em todos os estados.':' '+who(game.incumbent).short+' recebe +R$ 100 mil por rodada como atual presidente.'):'');
  $('mapLegend').textContent='Cinza = sem liderança única';recolor();renderSupportPanel();
 }
 function color(id){const index=who(id)?.index;return index===undefined?'#9bb0c8':COLORS[index]||'hsl('+Math.round(index*137.508%360)+' 54% 46%)'}
@@ -1136,7 +1163,7 @@ function applyElectionPreset(){
 }
 function initialCandidateGroups(year){
  const primary=ELECTION_PRESETS[year]||PEOPLE_2026.map(person=>person.id);
- return {primary,other:PEOPLE.filter(person=>!person.future).map(person=>person.id).filter(id=>!primary.includes(id))};
+ return {primary,other:PEOPLE.filter(person=>!person.celebrity&&!person.unlockYear).map(person=>person.id).filter(id=>!primary.includes(id))};
 }
 function arrangeCandidateChoices(){
  const groups=initialCandidateGroups(setupElectionYear);
@@ -1185,7 +1212,7 @@ function renderCandidateChoices(){
  }
  const year=setupElectionYear,custom=year&&matchingElection(picked)!==year;
  $('chooseElection').value=year||'';
- $('electionPresetHint').textContent=year?year+' · '+picked.length+' selecionados'+(custom?' · seleção personalizada':'')+'. Você pode retirar participantes deste ano. Para misturar anos, escolha Personalizada.':'Seleção livre de candidatos, com o último partido registrado no jogo.';
+ $('electionPresetHint').textContent=year?'Início em '+year+'. Os candidatos deste ano estão selecionados; você pode retirar participantes.':'Misture candidatos de diferentes épocas e partidos para montar sua disputa.';
 $('partyContextHint').textContent=setupCampaign?'Seu candidato anterior e o vencedor mantêm suas filiações nesta trajetória. Para trocar de candidato, marque outro integrante de '+setupCampaign.party+' na lista; somente candidatos desse partido aparecem no seletor.':!year?'Último partido registrado no jogo para cada candidato. Onde a filiação atual é incerta ou houve desfiliação, usamos o registro anterior, sem afirmar filiação atual.':year!=='2026'?'Partidos da eleição de '+year+'. Regras e perfis não mudam.':'Partidos atuais conforme o cadastro de outubro de 2026. Falecidos usam o último partido; filiações incertas estão sinalizadas. Regras e perfis não mudam.';
  const extras=picked.filter(id=>who(id).group==='alternativo').length;
  $('extrasCount').textContent=extras?'· '+extras+' selecionados':'';
@@ -1279,7 +1306,7 @@ function renderContinuation(){
  $('continuationRoster').innerHTML=continuationCandidates(plan).map(id=>{
   const person={...continuationPerson(plan,id),...(id===plan.controlled&&id===plan.celebrity?{party:plan.party}:{})},checked=plan.selected.includes(id),locked=id===plan.controlled||id===plan.winner;
   const conflict=!checked&&plan.selected.some(other=>continuationParty(plan,other,plan.controlled)===person.party);
-  const note=conflict?(person.party===plan.party?'Troque pelo seletor de candidato':'Partido já representado'):id===bonusCandidate?(thirdConsecutiveAttempt(id,plan.year,plan.history)?'Terceiro mandato consecutivo · renda fixa de R$ 150 mil/rodada':(id===plan.winner?'Atual presidente':'Bônus da presidência')+' · +R$ 100 mil/rodada'):id===plan.controlled?'Seu candidato':plan.formerWinners?.includes(id)?'Ex-presidente · revanche disponível':id===plan.player&&!ELECTION_PRESETS[plan.year]?.includes(id)?'Candidato mantido da eleição anterior':'';
+  const note=conflict?(person.party===plan.party?'Troque pelo seletor de candidato':'Partido já representado'):id===bonusCandidate?(thirdConsecutiveAttempt(id,plan.year,plan.history)?'Terceiro mandato consecutivo · R$ 150 mil/rodada · multiplicadores 1×':(id===plan.winner?'Atual presidente':'Bônus da presidência')+' · +R$ 100 mil/rodada'):id===plan.controlled?'Seu candidato':plan.formerWinners?.includes(id)?'Ex-presidente · revanche disponível':id===plan.player&&!ELECTION_PRESETS[plan.year]?.includes(id)?'Candidato mantido da eleição anterior':'';
   return '<label class="continuation-entry"><input type="checkbox" value="'+esc(id)+'"'+(checked?' checked':'')+(locked||conflict||(!checked&&plan.selected.length>=(plan.future?10:MAX_CANDIDATES))?' disabled':'')+'>'+partyIcon(id,person)+'<span>'+esc(person.short)+' <small>('+esc(person.party)+')</small>'+(note?'<small class="continuation-note">'+note+'</small>':'')+(plan.partyChanges?.some(change=>change.id===id)?'<small class="continuation-note">Troca fictícia: '+esc(plan.partyChanges.find(change=>change.id===id).from)+' → '+esc(person.party)+'</small>':'')+'</span></label>';
  }).join('');
  $('continuationCount').textContent=plan.selected.length+' participantes · mínimo '+(plan.future?2:2)+', máximo '+(plan.future?10:MAX_CANDIDATES)+(plan.partyChanges?.length?' · Trocas fictícias: '+plan.partyChanges.map(change=>change.id+' ('+change.from+' → '+change.to+')').join('; '):'');
@@ -1304,7 +1331,7 @@ renderCandidateChoices();if([...$('chooseP').options].some(option=>option.value=
   setSetupStep(1);$('resultOverlay').classList.add('hidden');$('setupOverlay').classList.remove('hidden');
  }
 }
-addCandidateChoices('officialCandidates',PEOPLE_2026);addCandidateChoices('alternativeCandidates',PEOPLE_ALTERNATE);$('chooseP').addEventListener('change',()=>{renderCandidateChoices();updatePreview()});renderCandidateChoices();setSetupStep(1);for(const s of [...STATES].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'))){let o=document.createElement('option');o.value=s.uf;o.textContent=s.name+' ('+s.uf+')';$('stateSelect').appendChild(o)}
+addCandidateChoices('officialCandidates',PEOPLE_2026);addCandidateChoices('alternativeCandidates',PEOPLE.filter(person=>person.group==='alternativo'&&!person.celebrity&&!person.unlockYear));$('chooseP').addEventListener('change',()=>{renderCandidateChoices();updatePreview()});renderCandidateChoices();setSetupStep(1);for(const s of [...STATES].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'))){let o=document.createElement('option');o.value=s.uf;o.textContent=s.name+' ('+s.uf+')';$('stateSelect').appendChild(o)}
 $('chooseElection').addEventListener('change',applyElectionPreset);$('candidateSearch').addEventListener('input',filterAlternativeCandidates);$('onlySelectedCandidates').addEventListener('change',filterAlternativeCandidates);
 $('supportBtn').addEventListener('click',openSupportOverlay);$('closeSupport').addEventListener('click',closeSupportOverlay);$('closeSupportDetail').addEventListener('click',closeSupportOverlay);$('supportBack').addEventListener('click',()=>{selectedSupportCandidate=null;renderSupportList();$('supportDetailView').hidden=true;$('supportListView').hidden=false});$('supportBuyBtn').addEventListener('click',buySelectedSupport);$('supportList').addEventListener('click',event=>{const button=event.target.closest('[data-support-source]');if(button)renderSupportDetail(button.dataset.supportSource)});document.addEventListener('keydown',event=>{if(event.key==='Escape')closeSupportOverlay()});
 $('continueSetupBtn').addEventListener('click',continueSetup);$('backSetupBtn').addEventListener('click',()=>setSetupStep(1));$('startBtn').addEventListener('click',begin);$('newBtn').addEventListener('click',newPrompt);$('rulesBtn').addEventListener('click',()=>$('rulesOverlay').classList.remove('hidden'));$('closeRules').addEventListener('click',()=>$('rulesOverlay').classList.add('hidden'));$('reviewBtn').addEventListener('click',()=>$('resultOverlay').classList.add('hidden'));$('resultMainBtn').addEventListener('click',()=>{if(afterResult==='second')makeSecondRound();else if(afterResult==='nextElection')continueElection();else newPrompt()});$('investBtn').addEventListener('click',investLocal);$('nextBtn').addEventListener('click',nextTurn);$('stateSelect').addEventListener('change',e=>selectUF(e.target.value));$('mapToggle').addEventListener('click',()=>{if(mapMode==='geo')showCartogram();else loadGeo();persist()});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesOverlay').classList.add('hidden')});

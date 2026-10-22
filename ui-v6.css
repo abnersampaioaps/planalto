@@ -5,8 +5,11 @@
 .optional-rules{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 .optional-rules .support-choice{margin:0;height:100%}
 @media(max-width:600px){.optional-rules{grid-template-columns:1fr}}
-.trajectory-benefits{padding:12px 14px;margin:12px 0;border-left:3px solid #176f67;background:#f0f7f6;border-radius:4px;color:#193f63;font-size:13px}
-.trajectory-benefits p{margin:5px 0 0;font-size:12px;line-height:1.45}
+.setup-opening{margin:8px 0 18px!important;color:#60788e!important}
+.setup-party-details{margin:14px 0;color:#60788e;font-size:11px}
+.setup-party-details summary{cursor:pointer}
+.setup-party-details .election-note{margin:8px 0}
+#setupStepOptions #campaignHint{padding:10px 12px;background:#f5f8fb;border-radius:5px;border:1px solid #dce5ed;margin:0 0 18px}
 .continuation-modal p{margin:8px 0;font-size:12px;line-height:1.4}
 .continuation-player{display:flex;align-items:center;gap:10px;margin-top:6px}
 .continuation-modal .input{background:#fff;color:#163751;border-color:#c9d6e2}

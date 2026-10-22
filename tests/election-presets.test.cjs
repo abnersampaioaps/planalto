@@ -217,11 +217,96 @@ test('interference affordability depends on the selected direction', () => {
  assert.equal(run('game.maxRounds'),14);
 });
 
+test('setup keeps rules and trajectory details in the second step', () => {
+ const first=html.slice(html.indexOf('<div id="setupStepCandidates">'),html.indexOf('<div id="setupStepOptions"'));
+ const second=html.slice(html.indexOf('<div id="setupStepOptions"'),html.indexOf('id="resultOverlay"'));
+ assert.ok(!first.includes('100 mil'));
+ assert.ok(!first.includes('id="campaignHint"'));
+ assert.ok(second.includes('id="campaignHint"'));
+ assert.ok(second.includes('Como funciona a continuidade?'));
+ assert.ok(second.includes('R$ 150 mil'));
+ assert.ok(first.indexOf('id="chooseElection"')<first.indexOf('id="officialCandidates"'));
+ assert.ok(first.indexOf('id="officialCandidates"')<first.indexOf('id="chooseP"'));
+});
+
+test('Luladroid unlocks in future elections from 2080, never in initial custom rosters', () => {
+ run("var droidRandom=Math.random;Math.random=()=>.9;game=newGame('Lula','normal',6,['Lula','Jair Bolsonaro'],true,'2026');game.endless=true");
+ for(const year of ['2030','2078']){
+  run(`var lockedDroidPlan=futureElectionPlan(game,'${year}')`);
+  assert.ok(!run("lockedDroidPlan.ids.includes('Luladroid da Silva')"));
+  assert.ok(!run("lockedDroidPlan.choices.includes('Luladroid da Silva')"));
+ }
+ for(const year of ['2080','2082']){
+  run(`var unlockedDroidPlan=futureElectionPlan(game,'${year}')`);
+  assert.ok(run("unlockedDroidPlan.choices.includes('Luladroid da Silva')"));
+  assert.equal(run("unlockedDroidPlan.parties['Luladroid da Silva']"),'PT');
+  run("unlockedDroidPlan.selected=[...unlockedDroidPlan.ids];changeContinuationPlayer(unlockedDroidPlan,'Luladroid da Silva')");
+  assert.ok(run("unlockedDroidPlan.selected.includes('Luladroid da Silva')"));
+ }
+ run('Math.random=droidRandom');
+ assert.ok(!run("initialCandidateGroups(null).other.includes('Luladroid da Silva')"));
+ assert.equal(run("validInitialRoster('Lula',['Lula','Luladroid da Silva'],null)"),false);
+});
+
+test('third consecutive attempt forces every state multiplier to 1 for humans and AI', () => {
+ run("game=newGame('Lula','normal',6,['Lula','Jair Bolsonaro'],true,'2010');game.electionHistory=[{year:'2002',winner:'Lula'},{year:'2006',winner:'Lula'}];game.incumbent='Lula'");
+ for(const difficulty of ['easy','normal','hard']){
+  run(`game.difficulty='${difficulty}'`);
+  assert.ok(run("STATES.every(s=>affinityMultiplier('Lula',s.uf)===1)"));
+ }
+ run("game.player='Jair Bolsonaro'");
+ assert.ok(run("STATES.every(s=>affinityMultiplier('Lula',s.uf)===1)"));
+ run("game.electionYear='2014';game.electionHistory.push({year:'2010',winner:'Jair Bolsonaro'})");
+ assert.ok(run("STATES.some(s=>affinityMultiplier('Lula',s.uf)>1)"));
+ run("game.electionYear='2010';game.incumbent='Dilma Rousseff'");
+ assert.ok(run("STATES.some(s=>affinityMultiplier('Dilma Rousseff',s.uf)>1)"));
+});
+
+test('interference preview is pure and loses two national percentage points proportionally', () => {
+ run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.incumbent='Lula';game.cash.Lula=2000000;for(const s of STATES){game.localTotal[s.uf].Lula=5;game.localTotal[s.uf]['Jair Bolsonaro']=3}");
+ const snapshot=plain('game');
+ const preview=plain("interferencePenalty('Lula')");
+ assert.deepEqual(plain('game'),snapshot);
+ assert.ok(Math.abs(preview.loss-2)<.00001);
+ assert.equal(preview.allocations.length,27);
+ const ratios=plain("interferencePenalty('Lula').allocations.map(a=>a.points/totalInfluence('Lula',a.uf))");
+ assert.ok(ratios.every(r=>Math.abs(r-ratios[0])<1e-10));
+ run("buyCampaignStrategy('Lula','interference','SP','delay')");
+ assert.ok(Math.abs(run("nationalResult().ranked.find(r=>r.id==='Lula').pct")-preview.after)<.00001);
+ assert.equal(run('game.maxRounds'),14);
+ assert.equal(run('game.strategyEvents[0].effects.length'),27);
+ assert.ok(run('strategySummaryRows(game.strategyEvents)').includes('São Paulo (SP)'));
+ assert.equal(run("stateLockedBy('MA')"),null);
+ run('game.round=2;game.localUsed=makeUses(game.active)');
+ const before=run("totalInfluence('Lula','SP')");
+ assert.equal(run("applyLocal('Lula','SP')"),true);
+ assert.ok(run("totalInfluence('Lula','SP')")>before);
+ const saved=plain('nationalResult()');
+ run('game=JSON.parse(JSON.stringify(game));normalizePartyContext(game)');
+ assert.deepEqual(plain('nationalResult()'),saved);
+ assert.equal(run('nationalResult().totalValid+nationalResult().indecisos'),run('totalValid'));
+});
+
+test('interference handles no votes, shares below 2 percent and sole-candidate votes safely', () => {
+ run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.incumbent='Lula';game.cash.Lula=2000000");
+ assert.equal(run("interferencePenalty('Lula').loss"),0);
+ run('game.localTotal.SP.Lula=1');
+ assert.ok(run("strategyReason('Lula','interference','SP','delay')").includes('Aguarde votos'));
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','delay')"),false);
+ run("game.localTotal.SP.Lula=.25;for(const s of STATES)game.localTotal[s.uf]['Jair Bolsonaro']=5");
+ const preview=plain("interferencePenalty('Lula')");
+ assert.ok(preview.before>0&&preview.before<2);
+ assert.equal(preview.after,0);
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','advance')"),true);
+ assert.equal(run("nationalResult().tally.Lula"),0);
+ assert.ok(run("STATES.every(s=>totalInfluence('Lula',s.uf)>=0)"));
+});
+
 test('full script parses; each person has one canonical ID and one group', () => {
   new vm.Script(script);
   const people = plain('PEOPLE');
   assert.equal(new Set(people.map(p => p.id)).size, people.length);
-  assert.equal(people.length, 72);
+  assert.equal(people.length, 73);
   assert.equal(people.filter(p => p.group === '2026').length, 12);
   assert.ok(people.every(p => ['left', 'center', 'right'].includes(p.axis)));
 });
@@ -478,12 +563,17 @@ test('the primary candidate list follows the year and custom restores the 2026 g
  for(const year of Object.keys(plain('ELECTION_PRESETS'))) {
   const groups=plain(`initialCandidateGroups(${JSON.stringify(year)})`);
   assert.deepEqual(groups.primary,plain(`ELECTION_PRESETS[${year}]`));
-  assert.equal(new Set([...groups.primary,...groups.other]).size,54);
-  assert.equal(groups.primary.length+groups.other.length,54);
+  assert.equal(new Set([...groups.primary,...groups.other]).size,63);
+  assert.equal(groups.primary.length+groups.other.length,63);
  }
  const custom=plain('initialCandidateGroups(null)');
  assert.deepEqual(custom.primary,plain('PEOPLE_2026.map(p=>p.id)'));
- assert.deepEqual(custom.other,plain('PEOPLE_ALTERNATE.map(p=>p.id)'));
+ assert.deepEqual(custom.other,plain("PEOPLE.filter(p=>p.group==='alternativo'&&!p.celebrity&&!p.unlockYear).map(p=>p.id)"));
+ for(const person of plain('FUTURE_PEOPLE')){
+  assert.equal(custom.other.includes(person.id),!person.celebrity&&!person.unlockYear);
+  assert.equal(run(`validInitialRoster('Lula',['Lula',${JSON.stringify(person.id)}],'2026')`),false);
+ }
+ assert.ok(run("validInitialRoster('Lulinha',['Lulinha','Janja'],null)"));
 });
 
 test('endless election plans persist and draw 2–10 people with at most one invited celebrity', () => {
