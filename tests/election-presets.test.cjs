@@ -130,13 +130,13 @@ test('third consecutive attempt reduces fixed income, not state income or same-p
  assert.equal(run("income('Dilma Rousseff')"),350000);
 });
 
-test('presidential interference charges 1.5m, changes only this turn and is exclusive', () => {
+test('presidential interference charges by direction, changes only this turn and is exclusive', () => {
  run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.incumbent='Lula';game.cash.Lula=5000000;game.cash['Jair Bolsonaro']=5000000");
  assert.equal(run("buyCampaignStrategy('Jair Bolsonaro','interference','SP','delay')"),false);
  assert.equal(run("buyCampaignStrategy('Lula','interference','SP','bad')"),false);
  assert.equal(run("buyCampaignStrategy('Lula','interference','SP','advance')"),true);
  assert.equal(run('game.maxRounds'),6);
- assert.equal(run('game.cash.Lula'),3500000);
+ assert.equal(run('game.cash.Lula'),4000000);
  assert.equal(run("buyCampaignStrategy('Lula','interference','SP','delay')"),false);
  run('game.round=5');
  assert.equal(run("buyCampaignStrategy('Lula','interference','SP','advance')"),true);
@@ -156,14 +156,72 @@ test('presidential interference charges 1.5m, changes only this turn and is excl
 test('presidential AI can choose interference under the same rules', () => {
  run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.incumbent='Jair Bolsonaro';game.cash['Jair Bolsonaro']=2000000;aiCampaignStrategy('Jair Bolsonaro')");
  assert.equal(run('game.maxRounds'),14);
- assert.equal(run("game.cash['Jair Bolsonaro']"),500000);
+ assert.equal(run("game.cash['Jair Bolsonaro']"),1500000);
+});
+
+test('Jones Manoel is available in custom and future pools, not historical presidential rosters', () => {
+ assert.ok(run("initialCandidateGroups(null).other.includes('Jones Manoel')"));
+ assert.ok(run("PEOPLE.some(p=>p.id==='Jones Manoel'&&p.party==='PSOL'&&!p.celebrity)"));
+ assert.ok(Object.values(plain('ELECTION_PRESETS')).every(ids=>!ids.includes('Jones Manoel')));
+ run("game=newGame('Jones Manoel','normal',6,['Jones Manoel','Lula'],true,'2026');game.endless=true;game.done=true;var jonesPlan=continuationPlan(game)");
+ assert.ok(run("jonesPlan.ids.includes('Jones Manoel')"));
+});
+
+test('future party switches are rare, capped, compatible and preserve the human party', () => {
+ run("var switchPlan={player:'Lula',party:'PT',ids:['Lula','Jair Bolsonaro','Jones Manoel'],parties:{Lula:'PT','Jair Bolsonaro':'PL','Jones Manoel':'PSOL'},choices:['Lula']};var switchRandom=Math.random;Math.random=()=>.9;drawPartySwitch(switchPlan)");
+ assert.equal(run('switchPlan.partyChanges.length'),0);
+ run('Math.random=()=>.2;drawPartySwitch(switchPlan);Math.random=switchRandom');
+ assert.equal(run('switchPlan.partyChanges.length'),1);
+ assert.equal(run('switchPlan.parties.Lula'),'PT');
+ assert.equal(run('new Set(switchPlan.ids.map(id=>switchPlan.parties[id])).size'),3);
+ assert.ok(run('switchPlan.partyChanges.every(c=>c.id!==switchPlan.player&&FUTURE_PARTY_FAMILIES[campaignProfile(c.id)].includes(c.to))'));
+ assert.equal(run("personForElection('Jair Bolsonaro').party"),'PL');
+ run("game=newGame('Lula','normal',6,ELECTION_PRESETS[2026],true,'2026');game.endless=true;game.done=true;var savedSwitchPlan=continuationPlan(game);var savedSwitchNext=continuationGame(game,savedSwitchPlan,'Lula',savedSwitchPlan.ids)");
+ assert.deepEqual(plain('savedSwitchNext.futureParties'),plain('savedSwitchPlan.parties'));
+ assert.deepEqual(plain('continuationPlan(game)'),plain('savedSwitchPlan'));
+});
+
+test('future party switches allow a lower-probability destination outside the political family', () => {
+ run("var crossPlan={player:'Lula',party:'PT',ids:['Lula','Jair Bolsonaro'],parties:{Lula:'PT','Jair Bolsonaro':'PL'},choices:['Lula']};var crossRandom=Math.random;Math.random=()=>0;drawPartySwitch(crossPlan);Math.random=crossRandom");
+ const change=plain('crossPlan.partyChanges[0]');
+ assert.equal(change.id,'Jair Bolsonaro');
+ assert.ok(!plain('FUTURE_PARTY_FAMILIES.right').includes(change.to));
+ assert.equal(change.to,'PT');
+ assert.ok(run("crossPlan.choices.includes('Jair Bolsonaro')"));
+ assert.equal(run('crossPlan.parties.Lula'),'PT');
+ assert.equal(run("campaignProfile('Jair Bolsonaro')"),'right');
+ assert.equal(run('crossPlan.partyChanges.length'),1);
+});
+
+test('party members can leave or join the human party without duplicating electoral nominees', () => {
+ run("var memberPlan={future:true,year:'2030',player:'Flávio Bolsonaro',party:'PL',ids:['Flávio Bolsonaro','Lula'],parties:{'Flávio Bolsonaro':'PL','Lula':'PT','Jair Bolsonaro':'PL','Romeu Zema':'NOVO'},choices:['Flávio Bolsonaro','Jair Bolsonaro']};var memberRandom=Math.random;var memberDraws=[0,.9,.9,0,.5,0];Math.random=()=>memberDraws.shift()??.5;drawPartySwitch(memberPlan);Math.random=memberRandom");
+ assert.equal(run("memberPlan.parties['Flávio Bolsonaro']"),'PL');
+ assert.equal(run('memberPlan.partyChanges[0].id'),'Jair Bolsonaro');
+ assert.notEqual(run("memberPlan.parties['Jair Bolsonaro']"),'PL');
+ assert.ok(!run("memberPlan.choices.includes('Jair Bolsonaro')"));
+ assert.equal(run('new Set(memberPlan.ids.map(id=>memberPlan.parties[id])).size'),run('memberPlan.ids.length'));
+ run("var incomingPlan={future:true,year:'2030',player:'Lula',party:'PT',ids:['Lula','Jair Bolsonaro'],parties:{Lula:'PT','Jair Bolsonaro':'PL','Jones Manoel':'PSOL'},choices:['Lula']};Math.random=()=>0;drawPartySwitch(incomingPlan);Math.random=memberRandom");
+ assert.equal(run("incomingPlan.parties['Jair Bolsonaro']"),'PT');
+ assert.ok(run("incomingPlan.choices.includes('Jair Bolsonaro')"));
+ assert.equal(run('incomingPlan.ids.length'),2);
+ assert.equal(run("incomingPlan.ids.filter(id=>incomingPlan.parties[id]==='PT').length"),1);
+ run("incomingPlan.selected=[...incomingPlan.ids];incomingPlan.controlled='Lula';changeContinuationPlayer(incomingPlan,'Jair Bolsonaro')");
+ assert.ok(run("incomingPlan.selected.includes('Jair Bolsonaro')&&!incomingPlan.selected.includes('Lula')"));
+});
+
+test('interference affordability depends on the selected direction', () => {
+ run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false);game.strategiesEnabled=true;game.incumbent='Lula';game.cash.Lula=500000");
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','advance')"),false);
+ assert.equal(run("buyCampaignStrategy('Lula','interference','SP','delay')"),true);
+ assert.equal(run('game.cash.Lula'),0);
+ assert.equal(run('game.maxRounds'),14);
 });
 
 test('full script parses; each person has one canonical ID and one group', () => {
   new vm.Script(script);
   const people = plain('PEOPLE');
   assert.equal(new Set(people.map(p => p.id)).size, people.length);
-  assert.equal(people.length, 71);
+  assert.equal(people.length, 72);
   assert.equal(people.filter(p => p.group === '2026').length, 12);
   assert.ok(people.every(p => ['left', 'center', 'right'].includes(p.axis)));
 });
@@ -420,8 +478,8 @@ test('the primary candidate list follows the year and custom restores the 2026 g
  for(const year of Object.keys(plain('ELECTION_PRESETS'))) {
   const groups=plain(`initialCandidateGroups(${JSON.stringify(year)})`);
   assert.deepEqual(groups.primary,plain(`ELECTION_PRESETS[${year}]`));
-  assert.equal(new Set([...groups.primary,...groups.other]).size,53);
-  assert.equal(groups.primary.length+groups.other.length,53);
+  assert.equal(new Set([...groups.primary,...groups.other]).size,54);
+  assert.equal(groups.primary.length+groups.other.length,54);
  }
  const custom=plain('initialCandidateGroups(null)');
  assert.deepEqual(custom.primary,plain('PEOPLE_2026.map(p=>p.id)'));
@@ -454,15 +512,18 @@ test('endless election plans persist and draw 2–10 people with at most one inv
 });
 
 test('future mode permits same-party newcomers but rejects outsiders and invalid roster sizes', () => {
+ run('var rosterRandom=Math.random;Math.random=()=>.9');
  run("game=newGame('Jair Bolsonaro','normal',6,ELECTION_PRESETS[2022],false,'2026');game.endless=true;game.done=true;var restrictedPlan=continuationPlan(game)");
  assert.ok(run("continuationChoices(restrictedPlan).includes('Nikolas Ferreira')"));
  assert.ok(run("continuationChoices(restrictedPlan).includes('Jair Renan Bolsonaro')"));
  assert.equal(run("continuationChoices(restrictedPlan).includes('Erika Hilton')"),false);
  assert.throws(()=>run("continuationGame(game,restrictedPlan,'Erika Hilton',[...restrictedPlan.ids.filter(id=>id!==game.player),'Erika Hilton'])"));
  assert.throws(()=>run("continuationGame(game,restrictedPlan,game.player,[game.player])"));
+ run('Math.random=rosterRandom');
 });
 
 test('new future candidates join their party choices only after 2026', () => {
+ run('var newcomerRandom=Math.random;Math.random=()=>.9');
  for(const [id,party] of [['Lulinha','PT'],['Janja','PT'],['Jair Renan Bolsonaro','PL'],['Arthur do Val','MISSAO'],['Kim Kataguiri','MISSAO'],['Amanda Vettorazzo','MISSAO']]){
   const person=plain(`PEOPLE.find(p=>p.id===${JSON.stringify(id)})`);
   assert.equal(person.party,party);
@@ -475,6 +536,7 @@ test('new future candidates join their party choices only after 2026', () => {
  assert.ok(run("continuationChoices(ptFuturePlan).includes('Lulinha') && continuationChoices(ptFuturePlan).includes('Janja')"));
  run("game=newGame('Renan Santos','normal',6,ELECTION_PRESETS[2026],false,'2026');game.endless=true;game.done=true;var missaoFuturePlan=continuationPlan(game)");
  assert.ok(run("['Arthur do Val','Kim Kataguiri','Amanda Vettorazzo'].every(id=>continuationChoices(missaoFuturePlan).includes(id))"));
+ run('Math.random=newcomerRandom');
 });
 
 test('future draws cap all celebrities at two and separate their parties', () => {
