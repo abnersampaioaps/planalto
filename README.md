@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.12
+# Rumo ao Planalto — V8.13
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,18 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.13 — IA adaptativa no Normal e Experiente
+
+- No **Iniciante**, a IA mantém o comportamento anterior: o perfil de investimento permanece fixo e a política de orçamento não é alterada.
+- No **Normal** e **Experiente**, os adversários preservam o perfil tático sorteado, mas passam a ajustar prioridades e despesas a cada decisão com base na diferença nacional de votos e nas rodadas restantes.
+- **Liderando com folga:** valorizam defesa, consolidação de lideranças e reserva de dinheiro para rodadas futuras.
+- **Disputa equilibrada:** buscam estados onde ultrapassar rivais ou melhorar a margem tem maior custo-benefício.
+- **Perdendo com folga:** privilegiam ganho marginal de votos, disputam estados contestados e aumentam o investimento e o uso de estratégias.
+- **Nas rodadas finais ou na última chance:** entram em modo ofensivo, reduzem reservas de caixa e priorizam oportunidades de voto antes da apuração.
+- O **Experiente** utiliza ajustes mais fortes e pode assumir riscos maiores que o Normal; a dificuldade não altera votos diretamente nem concede recursos extras.
+- No segundo turno, a política adaptativa também controla a proporção do orçamento destinada às estratégias, os investimentos estaduais e a intensificação da campanha no fim da disputa.
+- Regras anteriores de custos, teto de influência, apoios, limites estaduais e compatibilidade de partidas salvas permanecem.
 
 ## V8.12 — estratégias livres e IA mais competitiva
 
