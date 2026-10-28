@@ -817,6 +817,43 @@ function aiPlay(id){
  }
  return actions;
 }
+// Budget-aware multiplier purchases: an AI invests in the value of its own
+// existing state footprint rather than receiving any free permanent bonus.
+function aiMultiplierValue(id,uf){
+ const state=byUF[uf],raw=game.localTotal[uf][id]||0;
+ const current=affinityMultiplier(id,uf);
+ const rounds=Math.max(0,game.maxRounds-game.round);
+ const upcoming=rounds&&raw>0?Math.min(2,rounds):0;
+ const expected=raw+upcoming;
+ const gained=Math.min(10,expected*(current+.25))-Math.min(10,expected*current);
+ return Math.max(0,gained)*state.valid;
+}
+function aiImproveMultipliers(id){
+ if(game.done||game.pendingSecond)return 0;
+ let purchases=0;
+ for(let step=0;step<2;step++){
+  const reserve=game.round===game.maxRounds?0:game.phase===2?120000:180000;
+  const choices=[];
+  for(const state of STATES){
+   const uf=state.uf;
+   if(stateLockedBy(uf)||multiplierLevel(id,uf)>=4||(game.localTotal[uf][id]||0)===0)continue;
+   const cost=stateMultiplierCost(id,uf),value=aiMultiplierValue(id,uf);
+   if(game.cash[id]>=cost+reserve&&value>0)choices.push({national:false,uf,cost,score:value/cost});
+  }
+  const canGlobal=game.cash[id]>=NATIONAL_MULTIPLIER_COST+reserve;
+  if(canGlobal){
+   const targets=multiplierTargets(id,true,'SP');
+   const value=targets.reduce((sum,state)=>sum+aiMultiplierValue(id,state.uf),0);
+   if(targets.length>=6&&value>0)choices.push({national:true,uf:'SP',cost:NATIONAL_MULTIPLIER_COST,score:value/NATIONAL_MULTIPLIER_COST});
+  }
+  choices.sort((a,b)=>b.score-a.score||a.cost-b.cost);
+  const best=choices[0];
+  // A purchase must have expected influence in an already invested state.
+  if(!best||!Number.isFinite(best.score)||best.score<=0||!buyMultiplier(id,best.national,best.uf))break;
+  purchases++;
+ }
+ return purchases;
+}
 function aiBuySupports(id){
  const cost=nextSupportCost(id);
  if(!canUseSupports()||!cost||supportRoundPurchaseCount(id)>=MAX_SUPPORTS_PER_ROUND||game.cash[id]<cost)return 0;
@@ -1060,12 +1097,12 @@ function nextTurn(){
  if(game.done)return;
  const endedPhase=game.phase,endedRound=game.round;
  if(game.phase===2&&game.supportPriority===game.player&&!game.supportPriorityResolved)game.supportPriorityResolved=true;
- let total=0,supports=0,strategies=0;
+ let total=0,supports=0,strategies=0,boosts=0;
  for(const id of game.active){
   if(allStatesLocked())break; // Do not process other AIs after the last UF closes.
-  if(id!==game.player){supports+=aiBuySupports(id);strategies+=aiCampaignStrategy(id);total+=aiPlay(id)}
+  if(id!==game.player){supports+=aiBuySupports(id);boosts+=aiImproveMultipliers(id);strategies+=aiCampaignStrategy(id);total+=aiPlay(id)}
  }
- addLog('As IAs executaram '+total+' investimentos e '+strategies+' estratégias.'+(supports?' Também conquistaram '+supports+' apoio'+(supports===1?'':'s')+'.':''));
+ addLog('As IAs executaram '+total+' investimentos, '+strategies+' estratégias e '+boosts+' promessas de campanha.'+(supports?' Também conquistaram '+supports+' apoio'+(supports===1?'':'s')+'.':''));
  if(allStatesLocked()||game.round===game.maxRounds){concludePhase();return}
  for(const id of game.active)game.cash[id]+=income(id);
  game.round++;game.localUsed=makeUses(game.active);
@@ -1148,7 +1185,7 @@ function simulateAIRunoff(){
     for(const id of game.active)aiCampaignStrategy(id);
     if(allStatesLocked())break;
    }
-   for(const id of game.active){if(allStatesLocked())break;aiBuySupports(id);aiCampaignStrategy(id);aiPlay(id)}
+   for(const id of game.active){if(allStatesLocked())break;aiBuySupports(id);aiImproveMultipliers(id);aiCampaignStrategy(id);aiPlay(id)}
    if(game.round>=game.maxRounds)break;
    if(allStatesLocked())continue;
    for(const id of game.active)game.cash[id]+=income(id);
