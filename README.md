@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.13
+# Rumo ao Planalto — V8.14
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,14 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.14 — antecipação da apuração para a próxima rodada
+
+- A estratégia **Interferência nas eleições → Antecipar** agora define a última rodada do turno atual como **a próxima rodada** (rodada atual + 1), em vez de reduzir quatro rodadas do prazo anterior.
+- A rodada em andamento não termina imediatamente: os jogadores ainda podem concluir suas ações nela e jogar a última rodada antes da apuração.
+- Antecipar é permitido apenas antes da última rodada do calendário vigente, incluindo a penúltima. Na penúltima, a data permanece a mesma, mas o custo e a penalidade da estratégia ainda são aplicados.
+- O custo de antecipação continua **R$ 1 milhão**, com redução da projeção nacional de até 2 pontos percentuais do usuário. O adiamento continua acrescentando quatro rodadas, por **R$ 500 mil**.
+- A alteração vale no primeiro e no segundo turno. Não modifica a duração de eleições futuras, a regra de estados fechados ou o funcionamento das partidas salvas.
 
 ## V8.13 — IA adaptativa no Normal e Experiente
 
