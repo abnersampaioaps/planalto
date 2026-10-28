@@ -818,15 +818,19 @@ function aiPlay(id){
  return actions;
 }
 // Budget-aware multiplier purchases: an AI invests in the value of its own
-// existing state footprint rather than receiving any free permanent bonus.
+// upcoming paid actions rather than receiving any free permanent bonus.
 function aiMultiplierValue(id,uf){
- const state=byUF[uf],raw=game.localTotal[uf][id]||0;
- const current=affinityMultiplier(id,uf);
- const rounds=Math.max(0,game.maxRounds-game.round);
- const upcoming=rounds&&raw>0?Math.min(2,rounds):0;
- const expected=raw+upcoming;
- const gained=Math.min(10,expected*(current+.25))-Math.min(10,expected*current);
- return Math.max(0,gained)*state.valid;
+ const state=byUF[uf],raw=Number(game.localTotal[uf][id]||0);
+ if(stateLockedBy(uf)||multiplierLevel(id,uf)>=4||raw>=MAX_LOCAL)return 0;
+ const current=affinityMultiplier(id,uf),remaining=Math.max(0,game.maxRounds-game.round);
+ const slotsNow=game.round===game.maxRounds?MAX_LOCAL-raw:Math.max(0,MAX_ROUND-(game.localUsed[uf]?.[id]||0));
+ // Estimate a realistic near-term campaign rather than assuming the state will hit its cap.
+ const futureActions=Math.min(MAX_LOCAL-raw,3,slotsNow+Math.min(remaining,2)*MAX_ROUND);
+ if(futureActions<=0)return 0;
+ const earned=totalInfluence(id,uf);
+ const before=Math.min(MAX_LOCAL,earned+futureActions*current);
+ const after=Math.min(MAX_LOCAL,earned+futureActions*(current+.25));
+ return Math.max(0,after-before)*state.valid;
 }
 function aiImproveMultipliers(id){
  if(game.done||game.pendingSecond)return 0;
@@ -848,7 +852,7 @@ function aiImproveMultipliers(id){
   }
   choices.sort((a,b)=>b.score-a.score||a.cost-b.cost);
   const best=choices[0];
-  // A purchase must have expected influence in an already invested state.
+  // Purchase only if upcoming paid actions can benefit.
   if(!best||!Number.isFinite(best.score)||best.score<=0||!buyMultiplier(id,best.national,best.uf))break;
   purchases++;
  }
