@@ -429,3 +429,107 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
  .candidate-tools{grid-template-columns:1fr}
  .candidate-extras summary{line-height:1.6}
 }
+
+
+/* V8.15: mapa secundário no visual institucional claro da interface.
+   A coloração progressiva dos estados permanece controlada pelo JavaScript. */
+.map-tabs{
+ display:flex;align-items:end;justify-content:flex-start;gap:20px;
+ margin:8px 0 11px;padding:0 2px;
+ border-bottom:1px solid #d9e4ec;background:transparent;
+}
+.map-tabs button{
+ flex:0 0 auto;min-height:0;margin:0;padding:6px 2px 9px;
+ border:0;border-bottom:2px solid transparent;border-radius:0;
+ background:transparent!important;box-shadow:none!important;
+ color:#60778d!important;font:600 12px/1.3 -apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ cursor:pointer;transition:color .15s,border-color .15s;
+}
+.map-tabs button:hover{color:#195b88!important}
+.map-tabs button[aria-selected="true"]{
+ border-bottom-color:#176398;color:#154f7d!important;
+ font-weight:750;background:transparent!important;
+}
+.map-tabs button:focus-visible{outline:2px solid #176398;outline-offset:3px;border-radius:2px}
+
+.right #multiplierPanel{color:#284967;background:#fff!important;overflow-y:auto}
+#multiplierPanel h2{color:#193d61}
+#multiplierPanel .multiplier-summary{
+ color:#566e84;font-size:12px;line-height:1.55;
+ margin:7px 0 10px;font-weight:400;
+}
+#multiplierPanel .multiplier-summary b{color:#174e78;font-weight:750}
+#multiplierPanel .statename{
+ color:#183f62;font-size:17px;line-height:1.35;font-weight:780;
+ margin:10px 0 12px;overflow-wrap:anywhere;
+}
+#multiplierPanel .multiplier-action{
+ padding:11px 0 10px;margin:0;border-top:1px solid #e1e8ef;
+ background:transparent;
+}
+#multiplierPanel .multiplier-action h3,
+#multiplierPanel .multiplier-roster-title{
+ color:#234a6a;font-size:12px;line-height:1.4;font-weight:750;
+ margin:0 0 5px;
+}
+#multiplierPanel .multiplier-action p{
+ color:#61778b;font-size:11px;line-height:1.45;
+ margin:0 0 8px;
+}
+#multiplierPanel .multiplier-action .button{
+ display:block;width:100%;min-height:37px;margin:0;
+ font-size:11px;padding:8px 11px;line-height:1.35;
+}
+#multiplierPanel .multiplier-action .button.primary{
+ background:#116c62;color:#fff;border-color:#116c62;
+}
+#multiplierPanel .multiplier-stamp{
+ display:block;margin:5px 0 0;color:#56738c;font-size:10px;
+ font-weight:500;line-height:1.4;
+}
+#multiplierPanel .multiplier-tip{
+ color:#667b8e;font-size:10px;line-height:1.45;
+ margin:10px 0 13px;
+}
+#multiplierPanel .multiplier-roster-title{margin:0 0 8px}
+#multiplierPanel .multiplier-list{
+ display:flex;flex-direction:column;gap:5px;
+ max-height:210px;overflow-y:auto;overscroll-behavior:contain;
+ margin:0 0 11px;padding:0 3px 0 0;
+}
+#multiplierPanel .multiplier-entry{
+ display:flex;align-items:center;justify-content:space-between;
+ min-width:0;min-height:34px;gap:10px;padding:7px 10px;
+ color:#244764;background:#f5f8fb;border:1px solid #dbe5ed;
+ border-radius:5px;line-height:1.3;font-size:11px;
+}
+#multiplierPanel .multiplier-entry.you{
+ background:#edf7f3;border-color:#a9d5ca;color:#174b44;
+}
+#multiplierPanel .multiplier-entry span{
+ min-width:0;color:inherit;font-weight:600;overflow-wrap:anywhere;
+}
+#multiplierPanel .multiplier-entry strong{
+ flex:none;color:#17577d;font-size:13px;font-weight:800;
+ font-variant-numeric:tabular-nums;white-space:nowrap;
+}
+#multiplierPanel .multiplier-entry.you strong{color:#116c62}
+#multiplierPanel #multiplierNextTurn{
+ display:block;width:100%;min-height:40px;margin:8px 0 0;
+ background:#1d5385;border-color:#1d5385;color:#fff;
+ font-size:12px;font-weight:750;
+}
+#multiplierPanel .button:disabled{
+ opacity:.52;cursor:not-allowed;
+}
+.panel[hidden]{display:none!important}
+@media(max-width:720px){
+ .map-tabs{gap:15px;margin:7px 0 9px}
+ .map-tabs button{font-size:11px;padding:7px 2px 8px}
+ #multiplierPanel .multiplier-list{max-height:190px}
+}
+@media(orientation:landscape) and (max-height:680px){
+ #multiplierPanel .multiplier-summary{font-size:11px;line-height:1.4}
+ #multiplierPanel .multiplier-action{padding:8px 0}
+ #multiplierPanel .multiplier-list{max-height:125px}
+}
