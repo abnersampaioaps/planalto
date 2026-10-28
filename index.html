@@ -708,10 +708,13 @@ function aiPriority(id,state,tactic,cost,plan=null){
  const mine=totalInfluence(id,uf),all=game.active.reduce((sum,c)=>sum+totalInfluence(c,uf),0);
  const opponentPeak=Math.max(0,...game.active.filter(c=>c!==id).map(c=>totalInfluence(c,uf)));
  const previousLeader=leader(state),beforeShares=shares(state);
+ const simulatedReward=affinityMultiplier(id,uf);
  values[id]++;
+ game.localInfluence[uf][id]+=simulatedReward;
  const nextLeader=leader(state),afterShares=shares(state);
  const lockNext=totalInfluence(id,uf)>=MAX_LOCAL?1:0;
  values[id]--;
+ game.localInfluence[uf][id]-=simulatedReward;
  // In the runoff, taking votes away from the only opponent is as valuable as gaining them.
  const rival=game.phase===2?game.active.find(candidate=>candidate!==id):null;
  const gainedVotes=(afterShares[id]-beforeShares[id]+(rival?beforeShares[rival]-afterShares[rival]:0))*state.valid;
