@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.11
+# Rumo ao Planalto — V8.12
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,15 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.12 — estratégias livres e IA mais competitiva
+
+- As estratégias de campanha não têm mais limite de três por turno nem de uma por rodada. Jogador e IA podem repetir ações, inclusive ofensivas contra o mesmo alvo e estado, enquanto houver saldo, influência aplicável e demais pré-requisitos. Proteções ativas no mesmo estado não se acumulam.
+- A última chance também permite usar várias estratégias antes de encerrar a apuração; uma ação não encerra mais automaticamente essa oportunidade.
+- A IA deixou de escolher estratégias aleatoriamente: avalia ganhos esperados de margem de votos por real gasto para ataques, debates e recuperação de influência, além de considerar defesas em estados relevantes no segundo turno.
+- No segundo turno, a IA deixa de reservar caixa para investimentos estaduais e pode agir em mais de 12 estados/ações na mesma rodada, sempre respeitando o limite estadual por rodada, a influência máxima, o fechamento dos estados e o saldo disponível.
+- Ao negociar apoios, a IA prioriza os candidatos eliminados com transferência efetiva e aumento estimado de votos. A limitação de até três apoios, com uma compra por rodada, permanece.
+- Os custos das estratégias e as regras de afinidade e voto continuam iguais. As partidas salvas permanecem na chave `rumo_ao_planalto_v8`.
 
 ## V8.11 — Apoios do 1º turno
 
