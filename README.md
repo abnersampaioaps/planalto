@@ -27,7 +27,7 @@ Validação: `node --test tests/election-presets.test.cjs`.
 
 - A estratégia **Interferência nas eleições → Antecipar** agora define a última rodada do turno atual como **a próxima rodada** (rodada atual + 1), em vez de reduzir quatro rodadas do prazo anterior.
 - A rodada em andamento não termina imediatamente: os jogadores ainda podem concluir suas ações nela e jogar a última rodada antes da apuração.
-- Antecipar é permitido apenas antes da última rodada do calendário vigente, incluindo a penúltima. Na penúltima, a data permanece a mesma, mas o custo e a penalidade da estratégia ainda são aplicados.
+- Antecipar só pode ser comprado **até a antepenúltima rodada** do calendário vigente (rodada atual ≤ rodada final − 2). Na penúltima e na última rodada, a compra é bloqueada, sem descontar dinheiro ou aplicar a penalidade.
 - O custo de antecipação continua **R$ 1 milhão**, com redução da projeção nacional de até 2 pontos percentuais do usuário. O adiamento continua acrescentando quatro rodadas, por **R$ 500 mil**.
 - A alteração vale no primeiro e no segundo turno. Não modifica a duração de eleições futuras, a regra de estados fechados ou o funcionamento das partidas salvas.
 
