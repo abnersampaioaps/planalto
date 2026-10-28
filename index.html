@@ -830,6 +830,7 @@ const CAMPAIGN_STRATEGIES={
  attack:{name:'Ataque ao candidato',cost:600000,description:'Retira até 2 pontos do adversário. Uma defesa bloqueia o ataque inteiro.'},
  mobilize:{name:'Mobilização de base',cost:300000,description:'Recupera até 1 ponto perdido por estratégias adversárias.'},
  defend:{name:'Defesa de campanha',cost:250000,description:'Bloqueia a próxima ação ofensiva neste estado, até o fim da rodada seguinte.'},
+ nationalPromise:{name:'Programa nacional de promessas',cost:1500000,description:'Aumenta em ×0,25 os multiplicadores da candidatura em todos os estados abertos abaixo de ×2.'},
  interference:{name:'Interferência nas eleições',cost:500000,description:'Exclusiva da presidência: antecipa (R$ 1 milhão) a apuração para o fim da próxima rodada ou adia (R$ 500 mil) a apuração do turno atual em 4 rodadas. A antecipação só é permitida até a antepenúltima rodada. Não altera o ano da eleição nem a duração dos próximos turnos.'}
 };
 function campaignStrategyCost(type,direction){return type==='interference'?(direction==='advance'?1000000:500000):CAMPAIGN_STRATEGIES[type]?.cost}
@@ -837,6 +838,7 @@ function strategyKey(id,uf){return JSON.stringify([id,uf])}
 function strategyReason(id,type,uf,target){
  const action=CAMPAIGN_STRATEGIES[type];
  if(!game.strategiesEnabled||game.done||game.pendingSecond||!game.active.includes(id)||!byUF[uf]||!action)return 'Estratégias indisponíveis.';
+ if(type==='nationalPromise')return multiplierReason(id,true,uf);
  if(game.cash[id]<campaignStrategyCost(type,target))return 'Saldo insuficiente.';
  if(type==='interference'){
   if(id!==game.incumbent)return 'Apenas o atual representante da presidência pode usar esta estratégia.';
@@ -875,6 +877,15 @@ function interferencePenalty(id){
 }
 function buyCampaignStrategy(id,type,uf,target){
  if(strategyReason(id,type,uf,target))return false;
+ if(type==='nationalPromise'){
+  const previous=Object.fromEntries(STATES.map(s=>[s.uf,totalInfluence(id,s.uf)]));
+  const purchase=buyMultiplier(id,true,uf);
+  if(!purchase)return false;
+  game.strategyUses??={};game.strategyUses[id]=(game.strategyUses[id]||0)+1;
+  game.strategyEvents??=[];
+  game.strategyEvents.push({phase:game.phase,round:game.round,id,type,uf,target:null,outcome:'multiplicador +×0,25 em '+purchase.targets.length+' UFs',effects:purchase.targets.map(state=>({id,uf:state,points:totalInfluence(id,state)-previous[state]})).filter(e=>e.points!==0)});
+  return true;
+ }
  const before=Object.fromEntries(game.active.map(candidate=>[candidate,totalInfluence(candidate,uf)]));
  game.strategyUses??={};game.strategyRounds??={};game.strategyDefenses??={};game.strategyAttacks??={};
  game.cash[id]-=campaignStrategyCost(type,target);game.strategyUses[id]=(game.strategyUses[id]||0)+1;game.strategyRounds[id]=game.round;
@@ -909,7 +920,7 @@ function queueStrategySummary(phase,round){
  game.strategySummary={phase,round,events};return true;
 }
 function strategySummaryRows(events){
-return events.map(event=>'<article class="strategy-summary-row"><strong>'+esc(event.id)+(event.id===game.player?' · você':'')+'</strong><div>'+esc(CAMPAIGN_STRATEGIES[event.type].name)+' · '+(event.type==='interference'?'Todo o país':esc(byUF[event.uf].name)+' ('+esc(event.uf)+')')+'</div><p>'+esc(event.outcome)+'.</p><div class="strategy-summary-effects">'+(event.effects.length?event.effects.map(effect=>'<span>'+esc(effect.id)+(effect.uf?' · '+esc(byUF[effect.uf].name)+' ('+esc(effect.uf)+')':'')+': <b>'+(effect.points>0?'+':'')+fmtInvestment(effect.points)+' ponto(s)</b></span>').join(''):'<span>Sem alteração de pontos.</span>')+'</div></article>').join('');
+return events.map(event=>'<article class="strategy-summary-row"><strong>'+esc(event.id)+(event.id===game.player?' · você':'')+'</strong><div>'+esc(CAMPAIGN_STRATEGIES[event.type].name)+' · '+((event.type==='interference'||event.type==='nationalPromise')?'Todo o país':esc(byUF[event.uf].name)+' ('+esc(event.uf)+')')+'</div><p>'+esc(event.outcome)+'.</p><div class="strategy-summary-effects">'+(event.effects.length?event.effects.map(effect=>'<span>'+esc(effect.id)+(effect.uf?' · '+esc(byUF[effect.uf].name)+' ('+esc(effect.uf)+')':'')+': <b>'+(effect.points>0?'+':'')+fmtInvestment(effect.points)+' ponto(s)</b></span>').join(''):'<span>Sem alteração de pontos.</span>')+'</div></article>').join('');
 }
 function renderStrategySummary(){
  const summary=game.strategySummary;
@@ -1022,14 +1033,18 @@ function renderStrategyPreview(){
  const type=$('strategyType').value,uf=$('strategyUF').value,target=$('strategyTarget').value,a=CAMPAIGN_STRATEGIES[type],offensive=type==='attack'||type==='debate';
  $('strategyTarget').disabled=!offensive;
  $('strategyDirectionField').hidden=type!=='interference';
- $('strategyUF').closest('.field').hidden=type==='interference';
- $('strategyTarget').closest('.field').hidden=type==='interference';
+ $('strategyUF').closest('.field').hidden=type==='interference'||type==='nationalPromise';
+ $('strategyTarget').closest('.field').hidden=type==='interference'||type==='nationalPromise';
  $('strategyNotice').textContent=game.lastChancePending?'Última chance de virar! Todos receberam a renda desta rodada. Você pode usar quantas estratégias puder pagar antes de seguir para a apuração. Se um estado reabrir, a rodada continua.':'Estratégias sem limite de uso: você pode repetir ações enquanto tiver saldo e alvos válidos. Defesas ativas não se acumulam.';
  $('strategySupports').hidden=!game.supportsEnabled;$('strategySupports').disabled=!canUseSupports();
  const id=offensive?target:game.player,before=totalInfluence(id,uf),after=type==='attack'?Math.max(0,before-2):type==='debate'?Math.max(0,before-1):Math.min(10,before+Math.min(1,game.strategyLosses?.[uf]?.[id]||0));
  const reason=strategyReason(game.player,type,uf,target);
  $('strategyPreview').textContent=a.description+' '+(type==='defend'?'':id+': '+fmtInvestment(before)+' → '+fmtInvestment(after)+' pontos'+(type==='debate'?' em caso de sucesso':'')+'. ')+(offensive?'Uma defesa ativa pode bloquear o efeito. ':'')+'Saldo: '+money(game.cash[game.player])+'. Usadas neste turno: '+(game.strategyUses?.[game.player]||0)+' (sem limite). '+reason;
  $('strategyConfirm').disabled=Boolean(reason);
+ if(type==='nationalPromise'){
+  const targets=multiplierTargets(game.player,true,uf);
+  $('strategyPreview').textContent=a.description+' Estados elegíveis: '+targets.length+'. Custo: '+money(NATIONAL_MULTIPLIER_COST)+'. Saldo: '+money(game.cash[game.player])+'. '+reason;
+ }
  $('strategyClose').textContent=game.lastChancePending?'Seguir para a apuração':'Fechar';
  if(type==='interference'){
   const direction=$('strategyDirection').value,reason=strategyReason(game.player,type,uf,direction);
@@ -1174,6 +1189,13 @@ function investLocal(){
   toast(newOwner?'Estado fechado para todas as campanhas!':'Investimento realizado em '+byUF[selectedUF].name+'.');
  }
 }
+function purchasePlayerMultiplier(national){
+ const choice=buyMultiplier(game.player,national,selectedUF);
+ if(!choice){toast(multiplierReason(game.player,national,selectedUF));return}
+ if(allStatesLocked()){concludePhase();return}
+ render();persist();
+ toast((national?'Programa nacional':'Promessa estadual')+' comprado: +×0,25 em '+choice.targets.length+' UF(s).');
+}
 function renderSupportPanel(){
  const strategies=game.strategiesEnabled&&!game.done&&!game.pendingSecond;
  const visible=canUseSupports()||strategies;
@@ -1279,12 +1301,49 @@ function render(){
  $('investBtn').disabled=game.done||game.pendingSecond||Boolean(lockOwner)||limitRound||limitTotal||game.cash[id]<cost;
  $('nextBtn').textContent=game.pendingSecond?'Iniciar 2º turno':game.done?'Eleição encerrada':game.round===game.maxRounds?'Apurar turno →':'Encerrar rodada →';
  $('nextBtn').disabled=game.done;
- $('costHint').textContent='Afinidade histórica ×'+fmtInvestment(multiplier)+' · '+(game.round===game.maxRounds?'Última rodada: ações livres.':'Até 2 ações por estado nesta rodada.')+' Fecha aos 10 pontos de influência.';
- $('turnHint').textContent='Nova rodada: R$ 250 mil + R$ 50 mil por estado liderado.'+(game.incumbent?(presidentBonus(game.incumbent)<0?' '+who(game.incumbent).short+' tem renda fixa reduzida a R$ 150 mil/rodada pela tentativa de terceiro mandato consecutivo, com multiplicadores de 1× em todos os estados.':' '+who(game.incumbent).short+' recebe +R$ 100 mil por rodada como atual presidente.'):'');
- $('mapLegend').textContent='Cinza = sem liderança única';recolor();renderSupportPanel();
+ $('costHint').textContent='Multiplicador de campanha ×'+fmtInvestment(multiplier)+' · '+(game.round===game.maxRounds?'Última rodada: ações livres.':'Até 2 ações por estado nesta rodada.')+' Fecha aos 10 pontos de influência.';
+ $('turnHint').textContent='Nova rodada: R$ 250 mil + R$ 50 mil por estado liderado.'+(game.incumbent?(presidentBonus(game.incumbent)<0?' '+who(game.incumbent).short+' tem renda fixa reduzida a R$ 150 mil/rodada pela tentativa de terceiro mandato consecutivo.':' '+who(game.incumbent).short+' recebe +R$ 100 mil por rodada como atual presidente.'):'');
+ $('campaignStatePanel').hidden=mapTab!=='main';
+ $('multiplierPanel').hidden=mapTab!=='multipliers';
+ $('tabMain').setAttribute('aria-selected',String(mapTab==='main'));
+ $('tabMultipliers').setAttribute('aria-selected',String(mapTab==='multipliers'));
+ $('mapLegend').textContent=mapTab==='main'?'Cinza = sem liderança única':'Cores: cinza ×1 → verde ×2 (bônus do seu candidato)';
+ renderMultiplierPanel();
+ recolor();renderSupportPanel();
 }
 function color(id){const index=who(id)?.index;return index===undefined?'#9bb0c8':COLORS[index]||'hsl('+Math.round(index*137.508%360)+' 54% 46%)'}
-function recolor(){document.querySelectorAll('#map .territory').forEach(el=>{const s=byUF[el.dataset.uf];if(!s)return;const lead=leader(s);el.setAttribute('fill',lead?color(lead):'#c3ccd7');el.classList.toggle('selected',s.uf===selectedUF);el.classList.toggle('locked',Boolean(stateLockedBy(s.uf)));const title=el.querySelector('title');if(title)title.textContent=s.name+' — '+(stateLockedBy(s.uf)?'FECHADO por '+who(stateLockedBy(s.uf)).short+' (10 pontos)':lead?'líder: '+who(lead).short+' ('+percent(shares(s)[lead]*100)+')':'sem líder / empate')})}
+function multiplierColor(level){return ['#bcc9d5','#99d2bf','#6bc6ad','#389f89','#176d65'][level]||'#bcc9d5'}
+function recolor(){
+ document.querySelectorAll('#map .territory').forEach(el=>{
+  const s=byUF[el.dataset.uf];if(!s)return;
+  const lead=leader(s),mine=affinityMultiplier(game.player,s.uf);
+  el.setAttribute('fill',mapTab==='multipliers'?multiplierColor(multiplierLevel(game.player,s.uf)):(lead?color(lead):'#c3ccd7'));
+  el.classList.toggle('selected',s.uf===selectedUF);
+  el.classList.toggle('locked',Boolean(stateLockedBy(s.uf)));
+  const title=el.querySelector('title');
+  if(title)title.textContent=mapTab==='multipliers'?s.name+' — seu bônus ×'+fmtInvestment(mine)+(stateLockedBy(s.uf)?' · Estado fechado':''):s.name+' — '+(stateLockedBy(s.uf)?'FECHADO por '+who(stateLockedBy(s.uf)).short+' (10 pontos)':lead?'líder: '+who(lead).short+' ('+percent(shares(s)[lead]*100)+')':'sem líder / empate');
+ });
+}
+function renderMultiplierPanel(){
+ const uf=selectedUF,id=game.player,state=byUF[uf];
+ $('multiplierUf').textContent=uf;
+ $('multiplierStateName').textContent=state.name+' · seu bônus ×'+fmtInvestment(affinityMultiplier(id,uf));
+ $('multiplierRoster').innerHTML=game.active.map(candidate=>'<div class="multiplier-entry'+(candidate===id?' you':'')+'"><span>'+esc(who(candidate).short)+(candidate===id?' · você':'')+'</span><strong>×'+fmtInvestment(affinityMultiplier(candidate,uf))+'</strong></div>').join('');
+ const stateCost=stateMultiplierCost(id,uf),national=multiplierTargets(id,true,uf);
+ const stateReason=multiplierReason(id,false,uf),nationalReason=multiplierReason(id,true,uf);
+ $('buyStateMultiplier').textContent='Promessa estadual · '+money(stateCost)+' → ×'+fmtInvestment(Math.min(2,affinityMultiplier(id,uf)+.25));
+ $('buyStateMultiplier').disabled=Boolean(stateReason);
+ $('stateMultiplierHint').textContent=stateReason||'Disponível: +×0,25 em '+state.name;
+ $('buyNationalMultiplier').textContent='Programa nacional · '+money(NATIONAL_MULTIPLIER_COST);
+ $('buyNationalMultiplier').disabled=Boolean(nationalReason);
+ $('nationalMultiplierHint').textContent=nationalReason||'Abrange '+national.length+' UFs abertas com espaço para melhorar';
+ $('multiplierNextTurn').textContent=$('nextBtn').textContent;
+ $('multiplierNextTurn').disabled=$('nextBtn').disabled;
+}
+function setMapTab(value){
+ mapTab=value==='multipliers'?'multipliers':'main';
+ if(game)render();
+}
 function selectUF(uf){if(!byUF[uf])return;selectedUF=uf;render();persist()}
 function svg(tag){return document.createElementNS('http://www.w3.org/2000/svg',tag)}
 function addPath(uf,d){const path=svg('path');path.setAttribute('d',d);path.setAttribute('class','territory');path.setAttribute('data-uf',uf);path.setAttribute('tabindex','0');path.setAttribute('role','button');path.setAttribute('aria-label',byUF[uf].name);const t=svg('title');path.appendChild(t);path.addEventListener('click',()=>selectUF(uf));path.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectUF(uf)}});$('map').appendChild(path)}
@@ -1497,7 +1556,11 @@ renderCandidateChoices();if([...$('chooseP').options].some(option=>option.value=
 addCandidateChoices('officialCandidates',PEOPLE_2026);addCandidateChoices('alternativeCandidates',PEOPLE.filter(person=>person.group==='alternativo'&&!person.celebrity&&!person.unlockYear));$('chooseP').addEventListener('change',()=>{renderCandidateChoices();updatePreview()});renderCandidateChoices();setSetupStep(1);for(const s of [...STATES].sort((a,b)=>a.name.localeCompare(b.name,'pt-BR'))){let o=document.createElement('option');o.value=s.uf;o.textContent=s.name+' ('+s.uf+')';$('stateSelect').appendChild(o)}
 $('chooseElection').addEventListener('change',applyElectionPreset);$('candidateSearch').addEventListener('input',filterAlternativeCandidates);$('onlySelectedCandidates').addEventListener('change',filterAlternativeCandidates);
 $('supportBtn').addEventListener('click',openSupportOverlay);$('closeSupport').addEventListener('click',closeSupportOverlay);$('closeSupportDetail').addEventListener('click',closeSupportOverlay);$('supportBack').addEventListener('click',()=>{selectedSupportCandidate=null;renderSupportList();$('supportDetailView').hidden=true;$('supportListView').hidden=false});$('supportBuyBtn').addEventListener('click',buySelectedSupport);$('supportList').addEventListener('click',event=>{const button=event.target.closest('[data-support-source]');if(button)renderSupportDetail(button.dataset.supportSource)});document.addEventListener('keydown',event=>{if(event.key==='Escape')closeSupportOverlay()});
-$('continueSetupBtn').addEventListener('click',continueSetup);$('backSetupBtn').addEventListener('click',()=>setSetupStep(1));$('startBtn').addEventListener('click',begin);$('newBtn').addEventListener('click',newPrompt);$('rulesBtn').addEventListener('click',()=>$('rulesOverlay').classList.remove('hidden'));$('closeRules').addEventListener('click',()=>$('rulesOverlay').classList.add('hidden'));$('reviewBtn').addEventListener('click',()=>$('resultOverlay').classList.add('hidden'));$('resultMainBtn').addEventListener('click',()=>{if(afterResult==='second')makeSecondRound();else if(afterResult==='nextElection')continueElection();else newPrompt()});$('investBtn').addEventListener('click',investLocal);$('nextBtn').addEventListener('click',nextTurn);$('stateSelect').addEventListener('change',e=>selectUF(e.target.value));$('mapToggle').addEventListener('click',()=>{if(mapMode==='geo')showCartogram();else loadGeo();persist()});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesOverlay').classList.add('hidden')});
+$('continueSetupBtn').addEventListener('click',continueSetup);$('backSetupBtn').addEventListener('click',()=>setSetupStep(1));$('startBtn').addEventListener('click',begin);$('newBtn').addEventListener('click',newPrompt);$('rulesBtn').addEventListener('click',()=>$('rulesOverlay').classList.remove('hidden'));$('closeRules').addEventListener('click',()=>$('rulesOverlay').classList.add('hidden'));$('reviewBtn').addEventListener('click',()=>$('resultOverlay').classList.add('hidden'));$('resultMainBtn').addEventListener('click',()=>{if(afterResult==='second')makeSecondRound();else if(afterResult==='nextElection')continueElection();else newPrompt()});$('investBtn').addEventListener('click',investLocal);$('nextBtn').addEventListener('click',nextTurn);
+$('tabMain').addEventListener('click',()=>setMapTab('main'));$('tabMultipliers').addEventListener('click',()=>setMapTab('multipliers'));
+$('buyStateMultiplier').addEventListener('click',()=>purchasePlayerMultiplier(false));
+$('buyNationalMultiplier').addEventListener('click',()=>purchasePlayerMultiplier(true));
+$('multiplierNextTurn').addEventListener('click',nextTurn);$('stateSelect').addEventListener('change',e=>selectUF(e.target.value));$('mapToggle').addEventListener('click',()=>{if(mapMode==='geo')showCartogram();else loadGeo();persist()});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesOverlay').classList.add('hidden')});
 $('resultMenuBtn').addEventListener('click',newPrompt);
 $('strategySummaryClose').addEventListener('click',()=>{delete game.strategySummary;$('strategySummaryOverlay').classList.add('hidden');persist();const target=game.lastChancePending?'strategyType':game.done||game.pendingSecond?'resultMainBtn':'nextBtn';$(target).focus()});
 $('strategySupports').addEventListener('click',()=>{game.openingSupports=true;openSupportOverlay();delete game.openingSupports;$('strategiesOverlay').classList.add('hidden')});
