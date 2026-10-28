@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.14
+# Rumo ao Planalto — V8.15
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,19 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.15 — novo mapa de multiplicadores e promessas de campanha
+
+O tabuleiro tem agora duas abas: **Mapa eleitoral** (padrão, com lideranças e investimentos) e **Multiplicadores** (mesma cartografia, colorida conforme o multiplicador do candidato humano em cada UF). Clicar no estado muda o painel de ações e mostra também os multiplicadores dos adversários.
+
+- **Todas as candidaturas de uma nova partida começam com ×1 em cada estado**, independentemente do perfil político, da votação histórica ou da dificuldade. Aumentos só podem ser comprados durante a eleição, até **×2 por candidato e UF**, em passos de **×0,25**.
+- **Promessa estadual:** R$ 150 mil na primeira compra da UF, aumentando R$ 50 mil por melhoria já comprada naquele estado. Cada compra eleva o multiplicador apenas da candidatura compradora na UF selecionada.
+- **Programa nacional de campanha:** custa **R$ 1,5 milhão** e aumenta em ×0,25 os multiplicadores da candidatura compradora em todos os estados ainda abertos e abaixo do teto. Está disponível na nova aba e, quando as estratégias especiais estão ativadas, também na lista de estratégias.
+- **Estados fechados:** não podem receber melhorias estaduais ou nacionais. O novo multiplicador se aplica aos investimentos já feitos e aos próximos, até o teto de 10 pontos efetivos, podendo encerrar estados abertos.
+- **IA:** faz compras usando o próprio dinheiro, considerando investimentos já existentes e possíveis benefícios futuros. Não recebe multiplicadores gratuitos. A quantidade de compras é limitada pela capacidade financeira e pelo teto de ×2.
+- **Segundo turno:** os finalistas mantêm os multiplicadores adquiridos no primeiro turno; melhorias dos eliminados não são transferidas com seus apoios. Os apoios continuam seguindo suas regras de afinidade próprias.
+- **Salvamentos antigos:** ao carregar partidas V8.14 ou anteriores sem registro da nova mecânica, os bônus pré-existentes são transformados em níveis equivalentes para evitar mudar imediatamente a votação da partida em andamento. Novas eleições começam com todos os bônus zerados.
+- **Compatibilidade:** a chave de salvamento local `rumo_ao_planalto_v8` permanece; os níveis são registrados na partida para preservar a continuidade.
 
 ## V8.14 — antecipação da apuração para a próxima rodada
 
