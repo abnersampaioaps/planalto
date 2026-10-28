@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.15
+# Rumo ao Planalto — V8.16
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -23,6 +23,16 @@ Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/a
 
 Validação: `node --test tests/election-presets.test.cjs`.
 
+## V8.16 — multiplicadores apenas para investimentos futuros
+
+- A compra de promessas estaduais ou de um programa nacional **não altera pontos e votos de investimentos passados**. O novo multiplicador vale exclusivamente para ações estaduais pagas depois da compra.
+- Cada ação registra seus pontos definitivos de influência com o multiplicador do momento. Exemplo: uma ação ×1, promessa para ×1,25 e depois uma ação ×1,25 totalizam **2,25 pontos**, e não 2,5.
+- Compras sucessivas não recalculam o passado: 1 + 1 + 1,25 + 1,5 resulta em **4,75 pontos**. O limite de 10 pontos efetivos continua.
+- A IA avalia o benefício potencial **de ações futuras**, e suas simulações contabilizam corretamente a influência que seria obtida ao investir com o multiplicador atual.
+- O segundo turno mantém tanto os pontos conquistados em cada UF como o multiplicador obtido por cada finalista. Novas ações podem aproveitar bônus acumulados sem alterar pontos antigos.
+- **Salvamentos anteriores:** na primeira abertura após a atualização, a influência já exibida é preservada como saldo inicial; a partir desse momento, apenas investimentos novos recebem multiplicadores posteriores. O novo registro de pontos por UF é persistido junto à partida.
+- O painel estadual separa pontos já conquistados do multiplicador das próximas ações. Custos e limites de aquisição dos bônus permanecem inalterados.
+
 ## V8.15 — novo mapa de multiplicadores e promessas de campanha
 
 O tabuleiro tem agora duas abas: **Mapa eleitoral** (padrão, com lideranças e investimentos) e **Multiplicadores** (mesma cartografia, colorida conforme o multiplicador do candidato humano em cada UF). Clicar no estado muda o painel de ações e mostra também os multiplicadores dos adversários.
@@ -30,10 +40,10 @@ O tabuleiro tem agora duas abas: **Mapa eleitoral** (padrão, com lideranças e 
 - **Todas as candidaturas de uma nova partida começam com ×1 em cada estado**, independentemente do perfil político, da votação histórica ou da dificuldade. Aumentos só podem ser comprados durante a eleição, até **×2 por candidato e UF**, em passos de **×0,25**.
 - **Promessa estadual:** R$ 150 mil na primeira compra da UF, aumentando R$ 50 mil por melhoria já comprada naquele estado. Cada compra eleva o multiplicador apenas da candidatura compradora na UF selecionada.
 - **Programa nacional de campanha:** custa **R$ 1,5 milhão** e aumenta em ×0,25 os multiplicadores da candidatura compradora em todos os estados ainda abertos e abaixo do teto. Está disponível na nova aba e, quando as estratégias especiais estão ativadas, também na lista de estratégias.
-- **Estados fechados:** não podem receber melhorias estaduais ou nacionais. O novo multiplicador se aplica aos investimentos já feitos e aos próximos, até o teto de 10 pontos efetivos, podendo encerrar estados abertos.
-- **IA:** faz compras usando o próprio dinheiro, considerando investimentos já existentes e possíveis benefícios futuros. Não recebe multiplicadores gratuitos. A quantidade de compras é limitada pela capacidade financeira e pelo teto de ×2.
+- **Estados fechados:** não podem receber melhorias estaduais ou nacionais. Multiplicadores comprados aplicam-se somente aos investimentos futuros, até o limite de 10 pontos efetivos; comprar uma promessa não fecha estados automaticamente.
+- **IA:** faz compras usando o próprio dinheiro e avaliando o potencial dos próximos investimentos, não ganhos retroativos. Não recebe multiplicadores gratuitos. A quantidade de compras é limitada pela capacidade financeira e pelo teto de ×2.
 - **Segundo turno:** os finalistas mantêm os multiplicadores adquiridos no primeiro turno; melhorias dos eliminados não são transferidas com seus apoios. Os apoios continuam seguindo suas regras de afinidade próprias.
-- **Salvamentos antigos:** ao carregar partidas V8.14 ou anteriores sem registro da nova mecânica, os bônus pré-existentes são transformados em níveis equivalentes para evitar mudar imediatamente a votação da partida em andamento. Novas eleições começam com todos os bônus zerados.
+- **Salvamentos antigos:** partidas V8.15 ou anteriores preservam os pontos já exibidos no momento da migração; melhorias compradas depois da atualização só afetarão investimentos posteriores. Partidas novas começam com todos os multiplicadores em ×1.
 - **Compatibilidade:** a chave de salvamento local `rumo_ao_planalto_v8` permanece; os níveis são registrados na partida para preservar a continuidade.
 
 ## V8.14 — antecipação da apuração para a próxima rodada
