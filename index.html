@@ -25,7 +25,7 @@
 @media(max-width:390px){.mapbox{height:390px}.standing{grid-template-columns:90px minmax(35px,1fr) 67px}.standing-pct{font-size:20px}}
 </style>
 
-<link rel="stylesheet" href="./ui-v6.css?v=104"></head><body>
+<link rel="stylesheet" href="./ui-v6.css?v=105"></head><body>
 <div class="shell">
 <header class="header">
 <div class="brand"><div class="symbol">★</div><div><div class="eyebrow">Simulador de estratégia eleitoral</div><div class="brandname">Rumo ao Planalto<span>.</span></div></div></div>
@@ -55,14 +55,19 @@
 </section>
 <section class="panel" id="multiplierPanel" hidden aria-labelledby="multiplierPanelTitle">
 <h2 id="multiplierPanelTitle">Multiplicadores <span id="multiplierUf" class="eyebrow" style="float:right">SP</span></h2>
-<p class="multiplier-summary">Promessas de campanha aumentam o multiplicador de <b>×1 até ×2</b>, em passos de <b>×0,25</b>. O bônus vale <b>somente para os próximos investimentos</b>.</p>
-<div class="statename" id="multiplierStateName">São Paulo</div>
-<div class="multiplier-action"><h3>Promessa estadual</h3><p>Melhora apenas a UF selecionada. Investimentos feitos antes da promessa permanecem com os mesmos pontos.</p>
-<button id="buyStateMultiplier" class="button primary">Promessa estadual</button><div class="multiplier-stamp" id="stateMultiplierHint"></div></div>
-<div class="multiplier-action"><h3>Programa de campanha nacional</h3><p>Aumenta em ×0,25 os multiplicadores dos próximos investimentos em estados abertos abaixo do teto. Também disponível nas estratégias de campanha.</p>
-<button id="buyNationalMultiplier" class="button">Programa nacional · R$ 1,5 mi</button><div class="multiplier-stamp" id="nationalMultiplierHint"></div></div>
-<p class="multiplier-tip">Os bônus são individuais e continuam no 2º turno. Os gastos saem do seu saldo.</p>
-<h3 class="multiplier-roster-title">Multiplicadores por candidatura</h3>
+<p class="multiplier-summary">Promessas: <b>+×0,25</b> apenas nos próximos investimentos (máx. ×2).</p>
+<div class="multiplier-state"><strong id="multiplierStateName">São Paulo</strong><span>Seu multiplicador <b id="multiplierCurrent">×1</b></span></div>
+<div class="multiplier-action">
+<div class="multiplier-action-info"><h3>Promessa estadual</h3><p id="stateMultiplierEffect">SP · ×1 → ×1,25</p></div>
+<button id="buyStateMultiplier" class="button primary">Comprar · R$ 150 mil</button>
+<small class="multiplier-stamp" id="stateMultiplierHint" aria-live="polite" hidden></small>
+</div>
+<div class="multiplier-action">
+<div class="multiplier-action-info"><h3>Programa nacional</h3><p id="nationalMultiplierEffect">+×0,25 · 27 UFs elegíveis</p></div>
+<button id="buyNationalMultiplier" class="button">Comprar · R$ 1,5 mi</button>
+<small class="multiplier-stamp" id="nationalMultiplierHint" aria-live="polite" hidden></small>
+</div>
+<h3 class="multiplier-roster-title">Por candidato</h3>
 <div id="multiplierRoster" class="multiplier-list" role="list" aria-label="Multiplicadores dos candidatos no estado selecionado" aria-live="polite"></div>
 <button class="button" id="multiplierNextTurn">Encerrar rodada →</button>
 </section>
@@ -1373,17 +1378,24 @@ function recolor(){
 }
 function renderMultiplierPanel(){
  const uf=selectedUF,id=game.player,state=byUF[uf];
- $('multiplierUf').textContent=uf;
- $('multiplierStateName').textContent=state.name+' · seu bônus ×'+fmtInvestment(affinityMultiplier(id,uf));
- $('multiplierRoster').innerHTML=game.active.map(candidate=>'<div class="multiplier-entry'+(candidate===id?' you':'')+'" role="listitem"><span>'+esc(who(candidate).short)+(candidate===id?' · você':'')+'</span><strong>×'+fmtInvestment(affinityMultiplier(candidate,uf))+'</strong></div>').join('');
- const stateCost=stateMultiplierCost(id,uf),national=multiplierTargets(id,true,uf);
+ const current=affinityMultiplier(id,uf),stateCost=stateMultiplierCost(id,uf),national=multiplierTargets(id,true,uf);
  const stateReason=multiplierReason(id,false,uf),nationalReason=multiplierReason(id,true,uf);
- $('buyStateMultiplier').textContent='Promessa estadual · '+money(stateCost)+' → ×'+fmtInvestment(Math.min(2,affinityMultiplier(id,uf)+.25));
+ $('multiplierUf').textContent=uf;
+ $('multiplierStateName').textContent=state.name;
+ $('multiplierCurrent').textContent='×'+fmtInvestment(current);
+ $('stateMultiplierEffect').textContent=uf+' · ×'+fmtInvestment(current)+' → ×'+fmtInvestment(Math.min(2,current+.25));
+ $('nationalMultiplierEffect').textContent='+×0,25 · '+national.length+' UF'+(national.length===1?'':'s')+' elegível'+(national.length===1?'':'eis');
+ $('multiplierRoster').innerHTML=game.active.map(candidate=>'<div class="multiplier-entry'+(candidate===id?' you':'')+'" role="listitem"><span>'+esc(who(candidate).short)+(candidate===id?' · você':'')+'</span><strong>×'+fmtInvestment(affinityMultiplier(candidate,uf))+'</strong></div>').join('');
+ $('buyStateMultiplier').textContent='Comprar · '+money(stateCost);
  $('buyStateMultiplier').disabled=Boolean(stateReason);
- $('stateMultiplierHint').textContent=stateReason||'Disponível: +×0,25 em '+state.name;
- $('buyNationalMultiplier').textContent='Programa nacional · '+money(NATIONAL_MULTIPLIER_COST);
+ $('buyStateMultiplier').setAttribute('aria-label','Comprar promessa em '+state.name+' por '+money(stateCost));
+ $('stateMultiplierHint').hidden=!stateReason;
+ $('stateMultiplierHint').textContent=stateReason;
+ $('buyNationalMultiplier').textContent='Comprar · '+money(NATIONAL_MULTIPLIER_COST);
  $('buyNationalMultiplier').disabled=Boolean(nationalReason);
- $('nationalMultiplierHint').textContent=nationalReason||'Abrange '+national.length+' UFs abertas com espaço para melhorar';
+ $('buyNationalMultiplier').setAttribute('aria-label','Comprar programa nacional por '+money(NATIONAL_MULTIPLIER_COST));
+ $('nationalMultiplierHint').hidden=!nationalReason;
+ $('nationalMultiplierHint').textContent=nationalReason;
  $('multiplierNextTurn').textContent=$('nextBtn').textContent;
  $('multiplierNextTurn').disabled=$('nextBtn').disabled;
 }
