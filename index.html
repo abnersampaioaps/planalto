@@ -55,17 +55,13 @@
 </section>
 <section class="panel" id="multiplierPanel" hidden aria-labelledby="multiplierPanelTitle">
 <h2 id="multiplierPanelTitle">Multiplicadores <span id="multiplierUf" class="eyebrow" style="float:right">SP</span></h2>
-<p class="multiplier-summary">Promessas: <b>+×0,25</b> apenas nos próximos investimentos (máx. ×2).</p>
+<p class="multiplier-summary">Promessas estaduais: <b>+×0,25</b> nas próximas ações (máx. ×2).</p>
+<p id="multiplierPenaltyNote" class="multiplier-penalty-note" aria-live="polite">Concentrar bônus pode reduzir outras UFs a ×0,9.</p>
 <div class="multiplier-state"><strong id="multiplierStateName">São Paulo</strong><span>Seu multiplicador <b id="multiplierCurrent">×1</b></span></div>
 <div class="multiplier-action">
 <div class="multiplier-action-info"><h3>Promessa estadual</h3><p id="stateMultiplierEffect">SP · ×1 → ×1,25</p></div>
 <button id="buyStateMultiplier" class="button primary">Comprar · R$ 150 mil</button>
 <small class="multiplier-stamp" id="stateMultiplierHint" aria-live="polite" hidden></small>
-</div>
-<div class="multiplier-action">
-<div class="multiplier-action-info"><h3>Programa nacional</h3><p id="nationalMultiplierEffect">+×0,25 · 27 UFs elegíveis</p></div>
-<button id="buyNationalMultiplier" class="button">Comprar · R$ 1,5 mi</button>
-<small class="multiplier-stamp" id="nationalMultiplierHint" aria-live="polite" hidden></small>
 </div>
 <h3 class="multiplier-roster-title">Por candidato</h3>
 <div id="multiplierRoster" class="multiplier-list" role="list" aria-label="Multiplicadores dos candidatos no estado selecionado" aria-live="polite"></div>
@@ -123,7 +119,7 @@
 <p>Na apuração, os votos não atribuídos não entram como válidos simulados. Quem obtiver mais de 50% dos votos válidos vence no primeiro turno; caso contrário, os dois mais votados avançam. <b>A duração escolhida no início vale para os dois turnos.</b> <b>Se todos os 27 estados forem fechados antes da última rodada, o turno é apurado imediatamente — exceto se ainda houver um apoio capaz de gerar influência.</b> Os investimentos pagos dos dois finalistas são preservados; as ações dos candidatos eliminados saem do mapa. Se <b>Apoios do 1º turno</b> estiver habilitado na configuração inicial, essas ações poderão ser negociadas: cada finalista pode conquistar até três apoios, por R$ 1 mi, R$ 2 mi e R$ 4 mi. Há no máximo uma negociação por finalista em cada rodada; quem estiver atrás na votação nacional recebe a primeira oportunidade de negociar. Cada apoio transfere até 70%, 50% ou 30% das ações estaduais do eliminado, conforme a afinidade entre os perfis; o teto de 10 pontos por estado continua valendo. Cada finalista pode comprar uma vez o apoio de cada eliminado. Quando comprador e eliminado tiverem o mesmo perfil, o apoio fica exclusivo e o outro finalista não pode negociá-lo; a IA segue as mesmas regras. <b>Na 1ª rodada do 2º turno, cada finalista recebe o saldo que sobrou do 1º turno + R$ 250 mil + R$ 50 mil por estado que liderar sozinho após a retirada dos eliminados. Os multiplicadores comprados também são preservados pelos finalistas.</b></p>
 <p>As estratégias de campanha não têm limite de utilizações por rodada ou por turno: podem ser repetidas enquanto houver saldo e condições válidas. Ataques consecutivos ao mesmo adversário e estado são permitidos; proteções já ativas não são cumulativas. A interferência na apuração, exclusiva da presidência, pode antecipar o encerramento do turno para o fim da próxima rodada (somente até a antepenúltima rodada) ou adiá-lo em 4 rodadas. A antecipação fica bloqueada nas duas últimas rodadas, sem cobrança de custo ou aplicação de penalidade. No segundo turno, a IA utiliza mais seu orçamento, busca oportunidades de voto, compra apoios quando vantajosos e pode executar diversas estratégias na mesma rodada.</p>
 <p>No Normal e no Experiente, a IA adapta o estilo de jogo conforme a vantagem ou desvantagem na votação e as rodadas restantes. Com vantagem, protege posições e economiza recursos; em disputa equilibrada, prioriza oportunidades de ganho; atrás, assume mais riscos; perto da apuração, usa os recursos disponíveis com mais intensidade. No Iniciante, permanece com o perfil fixo de comportamento.</p>
-<p>Na aba <b>Multiplicadores</b>, uma promessa estadual aumenta em ×0,25 a influência por ação na UF selecionada e custa R$ 150 mil, acrescidos de R$ 50 mil por melhoria anterior nessa UF. O programa nacional custa R$ 1,5 milhão e aumenta em ×0,25 os multiplicadores de todos os estados ainda abertos abaixo de ×2. Os bônus só se aplicam a investimentos feitos depois da compra; pontos anteriores não mudam. Os bônus acompanham os finalistas ao segundo turno, e a IA pode comprar as mesmas ações. O mapa mostra os multiplicadores do jogador, enquanto o painel lista os bônus de todos os candidatos naquele estado.</p>
+<p>Na aba <b>Multiplicadores</b>, promessas estaduais aumentam em ×0,25 o rendimento dos próximos investimentos na UF escolhida. O custo começa em R$ 150 mil e cresce R$ 50 mil por melhoria anterior no estado. Se os 3 ou mais estados com bônus estiverem todos na mesma região, ou os 6 ou mais estados com bônus estiverem todos num único eixo (Sul, Sudeste e Centro-Oeste; ou Norte e Nordeste), os demais estados sem bônus rendem ×0,9 nas ações futuras. A penalidade não acumula nem altera pontos já conquistados e deixa de valer quando os bônus deixam de atender a esses critérios. Os multiplicadores acompanham os finalistas ao segundo turno, e a IA pode comprar as mesmas promessas.</p>
 <p>Esta é uma simulação fictícia. A parcela não atribuída do jogo não equivale à classificação oficial de votos nulos do TSE.</p>
 <div class="actions"><button class="button primary" id="closeRules">Entendi</button></div></section></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
@@ -875,40 +871,37 @@ function aiPlay(id){
 // Budget-aware multiplier purchases: an AI invests in the value of its own
 // upcoming paid actions rather than receiving any free permanent bonus.
 function aiMultiplierValue(id,uf){
- const state=byUF[uf],raw=Number(game.localTotal[uf][id]||0);
+ const raw=Number(game.localTotal[uf][id]||0);
  if(stateLockedBy(uf)||multiplierLevel(id,uf)>=4||raw>=MAX_LOCAL)return 0;
  const current=affinityMultiplier(id,uf),remaining=Math.max(0,game.maxRounds-game.round);
  const slotsNow=game.round===game.maxRounds?MAX_LOCAL-raw:Math.max(0,MAX_ROUND-(game.localUsed[uf]?.[id]||0));
- // Estimate a realistic near-term campaign rather than assuming the state will hit its cap.
  const futureActions=Math.min(MAX_LOCAL-raw,3,slotsNow+Math.min(remaining,2)*MAX_ROUND);
  if(futureActions<=0)return 0;
- const earned=totalInfluence(id,uf);
- const before=Math.min(MAX_LOCAL,earned+futureActions*current);
- const after=Math.min(MAX_LOCAL,earned+futureActions*(current+.25));
- return Math.max(0,after-before)*state.valid;
+ const earned=totalInfluence(id,uf),nextMultiplier=1+(multiplierLevel(id,uf)+1)*.25;
+ let value=Math.max(0,Math.min(MAX_LOCAL,earned+futureActions*nextMultiplier)-Math.min(MAX_LOCAL,earned+futureActions*current))*byUF[uf].valid;
+ const before=concentrationStatus(id).active,after=concentrationStatus(id,uf).active;
+ if(before!==after)for(const other of STATES){
+  if(other.uf===uf||multiplierLevel(id,other.uf)>0||stateLockedBy(other.uf))continue;
+  const actions=game.localTotal[other.uf]?.[id]||0;
+  if(actions>=MAX_LOCAL)continue;
+  value+=(after?-1:1)*Math.min(2,MAX_LOCAL-actions)*.1*other.valid;
+ }
+ return value;
 }
 function aiImproveMultipliers(id){
  if(game.done||game.pendingSecond)return 0;
  let purchases=0;
  for(let step=0;step<2;step++){
-  const reserve=game.round===game.maxRounds?0:game.phase===2?120000:180000;
-  const choices=[];
+  const reserve=game.round===game.maxRounds?0:game.phase===2?120000:180000,choices=[];
   for(const state of STATES){
    const uf=state.uf;
    if(stateLockedBy(uf)||multiplierLevel(id,uf)>=4||(game.localTotal[uf][id]||0)===0)continue;
    const cost=stateMultiplierCost(id,uf),value=aiMultiplierValue(id,uf);
-   if(game.cash[id]>=cost+reserve&&value>0)choices.push({national:false,uf,cost,score:value/cost});
-  }
-  const canGlobal=game.cash[id]>=NATIONAL_MULTIPLIER_COST+reserve;
-  if(canGlobal){
-   const targets=multiplierTargets(id,true,'SP');
-   const value=targets.reduce((sum,state)=>sum+aiMultiplierValue(id,state.uf),0);
-   if(targets.length>=6&&value>0)choices.push({national:true,uf:'SP',cost:NATIONAL_MULTIPLIER_COST,score:value/NATIONAL_MULTIPLIER_COST});
+   if(game.cash[id]>=cost+reserve&&value>0)choices.push({uf,cost,score:value/cost});
   }
   choices.sort((a,b)=>b.score-a.score||a.cost-b.cost);
   const best=choices[0];
-  // Purchase only if upcoming paid actions can benefit.
-  if(!best||!Number.isFinite(best.score)||best.score<=0||!buyMultiplier(id,best.national,best.uf))break;
+  if(!best||!Number.isFinite(best.score)||best.score<=0||!buyMultiplier(id,false,best.uf))break;
   purchases++;
  }
  return purchases;
@@ -1265,11 +1258,11 @@ function investLocal(){
  }
 }
 function purchasePlayerMultiplier(national){
- const choice=buyMultiplier(game.player,national,selectedUF);
- if(!choice){toast(multiplierReason(game.player,national,selectedUF));return}
+ const choice=buyMultiplier(game.player,false,selectedUF);
+ if(!choice){toast(multiplierReason(game.player,false,selectedUF));return}
  if(allStatesLocked()){concludePhase();return}
  render();persist();
- toast((national?'Programa nacional':'Promessa estadual')+' comprado: +×0,25 em '+choice.targets.length+' UF(s).');
+ toast('Promessa estadual comprada: +×0,25 em '+byUF[selectedUF].name+'.');
 }
 function renderSupportPanel(){
  const strategies=game.strategiesEnabled&&!game.done&&!game.pendingSecond;
@@ -1387,17 +1380,17 @@ function render(){
  $('multiplierPanel').hidden=mapTab!=='multipliers';
  $('tabMain').setAttribute('aria-selected',String(mapTab==='main'));
  $('tabMultipliers').setAttribute('aria-selected',String(mapTab==='multipliers'));
- $('mapLegend').textContent=mapTab==='main'?'Cinza = sem liderança única':'Cores: cinza ×1 → verde ×2 (bônus do seu candidato)';
+ $('mapLegend').textContent=mapTab==='main'?'Cinza = sem liderança única':'Laranja ×0,9 · cinza ×1 · verde até ×2';
  renderMultiplierPanel();
  recolor();renderSupportPanel();
 }
 function color(id){const index=who(id)?.index;return index===undefined?'#9bb0c8':COLORS[index]||'hsl('+Math.round(index*137.508%360)+' 54% 46%)'}
-function multiplierColor(level){return ['#bcc9d5','#99d2bf','#6bc6ad','#389f89','#176d65'][level]||'#bcc9d5'}
+function multiplierColor(level,penalized=false){return penalized?'#e0a77f':(['#bcc9d5','#99d2bf','#6bc6ad','#389f89','#176d65'][level]||'#bcc9d5')}
 function recolor(){
  document.querySelectorAll('#map .territory').forEach(el=>{
   const s=byUF[el.dataset.uf];if(!s)return;
   const lead=leader(s),mine=affinityMultiplier(game.player,s.uf);
-  el.setAttribute('fill',mapTab==='multipliers'?multiplierColor(multiplierLevel(game.player,s.uf)):(lead?color(lead):'#c3ccd7'));
+  el.setAttribute('fill',mapTab==='multipliers'?multiplierColor(multiplierLevel(game.player,s.uf),mine<1):(lead?color(lead):'#c3ccd7'));
   el.classList.toggle('selected',s.uf===selectedUF);
   el.classList.toggle('locked',Boolean(stateLockedBy(s.uf)));
   const title=el.querySelector('title');
@@ -1406,24 +1399,19 @@ function recolor(){
 }
 function renderMultiplierPanel(){
  const uf=selectedUF,id=game.player,state=byUF[uf];
- const current=affinityMultiplier(id,uf),stateCost=stateMultiplierCost(id,uf),national=multiplierTargets(id,true,uf);
- const stateReason=multiplierReason(id,false,uf),nationalReason=multiplierReason(id,true,uf);
+ const current=affinityMultiplier(id,uf),stateCost=stateMultiplierCost(id,uf),concentration=concentrationStatus(id);
+ const stateReason=multiplierReason(id,false,uf);
  $('multiplierUf').textContent=uf;
  $('multiplierStateName').textContent=state.name;
  $('multiplierCurrent').textContent='×'+fmtInvestment(current);
- $('stateMultiplierEffect').textContent=uf+' · ×'+fmtInvestment(current)+' → ×'+fmtInvestment(Math.min(2,current+.25));
- $('nationalMultiplierEffect').textContent='+×0,25 · '+national.length+(national.length===1?' UF elegível':' UFs elegíveis');
+ $('stateMultiplierEffect').textContent=uf+' · ×'+fmtInvestment(current)+' → ×'+fmtInvestment(Math.min(2,1+(multiplierLevel(id,uf)+1)*.25));
+ $('multiplierPenaltyNote').textContent=concentration.active?'Concentração em '+concentration.area+' ('+concentration.count+' UFs com bônus): ×0,9 nas demais UFs sem bônus.':'3+ UFs na mesma região ou 6+ no mesmo eixo causam ×0,9 nas demais UFs sem bônus.';
  $('multiplierRoster').innerHTML=game.active.map(candidate=>'<div class="multiplier-entry'+(candidate===id?' you':'')+'" role="listitem"><span>'+esc(who(candidate).short)+(candidate===id?' · você':'')+'</span><strong>×'+fmtInvestment(affinityMultiplier(candidate,uf))+'</strong></div>').join('');
  $('buyStateMultiplier').textContent='Comprar · '+money(stateCost);
  $('buyStateMultiplier').disabled=Boolean(stateReason);
  $('buyStateMultiplier').setAttribute('aria-label','Comprar promessa em '+state.name+' por '+money(stateCost));
  $('stateMultiplierHint').hidden=!stateReason;
  $('stateMultiplierHint').textContent=stateReason;
- $('buyNationalMultiplier').textContent='Comprar · '+money(NATIONAL_MULTIPLIER_COST);
- $('buyNationalMultiplier').disabled=Boolean(nationalReason);
- $('buyNationalMultiplier').setAttribute('aria-label','Comprar programa nacional por '+money(NATIONAL_MULTIPLIER_COST));
- $('nationalMultiplierHint').hidden=!nationalReason;
- $('nationalMultiplierHint').textContent=nationalReason;
  $('multiplierNextTurn').textContent=$('nextBtn').textContent;
  $('multiplierNextTurn').disabled=$('nextBtn').disabled;
 }
@@ -1648,7 +1636,7 @@ $('supportBtn').addEventListener('click',openSupportOverlay);$('closeSupport').a
 $('continueSetupBtn').addEventListener('click',continueSetup);$('backSetupBtn').addEventListener('click',()=>setSetupStep(1));$('startBtn').addEventListener('click',begin);$('newBtn').addEventListener('click',newPrompt);$('rulesBtn').addEventListener('click',()=>$('rulesOverlay').classList.remove('hidden'));$('closeRules').addEventListener('click',()=>$('rulesOverlay').classList.add('hidden'));$('reviewBtn').addEventListener('click',()=>$('resultOverlay').classList.add('hidden'));$('resultMainBtn').addEventListener('click',()=>{if(afterResult==='second')makeSecondRound();else if(afterResult==='nextElection')continueElection();else newPrompt()});$('investBtn').addEventListener('click',investLocal);$('nextBtn').addEventListener('click',nextTurn);
 $('tabMain').addEventListener('click',()=>setMapTab('main'));$('tabMultipliers').addEventListener('click',()=>setMapTab('multipliers'));
 $('buyStateMultiplier').addEventListener('click',()=>purchasePlayerMultiplier(false));
-$('buyNationalMultiplier').addEventListener('click',()=>purchasePlayerMultiplier(true));
+
 $('multiplierNextTurn').addEventListener('click',nextTurn);$('stateSelect').addEventListener('change',e=>selectUF(e.target.value));$('mapToggle').addEventListener('click',()=>{if(mapMode==='geo')showCartogram();else loadGeo();persist()});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesOverlay').classList.add('hidden')});
 $('resultMenuBtn').addEventListener('click',newPrompt);
 $('strategySummaryClose').addEventListener('click',()=>{delete game.strategySummary;$('strategySummaryOverlay').classList.add('hidden');persist();const target=game.lastChancePending?'strategyType':game.done||game.pendingSecond?'resultMainBtn':'nextBtn';$(target).focus()});
