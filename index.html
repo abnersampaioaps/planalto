@@ -1584,10 +1584,10 @@ function begin(){
  if(setupCampaign?.winner&&!chosen.includes(setupCampaign.winner)){toast('O vencedor anterior deve participar.');return}
  const previousElection=setupCampaign?game:null;
  game=newGame(p,$('chooseDiff').value,Number($('chooseTime').value),chosen,$('chooseSupports').checked,setupElectionYear,setupCampaign?.party||null);
- if(previousElection)applyRunoffLegacy(game,previousElection);
  game.endless=$('chooseEndless').checked;
  game.strategiesEnabled=$('chooseStrategies').checked;
- if(game.endless&&!game.electionYear)game.electionYear='2026';
+ if(game.endless&&!game.electionYear)game.electionYear=setupCampaign?.year||'2026';
+ if(previousElection)applyRunoffLegacy(game,previousElection);
  if(setupCampaign){
   game.candidateParties={...game.candidateParties,...Object.fromEntries(Object.entries(setupCampaign.parties).filter(([id])=>chosen.includes(id)))};
   game.electionHistory=setupCampaign.history.map(entry=>({...entry}));
