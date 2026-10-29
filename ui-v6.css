@@ -470,3 +470,66 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 @media(max-width:720px){.map-tabs{gap:15px;margin:7px 0 9px}.map-tabs button{font-size:11px;padding:7px 2px 8px}#multiplierPanel .multiplier-list{max-height:190px}}
 @media(max-width:420px){#multiplierPanel .multiplier-action{grid-template-columns:1fr;gap:6px}#multiplierPanel .multiplier-action .button{width:100%}}
 @media(orientation:landscape) and (max-height:680px){#multiplierPanel .multiplier-summary{line-height:1.35}#multiplierPanel .multiplier-action{padding:7px 0}#multiplierPanel .multiplier-list{max-height:125px}}
+
+/* V8.21 · Continuidade eleitoral: sorteio explícito e mercado de transferências. */
+.continuation-modal{width:min(900px,calc(100vw - 28px));max-width:900px;max-height:calc(100dvh - 24px);padding:27px 29px 23px;overflow-y:auto;overflow-x:hidden}
+.continuation-modal .continuation-top{padding:0 0 18px;border-bottom:1px solid #e3eaf0}
+.continuation-top .eyebrow{font-size:10px;letter-spacing:1.3px;color:#24618c}
+.continuation-modal .continuation-top h1{font-size:30px;line-height:1.18;letter-spacing:-.6px;margin:6px 0 4px;color:#173b62}
+.continuation-modal .continuation-top p{font-size:12px;color:#6b8094;margin:0}
+.continuation-modal .continuation-section{margin:0;padding:17px 0 15px;border-bottom:1px solid #e3eaf0}
+.continuation-modal .continuation-section-heading{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:0 0 10px;min-width:0}
+.continuation-modal .continuation-section-heading>div{min-width:0}
+.continuation-modal .continuation-section h2{font-size:16px;line-height:1.25;margin:0;color:#183f64;font-weight:750;letter-spacing:-.15px}
+.continuation-modal .continuation-hint{margin:5px 0 0;font-size:11px;line-height:1.45;color:#647c92}
+.continuation-modal .continuation-identity{padding-top:14px;padding-bottom:15px}
+.continuation-modal .continuation-player{margin:0;gap:10px}
+.continuation-modal #continuationPlayerLogo .party-logo{width:37px;height:37px;min-width:37px;border:1px solid #dce6ee;border-radius:6px;padding:4px}
+.continuation-modal #continuationPlayer{height:43px;min-height:43px;flex:1;max-width:none;padding:8px 13px;border-radius:6px;font-size:13px}
+.continuation-modal #continuationPlayerHint{margin:6px 0 0 47px}
+.continuation-modal .continuation-transfer-section{padding:17px 0}
+.continuation-modal .continuation-section-kicker{display:block;font-size:9px;text-transform:uppercase;letter-spacing:1.05px;font-weight:750;color:#257268;margin:0 0 4px}
+.continuation-modal .continuation-count-tag{flex-shrink:0;white-space:nowrap;color:#37627c;background:#edf4f8;border:1px solid #d8e5ed;border-radius:100px;padding:5px 9px;font-size:10px;font-weight:700}
+.continuation-modal .continuation-transfer-list{display:grid;gap:8px}
+.continuation-modal .continuation-transfer-card{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px 18px;padding:13px 14px;border:1px solid #c7dcd6;border-left:4px solid #147768;background:#f3faf7;border-radius:6px;min-width:0}
+.continuation-modal .continuation-transfer-person{display:grid;gap:3px;min-width:130px}
+.continuation-modal .continuation-transfer-person strong{font-size:14px;color:#153d5b;overflow-wrap:anywhere}
+.continuation-modal .continuation-transfer-person span{font-size:10px;color:#5e7d78}
+.continuation-modal .continuation-transfer-route{display:flex;align-items:center;flex-wrap:wrap;gap:8px}
+.continuation-modal .continuation-transfer-club{display:flex;align-items:center;gap:6px;padding:5px 9px;background:#fff;border:1px solid #dce6e8;border-radius:5px;font-size:12px;color:#536d7d;min-width:78px}
+.continuation-modal .continuation-transfer-club.incoming{border-color:#a2d2c4;background:#e5f5ef;color:#116a5b}
+.continuation-modal .continuation-transfer-club .party-logo{width:26px;height:26px;min-width:26px;padding:2px}
+.continuation-modal .continuation-transfer-arrow{color:#17776c;font-size:22px;font-weight:750;line-height:1}
+.continuation-modal .continuation-no-transfers{margin:0!important;padding:10px 12px;color:#6b7d8e;font-size:11px;background:#f6f8fa;border:1px dashed #dce4ec;border-radius:5px}
+.continuation-modal .continuation-draw-badge{display:inline-flex;flex-shrink:0;align-items:center;border:1px solid #d2e5dd;color:#176d61;background:#eaf6f1;border-radius:4px;padding:5px 8px;font-size:10px;font-weight:750;white-space:nowrap}
+.continuation-modal #continuationRoster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:11px}
+.continuation-modal .continuation-entry{min-height:57px;padding:9px 11px;gap:9px;border:1px solid #dce5ed;border-radius:6px;color:#284968;background:#fff;transition:background .15s,border-color .15s}
+.continuation-modal .continuation-entry.is-selected{background:#f7fafc}
+.continuation-modal .continuation-entry.is-fixed{border-color:#c8ddd5}
+.continuation-modal .continuation-entry:hover{background:#f0f6f9;border-color:#b8d0df}
+.continuation-modal .continuation-entry input{width:16px;height:16px}
+.continuation-modal .continuation-entry input:disabled{cursor:not-allowed}
+.continuation-modal .continuation-entry>span:last-child{font-size:12px;line-height:1.4}
+.continuation-modal .continuation-entry .party-logo{width:30px;height:30px;min-width:30px;border:1px solid #e2e9ef;border-radius:4px;padding:2px}
+.continuation-modal .continuation-note{font-size:10px;color:#6e8396;margin-top:2px}
+.continuation-modal .continuation-moved{color:#137567;font-weight:700}
+.continuation-modal #continuationCount{font-size:11px;color:#60788e;margin:10px 0 0}
+.continuation-modal .continuation-details{margin:14px 0 0;padding:10px 12px;border:1px solid #dbe5ed;border-radius:6px;background:#f8fafc}
+.continuation-modal .continuation-details>summary{cursor:pointer;color:#234f72;font-size:11px;font-weight:700}
+.continuation-modal #continuationRules{margin:8px 0 0;max-width:760px}
+.continuation-modal .continuation-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:18px}
+.continuation-modal .continuation-actions .button{font-size:12px;min-height:40px;margin:0;padding:9px 14px}
+@media(max-width:700px){
+ .continuation-modal{width:calc(100vw - 18px);max-height:calc(100dvh - 14px);padding:20px 17px}
+ .continuation-modal .continuation-top h1{font-size:25px}
+ .continuation-modal #continuationRoster{grid-template-columns:1fr}
+ .continuation-modal .continuation-transfer-card{align-items:stretch}
+ .continuation-modal .continuation-transfer-route{width:100%}
+ .continuation-modal .continuation-actions{flex-direction:column-reverse}
+ .continuation-modal .continuation-actions .button{width:100%}
+}
+@media(max-width:390px){
+ .continuation-modal .continuation-section-heading{align-items:flex-start}
+ .continuation-modal .continuation-draw-badge,.continuation-modal .continuation-count-tag{white-space:normal;text-align:center;font-size:9px}
+ .continuation-modal .continuation-transfer-club{min-width:0}
+}
