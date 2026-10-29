@@ -25,7 +25,7 @@
 @media(max-width:390px){.mapbox{height:390px}.standing{grid-template-columns:90px minmax(35px,1fr) 67px}.standing-pct{font-size:20px}}
 </style>
 
-<link rel="stylesheet" href="./ui-v6.css?v=105"></head><body>
+<link rel="stylesheet" href="./ui-v6.css?v=106"></head><body>
 <div class="shell">
 <header class="header">
 <div class="brand"><div class="symbol">★</div><div><div class="eyebrow">Simulador de estratégia eleitoral</div><div class="brandname">Rumo ao Planalto<span>.</span></div></div></div>
@@ -1394,7 +1394,7 @@ function recolor(){
   el.classList.toggle('selected',s.uf===selectedUF);
   el.classList.toggle('locked',Boolean(stateLockedBy(s.uf)));
   const title=el.querySelector('title');
-  if(title)title.textContent=mapTab==='multipliers'?s.name+' — seu bônus ×'+fmtInvestment(mine)+(stateLockedBy(s.uf)?' · Estado fechado':''):s.name+' — '+(stateLockedBy(s.uf)?'FECHADO por '+who(stateLockedBy(s.uf)).short+' (10 pontos)':lead?'líder: '+who(lead).short+' ('+percent(shares(s)[lead]*100)+')':'sem líder / empate');
+  if(title)title.textContent=mapTab==='multipliers'?s.name+' — seu multiplicador ×'+fmtInvestment(mine)+(stateLockedBy(s.uf)?' · Estado fechado':''):s.name+' — '+(stateLockedBy(s.uf)?'FECHADO por '+who(stateLockedBy(s.uf)).short+' (10 pontos)':lead?'líder: '+who(lead).short+' ('+percent(shares(s)[lead]*100)+')':'sem líder / empate');
  });
 }
 function renderMultiplierPanel(){
