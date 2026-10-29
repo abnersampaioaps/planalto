@@ -502,6 +502,7 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .continuation-modal .continuation-transfer-arrow{color:#17776c;font-size:22px;font-weight:750;line-height:1}
 .continuation-modal .continuation-no-transfers{margin:0!important;padding:10px 12px;color:#6b7d8e;font-size:11px;background:#f6f8fa;border:1px dashed #dce4ec;border-radius:5px}
 .continuation-modal .continuation-draw-badge{display:inline-flex;flex-shrink:0;align-items:center;border:1px solid #d2e5dd;color:#176d61;background:#eaf6f1;border-radius:4px;padding:5px 8px;font-size:10px;font-weight:750;white-space:nowrap}
+.continuation-modal .continuation-draw-badge[hidden],.continuation-modal .continuation-count-tag[hidden]{display:none!important}
 .continuation-modal #continuationRoster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-top:11px}
 .continuation-modal .continuation-entry{min-height:57px;padding:9px 11px;gap:9px;border:1px solid #dce5ed;border-radius:6px;color:#284968;background:#fff;transition:background .15s,border-color .15s}
 .continuation-modal .continuation-entry.is-selected{background:#f7fafc}

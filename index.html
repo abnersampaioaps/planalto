@@ -86,11 +86,11 @@
 <p class="continuation-hint" id="continuationPlayerHint"></p>
 </section>
 <section class="continuation-section continuation-transfer-section" id="continuationTransferSection" aria-labelledby="continuationTransferTitle" hidden>
-<div class="continuation-section-heading"><div><span class="continuation-section-kicker">Temporada de transferências</span><h2 id="continuationTransferTitle">Mercado de transferências</h2></div><span class="continuation-count-tag" id="continuationTransferBadge"></span></div>
+<div class="continuation-section-heading"><h2 id="continuationTransferTitle">Mudanças de partido</h2><span class="continuation-count-tag" id="continuationTransferBadge" hidden></span></div>
 <div class="continuation-transfer-list" id="continuationTransferList" aria-live="polite"></div>
 </section>
 <section class="continuation-section continuation-draw-section" aria-labelledby="continuationRosterTitle">
-<div class="continuation-section-heading"><div><h2 id="continuationRosterTitle">Participantes sorteados</h2><p class="continuation-hint" id="continuationDrawHint">Adversários definidos por sorteio; sua candidatura e a presidência têm vaga garantida.</p></div><span class="continuation-draw-badge" id="continuationDrawBadge">Sorteio concluído</span></div>
+<div class="continuation-section-heading"><div><h2 id="continuationRosterTitle">Participantes da Eleição</h2><p class="continuation-hint" id="continuationDrawHint">Adversários definidos automaticamente. Seu candidato e o presidente atual têm vaga garantida. Ajuste a lista (1 por partido).</p></div><span class="continuation-draw-badge" id="continuationDrawBadge" hidden>Elenco histórico</span></div>
 <div id="continuationRoster" role="group" aria-label="Selecionar participantes para a próxima eleição"></div>
 <p id="continuationCount" class="continuation-count-footer" aria-live="polite"></p>
 </section>
@@ -1620,14 +1620,15 @@ function renderContinuation(){
  const bonusCandidate=continuationIncumbent(plan,plan.controlled,plan.selected);
  const isFuture=Boolean(plan.future),transferList=Array.isArray(plan.partyChanges)?plan.partyChanges.filter(change=>change?.id&&change.from&&change.to):[];
  $('continuationPlayerLogo').innerHTML=partyIcon(plan.controlled,{party:plan.controlled===plan.celebrity?plan.party:continuationPerson(plan,plan.controlled).party});
- $('continuationRosterTitle').textContent=isFuture?'Participantes sorteados':'Participantes da eleição';
+ $('continuationRosterTitle').textContent='Participantes da Eleição '+plan.year;
  $('continuationDrawHint').textContent=isFuture
-  ?'Sorteio fictício: adversários definidos automaticamente. Seu candidato e o presidente atual têm vaga garantida. Ajuste a lista (1 por partido).'
+  ?'Adversários definidos automaticamente. Seu candidato e o presidente atual têm vaga garantida. Ajuste a lista (1 por partido).'
   :'Elenco baseado na eleição histórica. Você pode ajustar os participantes, mantendo um nome por partido e a vaga presidencial.';
- $('continuationDrawBadge').textContent=isFuture?'Sorteio concluído':'Elenco histórico';
+ $('continuationDrawBadge').hidden=isFuture;
  $('continuationTransferSection').hidden=!isFuture;
  if(isFuture){
-  $('continuationTransferBadge').textContent=transferList.length?transferList.length+' transferência'+(transferList.length===1?'':'s'):'Sem transferências';
+  $('continuationTransferBadge').hidden=transferList.length===0;
+  $('continuationTransferBadge').textContent=transferList.length?transferList.length+' transferência'+(transferList.length===1?'':'s'):'';
   $('continuationTransferList').innerHTML=transferList.length?transferList.map(change=>{
    const person=personForElection(change.id)||{short:change.id};
    const selected=plan.selected.includes(change.id);
@@ -1638,7 +1639,7 @@ function renderContinuation(){
     +'<span class="continuation-transfer-club incoming">'+partyIcon(change.id,{party:change.to})+'<b>'+esc(change.to)+'</b></span></div>'
     +'</article>';
   }).join('')
-  :'<p class="continuation-no-transfers">Nenhuma mudança de partido foi sorteada nesta temporada.</p>';
+  :'<p class="continuation-no-transfers">Nenhuma mudança de candidatos entre partidos ocorreu entre as eleições.</p>';
  }
  $('continuationRoster').innerHTML=continuationCandidates(plan).map(id=>{
   const person={...continuationPerson(plan,id),...(id===plan.controlled&&id===plan.celebrity?{party:plan.party}:{})},checked=plan.selected.includes(id),locked=id===plan.controlled||id===plan.winner;
