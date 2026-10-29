@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.18
+# Rumo ao Planalto — V8.19
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -23,15 +23,25 @@ Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/a
 
 Validação: `node --test tests/election-presets.test.cjs`.
 
-## V8.18 — herança de multiplicadores entre eleições
+## V8.19 — herança pelo multiplicador final ×1,5+
+
+- Os **dois finalistas do último segundo turno**, se disputarem a eleição imediatamente seguinte, começam com **×1,25** em cada UF na qual seu **multiplicador ao final do turno anterior era pelo menos ×1,5** (×1,5, ×1,75 ou ×2).
+- Multiplicadores finais de **×1 ou ×1,25** retornam a **×1**; os demais candidatos também iniciam em ×1. O requisito antigo de **10 pontos de investimentos** foi eliminado.
+- Ter 10 pontos investidos não é mais necessário nem suficiente. O bônus pertence individualmente a cada finalista, não ao partido ou substituto, e **não transfere pontos, ações, dinheiro nem votos**.
+- O ×1,25 herdado vale apenas para **investimentos futuros**, podendo ser aumentado normalmente com novas promessas, até o teto de ×2.
+- A regra vale tanto para o segundo turno jogado quanto para a simulação automática entre IAs. O novo registro guarda o multiplicador final em cada UF para ambos os finalistas.
+- Partidas salvas com **segundo turno jogado e concluído** são recalculadas com os multiplicadores finais disponíveis, mesmo que guardem a antiga lista de estados com 10 pontos. Resultados automáticos antigos sem os multiplicadores finais não permitem reconstrução segura e não recebem herança presumida.
+- Eleições decididas no primeiro turno não concedem essa herança. Nenhuma estratégia ou custo foi alterado.
+
+## V8.18 — herança de multiplicadores entre eleições (regra histórica substituída pela V8.19)
 
 - **Reinício padrão:** ao avançar para a próxima eleição da trajetória, todos os multiplicadores voltam para **×1**. Orçamento, ações pagas, apoios e pontos de influência não são transferidos.
-- **Exceção para os dois finalistas do último segundo turno:** cada candidato que participar novamente da eleição seguinte inicia com **×1,25**, exclusivamente nas UFs em que terminou o segundo turno anterior com **10 pontos provenientes de investimentos próprios**. O vencedor e o segundo colocado têm o mesmo direito.
-- **Não contam** pontos conquistados por compra de apoios, estratégias ou outros efeitos extras. Uma UF com 9,75 pontos de investimentos, mesmo com 10 de influência total após apoios, não gera bônus.
+- **Regra original da V8.18, substituída na V8.19:** exigia 10 pontos de investimentos próprios. A regra atual exige multiplicador final de pelo menos ×1,5 no estado. O vencedor e o segundo colocado têm o mesmo direito.
+- Na regra atual, **pontos de investimento, apoios e estratégias não são critérios de elegibilidade**: importa somente o multiplicador final (×1,5 ou mais).
 - O bônus inicial não gera votos: ele afeta **apenas os novos investimentos**, como qualquer outro multiplicador. Pode ser ampliado com promessas de campanha normais, respeitando o teto ×2.
 - A herança é individual: se um finalista não disputar a próxima eleição, seu bônus não passa para outro candidato ou para o partido. Ela vale **somente para a eleição imediatamente seguinte**, sem acumular benefícios de eleições mais antigas.
 - A mecânica funciona tanto com o segundo turno jogado pelo usuário quanto com o segundo turno automático entre IAs após sua eliminação. A finalização guarda os estados elegíveis dos dois finalistas.
-- **Salvamentos existentes:** partidas antigas que terminaram o segundo turno jogável podem calcular a herança pelo mapa final salvo. Em resultados automáticos antigos, sem registro do mapa final, não é possível recuperar os estados de investimento com segurança; não serão atribuídos bônus fictícios.
+- **Salvamentos existentes:** partidas antigas com segundo turno jogável concluído podem usar os multiplicadores finais salvos. Resultados automáticos antigos sem esse registro não terão bônus inferidos.
 - **Eleição resolvida no primeiro turno:** nenhum bônus de segundo turno é concedido. As estratégias e seus custos permanecem inalterados.
 
 ## V8.17 — remover Mobilização de base
