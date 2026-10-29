@@ -505,11 +505,12 @@ function ensureMultiplierLevels(){
  if(game.multiplierLevels)return;
  game.multiplierLevels=Object.fromEntries(STATES.map(s=>[s.uf,Object.fromEntries(game.all.map(id=>[id,Math.round((legacyMultiplier(id,s.uf)-1)*4)]))]));
 }
-// Record already-earned influence when migrating older saved campaigns.
+// Preserve influence from older saves using their original positive bonus only;
+// the new concentration penalty must never retroactively lower existing points.
 function ensureLocalInfluence(){
  if(game.localInfluence)return;
  game.localInfluence=Object.fromEntries(STATES.map(s=>[s.uf,Object.fromEntries(game.all.map(id=>[id,
-  Math.min(MAX_LOCAL,Math.round(Math.max(0,Number(game.localTotal?.[s.uf]?.[id]||0))*affinityMultiplier(id,s.uf)*4)/4)
+  Math.min(MAX_LOCAL,Math.round(Math.max(0,Number(game.localTotal?.[s.uf]?.[id]||0))*(1+multiplierLevel(id,s.uf)*.25)*4)/4)
  ]))]));
 }
 function effectiveInvestment(id,uf,levels=game.localTotal){
