@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.19
+# Rumo ao Planalto — V8.20
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,19 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.20 — promessas exclusivamente estaduais e concentração geográfica
+
+- **Programa Nacional removido** do seletor de estratégias, do mapa de multiplicadores e das decisões da IA. Compras antigas permanecem no histórico da partida salva, mas não podem ser repetidas. Só as **promessas estaduais** continuam disponíveis.
+- Para cada candidatura, considera-se o conjunto de UFs com **bônus positivo comprado ou herdado** (nível acima de ×1), independentemente da intensidade do bônus.
+- **Regra regional:** se houver **3 ou mais UFs com bônus e todas estiverem na mesma região** (Norte, Nordeste, Centro-Oeste, Sudeste ou Sul), os estados **sem bônus** terão multiplicador **×0,9** nas próximas ações.
+- **Regra por eixo:** se houver **6 ou mais UFs com bônus e todas pertencerem ao mesmo eixo** — Norte + Nordeste ou Sul + Sudeste + Centro-Oeste —, os estados **sem bônus** terão multiplicador **×0,9** nas próximas ações.
+- As penalidades **não se acumulam**: mesmo quando uma condição coincide com outra, o menor multiplicador é ×0,9. Estados com bônus mantêm ×1,25 a ×2 e nunca recebem a penalidade.
+- A concentração é **dinâmica**: adicionar uma promessa em outra região/eixo pode desativar a penalidade. Ao sair da concentração, multiplicadores sem bônus voltam a ×1. Os pontos de influência já conquistados não são recalculados; somente futuros investimentos usam o multiplicador vigente na hora da ação.
+- Ações no estado penalizado rendem corretamente **0,9 ponto**, com precisão decimal (sem arredondar para 1). Comprar a primeira promessa nesse estado faz suas próximas ações renderem **×1,25**, não ×1,15.
+- O **mapa de multiplicadores** mostra UFs penalizadas em **laranja** e as com bônus no gradiente verde existente. O painel mostra a concentração ativa e os seus efeitos.
+- A **IA** continua adquirindo apenas promessas estaduais com seu orçamento, avaliando o benefício futuro e estimando possíveis perdas por uma nova concentração.
+- Os bônus herdados do segundo turno podem satisfazer os limites de concentração já na rodada inicial da eleição seguinte. A regra é válida mesmo com as estratégias especiais desativadas.
 
 ## V8.19 — herança pelo multiplicador final ×1,5+
 
@@ -67,8 +80,8 @@ O tabuleiro tem agora duas abas: **Mapa eleitoral** (padrão, com lideranças e 
 
 - **Todas as candidaturas de uma nova partida começam com ×1 em cada estado**, independentemente do perfil político, da votação histórica ou da dificuldade. Aumentos só podem ser comprados durante a eleição, até **×2 por candidato e UF**, em passos de **×0,25**.
 - **Promessa estadual:** R$ 150 mil na primeira compra da UF, aumentando R$ 50 mil por melhoria já comprada naquele estado. Cada compra eleva o multiplicador apenas da candidatura compradora na UF selecionada.
-- **Programa nacional de campanha:** custa **R$ 1,5 milhão** e aumenta em ×0,25 os multiplicadores da candidatura compradora em todos os estados ainda abertos e abaixo do teto. Está disponível na nova aba e, quando as estratégias especiais estão ativadas, também na lista de estratégias.
-- **Estados fechados:** não podem receber melhorias estaduais ou nacionais. Multiplicadores comprados aplicam-se somente aos investimentos futuros, até o limite de 10 pontos efetivos; comprar uma promessa não fecha estados automaticamente.
+- **Programa nacional de campanha (histórico V8.15–V8.19; removido na V8.20):** custava R$ 1,5 milhão e aumentava em ×0,25 os multiplicadores de estados elegíveis. Não está mais disponível para compra.
+- **Estados fechados:** não podem receber novas promessas. Multiplicadores comprados aplicam-se somente aos investimentos futuros, até o limite de 10 pontos efetivos; comprar uma promessa não fecha estados automaticamente.
 - **IA:** faz compras usando o próprio dinheiro e avaliando o potencial dos próximos investimentos, não ganhos retroativos. Não recebe multiplicadores gratuitos. A quantidade de compras é limitada pela capacidade financeira e pelo teto de ×2.
 - **Segundo turno:** os finalistas mantêm os multiplicadores adquiridos no primeiro turno; melhorias dos eliminados não são transferidas com seus apoios. Os apoios continuam seguindo suas regras de afinidade próprias.
 - **Salvamentos antigos:** partidas V8.15 ou anteriores preservam os pontos já exibidos no momento da migração; melhorias compradas depois da atualização só afetarão investimentos posteriores. Partidas novas começam com todos os multiplicadores em ×1.
