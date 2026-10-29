@@ -22,6 +22,14 @@ O sorteio da próxima eleição é salvo ao abrir o modal: fechar, voltar ou rec
 
 No menu inicial, um ano específico limita a seleção aos seus participantes: pode-se retirar ou remarcar nomes daquele ano, mas não adicionar personagens externos. Personalizada mantém seleção livre. Um aviso explica a sequência, histórico, revanches e bônus antes de começar.
 
+## Concentração regional de multiplicadores (V8.20)
+
+A campanha só pode comprar **promessas estaduais**. A estratégia Programa Nacional e o botão correspondente foram removidos. Os estados que já tiverem bônus acima de ×1 — inclusive os herdados da eleição anterior — contam para a concentração.
+
+Se **3 ou mais estados com bônus** pertencerem **todos à mesma região**, ou **6 ou mais** estiverem **todos no mesmo eixo** (Norte + Nordeste ou Sul + Sudeste + Centro-Oeste), as UFs **sem bônus positivo** passam a usar **×0,9 nos próximos investimentos**. A penalidade é individual de cada candidato e **nunca acumula duas vezes**. Compras em regiões/eixos diferentes podem desfazer essa concentração; o multiplicador dos estados sem bônus retorna a ×1 quando as condições deixam de valer.
+
+Os pontos já conquistados permanecem inalterados mesmo quando a penalidade é ativada ou desativada. Os estados com multiplicadores positivos mantêm o valor correspondente, de ×1,25 a ×2. A cor laranja do mapa identifica estados penalizados. A regra também se aplica ao início de uma nova eleição se o candidato já herdou multiplicadores em estados concentrados.
+
 ## Multiplicadores herdados do último segundo turno
 
 Na passagem para a eleição imediatamente seguinte, multiplicadores iniciam em **×1** para todos, salvo bônus de **×1,25** em UFs específicas dos **dois participantes do segundo turno** anterior. Cada finalista que voltar a concorrer recebe o bônus **somente nos estados em que encerrou o segundo turno com multiplicador de pelo menos ×1,5** (×1,5, ×1,75 ou ×2). Multiplicadores anteriores de ×1 ou ×1,25 são zerados para ×1. Os dois finalistas podem receber o benefício simultaneamente, mesmo em UFs diferentes; ganhar ou perder a eleição não interfere na elegibilidade. A regra dos 10 pontos de investimento, utilizada na V8.18, deixou de valer.
