@@ -566,7 +566,7 @@ electionHistory:[],campaignStartYear:electionYear,aiStrategies:drawAIStrategies(
 electionYear:Object.hasOwn(ELECTION_PRESETS,electionYear)?String(electionYear):null,candidateParties:{...partySnapshot(active,electionYear),...(campaignParty?{[player]:campaignParty}:{})},
 firstEndedEarly:false,secondEndedEarly:false,
 cash:Object.fromEntries(active.map(id=>[id,START_CASH])),localUsed:makeUses(active),localTotal:makeUses(active),localInfluence:makeUses(active),multiplierLevels:makeUses(active),
-log:['Mapa neutro: ninguém investiu ainda.'],done:false,pendingSecond:false,firstResult:null,secondResult:null,
+log:['Mapa neutro: ninguém investiu ainda.'],inheritedMultiplierCount:0,done:false,pendingSecond:false,firstResult:null,secondResult:null,
 firstRoundLevels:null,eliminatedCandidates:[],supportInfluence:null,supportDeals:{},supportLocks:{},supportRoundPurchases:{},supportPriority:null,supportPriorityResolved:true};
 }
 function shares(state,active=game.active,levels=game.localTotal,supportLevels=game?.supportInfluence,scale=null){
