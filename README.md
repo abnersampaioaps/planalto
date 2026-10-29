@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.16
+# Rumo ao Planalto — V8.17
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,13 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.17 — remover Mobilização de base
+
+- A estratégia **Mobilização de base** foi retirada das opções de campanha e das decisões da IA, pois repetia grande parte do benefício obtido com um investimento estadual comum.
+- Um investimento no **mesmo estado** já recupera influência perdida por estratégias adversárias, consumindo o custo e o limite de ações daquela UF; investimentos em outros estados não recuperam pontos no estado atacado.
+- O histórico de mobilizações de partidas salvas permanece legível; apenas novas compras ficam indisponíveis.
+- As demais estratégias, multiplicadores e regras de orçamento continuam inalterados.
 
 ## V8.16 — multiplicadores apenas para investimentos futuros
 
