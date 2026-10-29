@@ -8,6 +8,14 @@ O elenco inicial da continuidade prioriza o candidato controlado, depois o presi
 
 Se o presidente ocupar a vaga do partido do jogador e for substituído, não participa da nova eleição, mas transfere os R$ 100 mil extras por rodada ao substituto do mesmo partido, incluindo a primeira rodada e o segundo turno. O histórico de sua vitória é preservado. A mesma regra vale para celebridades escolhidas para representar esse partido. A validação de início também rejeita partidos repetidos, independentemente do estado dos controles.
 
+## Interface da próxima eleição e mercado de transferências (V8.21)
+
+A tela de preparação usa uma hierarquia direta: candidatura controlada, mercado de transferências, lista de participantes e regras recolhidas. A lista usa o título **Participantes sorteados** somente nas eleições fictícias futuras (2030 em diante). O sistema explica que seu candidato e o presidente atual têm vaga garantida; as outras candidaturas são sorteadas, e a seleção continua editável respeitando um representante por partido. Para eleições históricas (até 2026), o elenco não é rotulado como sorteado.
+
+Cada transferência fictícia sorteada é exibida em destaque no **Mercado de transferências**, mostrando o personagem, a sigla e o escudo do partido de origem, a indicação visual de passagem e o partido de destino. A tela também informa quando o personagem transferido ficou fora do elenco selecionado. Quando nenhuma transferência é sorteada, mostra uma mensagem neutra. Nenhuma transferência é gerada ou aplicada apenas pelo ato de renderizar a tela.
+
+O sorteio já é salvo na preparação da eleição futura, antes do usuário selecionar o novo elenco. Reabrir a mesma preparação ou mudar as caixas não sorteia novas filiações, personagens ou participantes. O contador indica apenas os participantes selecionados; o resumo de orçamento, rodadas, apoios e bônus herdados aparece em **Regras e bônus da próxima eleição**, que pode ser expandido.
+
 ## Continuidade opcional após 2026
 
 O checkbox “Poder continuar após 2026” fica desligado por padrão, ao lado da compra de apoios. Ativado, preserva a sequência histórica até 2026 e prossegue indefinidamente em intervalos de quatro anos. Uma partida Personalizada com essa opção começa em 2026, preservando o elenco e os partidos personalizados.
