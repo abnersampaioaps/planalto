@@ -1384,7 +1384,7 @@ function renderMultiplierPanel(){
  $('multiplierStateName').textContent=state.name;
  $('multiplierCurrent').textContent='×'+fmtInvestment(current);
  $('stateMultiplierEffect').textContent=uf+' · ×'+fmtInvestment(current)+' → ×'+fmtInvestment(Math.min(2,current+.25));
- $('nationalMultiplierEffect').textContent='+×0,25 · '+national.length+' UF'+(national.length===1?'':'s')+' elegível'+(national.length===1?'':'eis');
+ $('nationalMultiplierEffect').textContent='+×0,25 · '+national.length+(national.length===1?' UF elegível':' UFs elegíveis');
  $('multiplierRoster').innerHTML=game.active.map(candidate=>'<div class="multiplier-entry'+(candidate===id?' you':'')+'" role="listitem"><span>'+esc(who(candidate).short)+(candidate===id?' · você':'')+'</span><strong>×'+fmtInvestment(affinityMultiplier(candidate,uf))+'</strong></div>').join('');
  $('buyStateMultiplier').textContent='Comprar · '+money(stateCost);
  $('buyStateMultiplier').disabled=Boolean(stateReason);
