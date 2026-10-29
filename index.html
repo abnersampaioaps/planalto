@@ -25,7 +25,7 @@
 @media(max-width:390px){.mapbox{height:390px}.standing{grid-template-columns:90px minmax(35px,1fr) 67px}.standing-pct{font-size:20px}}
 </style>
 
-<link rel="stylesheet" href="./ui-v6.css?v=106"></head><body>
+<link rel="stylesheet" href="./ui-v6.css?v=107"></head><body>
 <div class="shell">
 <header class="header">
 <div class="brand"><div class="symbol">★</div><div><div class="eyebrow">Simulador de estratégia eleitoral</div><div class="brandname">Rumo ao Planalto<span>.</span></div></div></div>
@@ -75,10 +75,27 @@
 </div>
 <details class="panel campaign-log"><summary>Detalhes e histórico de campanha</summary><div id="activity" class="log"></div></details></main><footer class="footer">Simulador independente, sem vínculo com o TSE ou com os partidos. Cadastro partidário de outubro de 2026 ou partido da eleição escolhida; falecidos usam a última filiação conhecida, e casos incertos são sinalizados; perfis de campanha fixos, definidos para esta simulação exclusivamente como mecânica de jogo. As promessas de campanha definem os multiplicadores durante a eleição; a votação de 2022 não determina os bônus. Cada estado começa sem votos atribuídos, e o ranking usa somente votos válidos simulados. Os pontos de influência podem superar o número de ações pagas por causa do bônus, até o teto de 10. Orçamento inicial de R$ 250 mil, mais R$ 250 mil por rodada e R$ 50 mil por estado liderado. Cartografia: <a href="https://github.com/henriquemalvar/br-geojson" target="_blank" rel="noopener">br-geojson</a>; logos partidários: <a href="https://github.com/avoarpj/partidos-brasil-svg" target="_blank" rel="noopener">partidos-brasil-svg (MIT)</a>.</footer></div>
 <div class="overlay hidden" id="continuationOverlay"><section class="modal continuation-modal" role="dialog" aria-modal="true" aria-labelledby="continuationTitle">
-<div class="eyebrow">Próxima eleição</div><h1 id="continuationTitle" tabindex="-1"></h1><p id="continuationParty"></p>
-<label for="continuationPlayer">Seu candidato</label><div class="continuation-player"><span id="continuationPlayerLogo"></span><select class="input" id="continuationPlayer" aria-describedby="continuationPlayerHint"></select></div><p class="small" id="continuationPlayerHint"></p>
-<h2>Participantes desta eleição</h2><p class="small">Apenas um candidato por partido. Para trocar o seu, use o seletor acima. O presidente participa, exceto se for substituído na vaga do seu partido.</p><div id="continuationRoster"></div><p class="small" id="continuationCount" aria-live="polite"></p><p class="small" id="continuationRules"></p>
-<div class="actions"><button class="button" id="continuationBack">Voltar ao resultado</button><button class="button primary" id="continuationStart">Começar eleição →</button></div>
+<header class="continuation-top">
+<div class="eyebrow">Próxima eleição</div>
+<h1 id="continuationTitle" tabindex="-1"></h1>
+<p id="continuationParty"></p>
+</header>
+<section class="continuation-section continuation-identity" aria-labelledby="continuationIdentityTitle">
+<div class="continuation-section-heading"><h2 id="continuationIdentityTitle">Sua candidatura</h2></div>
+<div class="continuation-player"><span id="continuationPlayerLogo"></span><select class="input" id="continuationPlayer" aria-label="Seu candidato" aria-describedby="continuationPlayerHint"></select></div>
+<p class="continuation-hint" id="continuationPlayerHint"></p>
+</section>
+<section class="continuation-section continuation-transfer-section" id="continuationTransferSection" aria-labelledby="continuationTransferTitle" hidden>
+<div class="continuation-section-heading"><div><span class="continuation-section-kicker">Temporada de transferências</span><h2 id="continuationTransferTitle">Mercado de transferências</h2></div><span class="continuation-count-tag" id="continuationTransferBadge"></span></div>
+<div class="continuation-transfer-list" id="continuationTransferList" aria-live="polite"></div>
+</section>
+<section class="continuation-section continuation-draw-section" aria-labelledby="continuationRosterTitle">
+<div class="continuation-section-heading"><div><h2 id="continuationRosterTitle">Participantes sorteados</h2><p class="continuation-hint" id="continuationDrawHint">Adversários definidos por sorteio; sua candidatura e a presidência têm vaga garantida.</p></div><span class="continuation-draw-badge" id="continuationDrawBadge">Sorteio concluído</span></div>
+<div id="continuationRoster" role="group" aria-label="Selecionar participantes para a próxima eleição"></div>
+<p id="continuationCount" class="continuation-count-footer" aria-live="polite"></p>
+</section>
+<details class="continuation-details"><summary>Regras e bônus da próxima eleição</summary><p class="continuation-hint" id="continuationRules"></p></details>
+<div class="actions continuation-actions"><button class="button" id="continuationBack">Voltar ao resultado</button><button class="button primary" id="continuationStart">Começar eleição →</button></div>
 </section></div>
 <div class="overlay" id="setupOverlay"><section class="modal setup-modal" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
 <div class="eyebrow" id="setupStepLabel">Etapa 1 de 2 · sua disputa</div>
@@ -103,7 +120,7 @@
 <div class="field"><label for="chooseTime">Rodadas por turno</label><select class="input" id="chooseTime" aria-describedby="roundsHint"><option value="6">Rápida · 6 rodadas</option><option value="10" selected>Clássica · 10 rodadas</option><option value="14">Longa · 14 rodadas</option></select><small class="setup-field-hint" id="roundsHint">Mesma duração nos dois turnos.</small></div>
 </div>
 <div class="optional-rules"><label class="support-choice"><input type="checkbox" id="chooseSupports" checked aria-describedby="supportsHint"><span><strong>Permitir compra de apoios</strong><small id="supportsHint">Você e a IA podem negociar apoios dos eliminados no 2º turno.</small></span></label><label class="support-choice"><input type="checkbox" id="chooseEndless"><span><strong>Poder continuar após 2026</strong><small>Após 2026 tudo pode acontecer, quem irá se manter no poder?</small></span></label><label class="support-choice"><input type="checkbox" id="chooseStrategies"><span><strong>Permitir estratégias de campanha</strong><small>Use ações especiais para atacar adversários, defender estados e mudar a disputa.</small></span></label></div>
-<details class="setup-details"><summary>Detalhes da disputa</summary><p id="perksDesc"></p><p>Os multiplicadores começam em ×1 e são aumentados com promessas de campanha estaduais ou nacionais, até ×2. O Experiente se diferencia pela estratégia da IA, não por bônus pré-definidos.</p><h3>Como funciona a continuidade?</h3><p>Ao escolher um ano, você pode avançar pelas eleições com seu partido e acompanhar os vencedores no histórico. A opção “Poder continuar após 2026” libera eleições a cada quatro anos, sem limite, inclusive para partidas personalizadas.</p><p>O partido vencedor recebe R$ 100 mil extras por rodada na eleição seguinte. Se o mesmo candidato tentar um terceiro mandato consecutivo, sua renda fixa cai para R$ 150 mil por rodada, além dos bônus por estados, mas os multiplicadores seguem as mesmas regras de campanha dos demais. O segundo turno acontece apenas se ninguém vencer no primeiro.</p><h3>Adversários e estratégias</h3><ul id="opponentPreview"></ul></details>
+<details class="setup-details"><summary>Detalhes da disputa</summary><p id="perksDesc"></p><p>Os multiplicadores começam em ×1 e podem aumentar com promessas estaduais até ×2. Concentrações regionais podem reduzir outros estados a ×0,9. O Experiente se diferencia pela estratégia da IA, não por bônus pré-definidos.</p><h3>Como funciona a continuidade?</h3><p>Ao escolher um ano, você pode avançar pelas eleições com seu partido e acompanhar os vencedores no histórico. A opção “Poder continuar após 2026” libera eleições a cada quatro anos, sem limite, inclusive para partidas personalizadas.</p><p>O partido vencedor recebe R$ 100 mil extras por rodada na eleição seguinte. Se o mesmo candidato tentar um terceiro mandato consecutivo, sua renda fixa cai para R$ 150 mil por rodada, além dos bônus por estados, mas os multiplicadores seguem as mesmas regras de campanha dos demais. O segundo turno acontece apenas se ninguém vencer no primeiro.</p><h3>Adversários e estratégias</h3><ul id="opponentPreview"></ul></details>
 <div class="actions setup-options-actions"><button class="button" id="backSetupBtn">← Voltar</button><button class="button primary" id="startBtn">Começar eleição →</button></div>
 </div>
 </section></div>
@@ -1593,24 +1610,45 @@ function continueElection(){
  $('continuationPlayer').innerHTML=eligible.map(id=>'<option value="'+esc(id)+'">'+esc(continuationPerson(plan,id).short)+(id===plan.celebrity?' · Celebridade convidada':'')+'</option>').join('');
  $('continuationPlayer').value=plan.player;
  $('continuationPlayer').disabled=eligible.length===1;
- $('continuationPlayerHint').textContent=eligible.length===1?'Seu candidato é o único deste partido disponível nesta eleição.':'Você pode manter seu candidato ou escolher outro do mesmo partido disponível nesta eleição.';
-if(plan.future)$('continuationPlayerHint').textContent='Cenário fictício: escolha alguém do seu partido ou, quando houver, a celebridade convidada do seu partido. O sorteio pode ter zero, uma ou duas celebridades. Filiações e perfis deste modo são convenções de jogo.';
- $('continuationRules').textContent='Mantidas as configurações anteriores: '+(game.roundsPerTurn||game.maxRounds)+' rodadas por turno · Apoios '+(game.supportsEnabled?'ativados':'desativados')+'. Investimentos e orçamento recomeçam; finalistas do último 2º turno podem herdar ×1,25 em estados cujo multiplicador final foi de pelo menos ×1,5.';
+ $('continuationPlayerHint').textContent=eligible.length===1?'Única opção disponível para representar seu partido.':'Você pode trocar o candidato por outro nome do seu partido.';
+ $('continuationRules').textContent=(game.roundsPerTurn||game.maxRounds)+' rodadas por turno · Apoios '+(game.supportsEnabled?'ativados':'desativados')+'. Orçamento e investimentos reiniciam. Finalistas do último 2º turno podem herdar ×1,25 nas UFs em que terminaram com multiplicador de pelo menos ×1,5. No modo futuro, participantes e mudanças de partido são fictícios.';
  renderContinuation();
  $('resultOverlay').classList.add('hidden');$('setupOverlay').classList.add('hidden');$('continuationOverlay').classList.remove('hidden');$('continuationTitle').focus();
 }
 function renderContinuation(){
  const plan=setupCampaign;if(!plan)return;
  const bonusCandidate=continuationIncumbent(plan,plan.controlled,plan.selected);
+ const isFuture=Boolean(plan.future),transferList=Array.isArray(plan.partyChanges)?plan.partyChanges.filter(change=>change?.id&&change.from&&change.to):[];
  $('continuationPlayerLogo').innerHTML=partyIcon(plan.controlled,{party:plan.controlled===plan.celebrity?plan.party:continuationPerson(plan,plan.controlled).party});
+ $('continuationRosterTitle').textContent=isFuture?'Participantes sorteados':'Participantes da eleição';
+ $('continuationDrawHint').textContent=isFuture
+  ?'Outras candidaturas sorteadas automaticamente. Seu candidato e o atual presidente têm vaga garantida. Ajuste o elenco, com um nome por partido.'
+  :'Elenco baseado na eleição histórica. Você pode ajustar os participantes, mantendo um nome por partido e a vaga presidencial.';
+ $('continuationDrawBadge').textContent=isFuture?'Sorteio concluído':'Elenco histórico';
+ $('continuationTransferSection').hidden=!isFuture;
+ if(isFuture){
+  $('continuationTransferBadge').textContent=transferList.length?transferList.length+' transferência'+(transferList.length===1?'':'s'):'Sem transferências';
+  $('continuationTransferList').innerHTML=transferList.length?transferList.map(change=>{
+   const person=personForElection(change.id)||{short:change.id};
+   const selected=plan.selected.includes(change.id);
+   return '<article class="continuation-transfer-card" aria-label="Transferência de '+esc(change.id)+' de '+esc(change.from)+' para '+esc(change.to)+'">'
+    +'<div class="continuation-transfer-person"><strong>'+esc(person.short||change.id)+'</strong><span>'+ (selected?'No elenco desta eleição':'Fora do elenco selecionado') +'</span></div>'
+    +'<div class="continuation-transfer-route"><span class="continuation-transfer-club">'+partyIcon(change.id,{party:change.from})+'<b>'+esc(change.from)+'</b></span>'
+    +'<span class="continuation-transfer-arrow" aria-hidden="true">→</span>'
+    +'<span class="continuation-transfer-club incoming">'+partyIcon(change.id,{party:change.to})+'<b>'+esc(change.to)+'</b></span></div>'
+    +'</article>';
+  }).join('')
+  :'<p class="continuation-no-transfers">Nenhuma mudança de partido foi sorteada nesta temporada.</p>';
+ }
  $('continuationRoster').innerHTML=continuationCandidates(plan).map(id=>{
   const person={...continuationPerson(plan,id),...(id===plan.controlled&&id===plan.celebrity?{party:plan.party}:{})},checked=plan.selected.includes(id),locked=id===plan.controlled||id===plan.winner;
   const conflict=!checked&&plan.selected.some(other=>continuationParty(plan,other,plan.controlled)===person.party);
-  const note=conflict?(person.party===plan.party?'Troque pelo seletor de candidato':'Partido já representado'):id===bonusCandidate?(thirdConsecutiveAttempt(id,plan.year,plan.history)?'Terceiro mandato consecutivo · R$ 150 mil/rodada · multiplicadores definidos em campanha':(id===plan.winner?'Atual presidente':'Bônus da presidência')+' · +R$ 100 mil/rodada'):id===plan.controlled?'Seu candidato':plan.formerWinners?.includes(id)?'Ex-presidente · revanche disponível':id===plan.player&&!ELECTION_PRESETS[plan.year]?.includes(id)?'Candidato mantido da eleição anterior':'';
-  return '<label class="continuation-entry"><input type="checkbox" value="'+esc(id)+'"'+(checked?' checked':'')+(locked||conflict||(!checked&&plan.selected.length>=(plan.future?10:MAX_CANDIDATES))?' disabled':'')+'>'+partyIcon(id,person)+'<span>'+esc(person.short)+' <small>('+esc(person.party)+')</small>'+(note?'<small class="continuation-note">'+note+'</small>':'')+(plan.partyChanges?.some(change=>change.id===id)?'<small class="continuation-note">Troca fictícia: '+esc(plan.partyChanges.find(change=>change.id===id).from)+' → '+esc(person.party)+'</small>':'')+'</span></label>';
+  const note=conflict?(person.party===plan.party?'Troque no seletor acima':'Partido já representado'):id===bonusCandidate?(thirdConsecutiveAttempt(id,plan.year,plan.history)?'Terceiro mandato · R$ 150 mil/rodada':(id===plan.winner?'Presidente atual':'Bônus da presidência')+' · +R$ 100 mil/rodada'):id===plan.controlled?'Seu candidato':plan.formerWinners?.includes(id)?'Ex-presidente':id===plan.player&&!ELECTION_PRESETS[plan.year]?.includes(id)?'Mantido da eleição anterior':'';
+  const switched=transferList.find(change=>change.id===id);
+  return '<label class="continuation-entry'+(checked?' is-selected':'')+(locked?' is-fixed':'')+'"><input type="checkbox" value="'+esc(id)+'"'+(checked?' checked':'')+(locked||conflict||(!checked&&plan.selected.length>=(plan.future?10:MAX_CANDIDATES))?' disabled':'')+'>'+partyIcon(id,person)+'<span>'+esc(person.short)+' <small>('+esc(person.party)+')</small>'+(note?'<small class="continuation-note">'+esc(note)+'</small>':'')+(switched?'<small class="continuation-note continuation-moved">Transferido · '+esc(switched.from)+' → '+esc(switched.to)+'</small>':'')+'</span></label>';
  }).join('');
- $('continuationCount').textContent=plan.selected.length+' participantes · mínimo '+(plan.future?2:2)+', máximo '+(plan.future?10:MAX_CANDIDATES)+(plan.partyChanges?.length?' · Trocas fictícias: '+plan.partyChanges.map(change=>change.id+' ('+change.from+' → '+change.to+')').join('; '):'');
- $('continuationStart').disabled=plan.selected.length<(plan.future?2:2)||plan.selected.length>(plan.future?10:MAX_CANDIDATES);
+ $('continuationCount').textContent=plan.selected.length+' de '+(plan.future?10:MAX_CANDIDATES)+' vagas · mínimo de 2 participantes'+(isFuture?' · elenco ajustável':'');
+ $('continuationStart').disabled=plan.selected.length<2||plan.selected.length>(plan.future?10:MAX_CANDIDATES);
  $('continuationStart').textContent='Começar eleição de '+plan.year+' →';
 }
 function startContinuation(){
