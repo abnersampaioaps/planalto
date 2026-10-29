@@ -22,6 +22,14 @@ O sorteio da próxima eleição é salvo ao abrir o modal: fechar, voltar ou rec
 
 No menu inicial, um ano específico limita a seleção aos seus participantes: pode-se retirar ou remarcar nomes daquele ano, mas não adicionar personagens externos. Personalizada mantém seleção livre. Um aviso explica a sequência, histórico, revanches e bônus antes de começar.
 
+## Multiplicadores herdados do último segundo turno
+
+Na passagem para a eleição imediatamente seguinte, multiplicadores iniciam em **×1** para todos, salvo bônus de **×1,25** em UFs específicas dos **dois participantes do segundo turno** anterior. Cada finalista que voltar a concorrer recebe o bônus somente nas UFs em que terminou o segundo turno com **10 pontos de investimentos pagos próprios**. Os dois finalistas podem receber o benefício simultaneamente, mesmo em UFs diferentes; ganhar ou perder a eleição não interfere na elegibilidade.
+
+O cálculo ignora apoios comprados e pontos de estratégias. O número de ações brutas pode ser menor que dez se ações com multiplicadores altos atingirem 10 pontos efetivos de investimento. O bônus é do **candidato**, não do partido: substituir um finalista não concede seus multiplicadores a outro representante. Nenhum ponto de influência, investimento ou voto é transportado; o multiplicador herdado só vale para novas ações, podendo aumentar por meio de promessas durante a eleição.
+
+A regra também considera o segundo turno disputado automaticamente pelas IAs quando o jogador é eliminado. Esses dados são registrados no resultado para continuar a trajetória. Em salvamentos antigos de um segundo turno jogado, o mapa final permite calcular os bônus; resultados automáticos anteriores à mecânica não possuem esse detalhe, então não recebem uma herança estimada. Se a eleição terminou no primeiro turno ou o candidato não participar da eleição seguinte, não há bônus. Não ocorre acumulação de bônus de eleições mais antigas.
+
 ## Presidência e revanches
 
 O vencedor anterior usa o partido oficial da eleição seguinte quando constar no elenco daquele ano. Fora desse elenco, mantém a filiação com que venceu. Isso também vale para o vencedor controlado pelo jogador: nesse caso, seu partido na continuidade acompanha a mudança oficial. O histórico anterior não é reescrito, e o bônus permanece ligado ao candidato, não ao partido.
@@ -38,7 +46,7 @@ A lista parte do atalho da próxima eleição e inclui o candidato anterior e o 
 
 O ano inicial aparece nas duas etapas de configuração e no botão de começar. Durante a partida, o box Histórico das eleições mostra uma linha por eleição concluída, com ano, vencedor e partido. O histórico contém apenas resultados da trajetória simulada, acompanha as eleições seguintes e é preservado no salvamento. Se o jogador for eliminado no primeiro turno, o segundo é simulado entre as IAs antes de registrar o vencedor; não se considera automaticamente o líder do primeiro turno como eleito.
 
-Orçamento e investimentos recomeçam do zero. Dificuldade, rodadas e opção de apoios são mantidas da partida anterior. O partido escolhido é salvo no snapshot da partida, permanecendo após recarregar a página e ao avançar novamente. Nenhum dinheiro, apoio ou investimento é transferido entre eleições.
+Orçamento, investimentos e votos recomeçam do zero. Apenas os multiplicadores elegíveis do último segundo turno podem começar em ×1,25, conforme a regra acima. Dificuldade, rodadas e opção de apoios são mantidas da partida anterior. O partido escolhido é salvo no snapshot da partida, permanecendo após recarregar a página e ao avançar novamente. Nenhum dinheiro, apoio ou investimento é transferido entre eleições.
 
 ## Modal exclusivo de próxima eleição
 
