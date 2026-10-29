@@ -876,7 +876,7 @@ const CAMPAIGN_STRATEGIES={
  attack:{name:'Ataque ao candidato',cost:600000,description:'Retira até 2 pontos do adversário. Uma defesa bloqueia o ataque inteiro.'},
  mobilize:{name:'Mobilização de base',cost:300000,description:'Recupera até 1 ponto perdido por estratégias adversárias.'},
  defend:{name:'Defesa de campanha',cost:250000,description:'Bloqueia a próxima ação ofensiva de qualquer candidato neste estado, até o fim da rodada seguinte.'},
- nationalPromise:{name:'Programa nacional de promessas',cost:1500000,description:'Aumenta em ×0,25 os multiplicadores da candidatura em todos os estados abertos abaixo de ×2.'},
+ nationalPromise:{name:'Programa Nacional',cost:1500000,description:'Aumenta em ×0,25 os multiplicadores da candidatura em todos os estados abertos abaixo de ×2.'},
  interference:{name:'Interferência nas eleições',cost:500000,description:'Exclusiva da presidência: antecipa (R$ 1 milhão) a apuração para o fim da próxima rodada ou adia (R$ 500 mil) a apuração do turno atual em 4 rodadas. A antecipação só é permitida até a antepenúltima rodada. Não altera o ano da eleição nem a duração dos próximos turnos.'}
 };
 function campaignStrategyCost(type,direction){return type==='interference'?(direction==='advance'?1000000:500000):CAMPAIGN_STRATEGIES[type]?.cost}
