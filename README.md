@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.20
+# Rumo ao Planalto — V8.21
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,16 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.21 — continuidade limpa, sorteio e mercado de transferências
+
+- A preparação da próxima eleição ganhou um layout mais simples: **Sua candidatura**, **Mercado de transferências**, **Participantes sorteados** e detalhes das regras em uma seção expansível.
+- Em eleições futuras (2030 em diante), o texto deixa explícito que o **sorteio é fictício e automático**, mas **o candidato do jogador e o presidente atual têm vaga garantida**. O jogador ainda pode selecionar os participantes respeitando o limite e um candidato por partido. Eleições históricas apresentam o elenco como histórico, sem menção incorreta a sorteio.
+- **Mercado de transferências:** mudanças de filiação sorteadas aparecem em cards destacados, com o candidato, o **partido de origem → partido de destino**, logos e indicação de participação no elenco atual. Se não houver mudanças, aparece uma mensagem curta, sem inventar transferências.
+- O resumo da lista mostra apenas **quantos participantes estão selecionados**, sem repetir todas as movimentações em uma frase longa. As regras e o bônus herdado permanecem disponíveis, mas recolhidos por padrão.
+- A escolha de candidato continua mostrando quando existe uma **celebridade convidada** e não altera as regras existentes de seleção.
+- **Sem alteração no sorteio:** o resultado continua sendo gerado e guardado ao preparar a eleição, preservado ao voltar à tela e ao recarregar. Abrir ou editar a apresentação não sorteia outros participantes nem novas transferências.
+- Layout responsivo, mantendo o estilo institucional claro do jogo.
 
 ## V8.20 — promessas exclusivamente estaduais e concentração geográfica
 
