@@ -1,4 +1,4 @@
-# Rumo ao Planalto — V8.17
+# Rumo ao Planalto — V8.18
 
 Continuidade histórica: ao terminar uma eleição anterior a 2026, avance para a próxima mantendo seu partido e escolhendo o mesmo candidato ou outro. Cada eleição reinicia orçamento e investimentos. [Regras da continuidade](docs/continuity.md).
 
@@ -22,6 +22,17 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
 Validação: `node --test tests/election-presets.test.cjs`.
+
+## V8.18 — herança de multiplicadores entre eleições
+
+- **Reinício padrão:** ao avançar para a próxima eleição da trajetória, todos os multiplicadores voltam para **×1**. Orçamento, ações pagas, apoios e pontos de influência não são transferidos.
+- **Exceção para os dois finalistas do último segundo turno:** cada candidato que participar novamente da eleição seguinte inicia com **×1,25**, exclusivamente nas UFs em que terminou o segundo turno anterior com **10 pontos provenientes de investimentos próprios**. O vencedor e o segundo colocado têm o mesmo direito.
+- **Não contam** pontos conquistados por compra de apoios, estratégias ou outros efeitos extras. Uma UF com 9,75 pontos de investimentos, mesmo com 10 de influência total após apoios, não gera bônus.
+- O bônus inicial não gera votos: ele afeta **apenas os novos investimentos**, como qualquer outro multiplicador. Pode ser ampliado com promessas de campanha normais, respeitando o teto ×2.
+- A herança é individual: se um finalista não disputar a próxima eleição, seu bônus não passa para outro candidato ou para o partido. Ela vale **somente para a eleição imediatamente seguinte**, sem acumular benefícios de eleições mais antigas.
+- A mecânica funciona tanto com o segundo turno jogado pelo usuário quanto com o segundo turno automático entre IAs após sua eliminação. A finalização guarda os estados elegíveis dos dois finalistas.
+- **Salvamentos existentes:** partidas antigas que terminaram o segundo turno jogável podem calcular a herança pelo mapa final salvo. Em resultados automáticos antigos, sem registro do mapa final, não é possível recuperar os estados de investimento com segurança; não serão atribuídos bônus fictícios.
+- **Eleição resolvida no primeiro turno:** nenhum bônus de segundo turno é concedido. As estratégias e seus custos permanecem inalterados.
 
 ## V8.17 — remover Mobilização de base
 
