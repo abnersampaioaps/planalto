@@ -36,7 +36,7 @@
   ]);
   return {...app,...auth,...firestore};
  }
- function createController({config,location,loadSdk=loadFirebase,native=null,onChange=()=>{},onSession=()=>{}}){
+ function createController({config,location,loadSdk=loadFirebase,native=null,onChange=()=>{},onSession=()=>{},timeoutMs=15000}){
   let sdk,auth,provider,initializing=null,unsubscribe=null;
   let state={phase:'idle',ready:false,busy:false,user:null,message:''};
   const update=patch=>{state={...state,...patch};onChange({...state});};
@@ -48,7 +48,8 @@
    update({phase:'loading',busy:true,message:'Preparando acesso à conta…'});
    initializing=(async()=>{
     try{
-     sdk=await loadSdk();
+     let timeout;
+     try{sdk=await Promise.race([loadSdk(),new Promise((_,reject)=>{timeout=setTimeout(()=>reject({code:'auth/network-request-failed'}),timeoutMs)})])}finally{clearTimeout(timeout)}
      const app=sdk.getApps().find(item=>item.name==='planalto-auth')||sdk.initializeApp(config,'planalto-auth');
      if(native){
       try{auth=sdk.initializeAuth(app,{persistence:sdk.indexedDBLocalPersistence})}
@@ -58,12 +59,16 @@
      provider=new sdk.GoogleAuthProvider();provider.setCustomParameters({prompt:'select_account'});
      if(unsubscribe)unsubscribe();
      await new Promise((resolve,reject)=>{
+      let settled=false;
+      const timeout=setTimeout(()=>{settled=true;if(unsubscribe)unsubscribe();reject({code:'auth/network-request-failed'})},timeoutMs);
       unsubscribe=sdk.onAuthStateChanged(auth,user=>{
+       if(settled)return;
+       clearTimeout(timeout);
        // Only the SDK's verified auth state establishes the signed-in identity.
        onSession(user,{sdk,auth});
        update({ready:true,phase:'ready',user:user?{uid:user.uid,name:user.displayName||'Sua conta',email:user.email||''}:null,message:''});
        resolve();
-      },reject);
+      },error=>{clearTimeout(timeout);settled=true;reject(error)});
      });
      return true;
     }catch(error){update({phase:'error',ready:false,message:errorMessage(error)});return false}

@@ -7,7 +7,7 @@ async function main(){
  for(const name of ['ui-v6.css','auth-config.js','auth.js','cloud-save.js'])await fs.copyFile(path.join(root,name),path.join(out,name));
  await fs.cp(path.join(root,'assets'),path.join(out,'assets'),{recursive:true});
  let html=await fs.readFile(path.join(root,'index.html'),'utf8');
- html=html.replace('<script src="./auth.js"></script>','<script src="./native-runtime.js"></script>\n<script src="./auth.js"></script>');
+ html=html.replace('<script src="./auth.js?v=2"','<script src="./native-runtime.js"></script>\n<script src="./auth.js?v=2"');
  await fs.writeFile(path.join(out,'index.html'),html);
  const configured=await fs.access(path.join(root,'ios/App/App/GoogleService-Info.plist')).then(()=>true,()=>false);
  await build({entryPoints:[path.join(root,'native-entry.js')],outfile:path.join(out,'native-runtime.js'),bundle:true,format:'iife',platform:'browser',target:'safari16',minify:true,logLevel:'info',banner:{js:'window.PLANALTO_NATIVE_AUTH_CONFIGURED='+configured+';'}});

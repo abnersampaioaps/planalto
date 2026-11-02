@@ -2085,7 +2085,6 @@ $('headerMenu').addEventListener('click',event=>{
 $('headerMenu').addEventListener('keydown',event=>{
  if(event.key==='Escape'&&$('headerMenu').open){event.preventDefault();event.stopPropagation();$('headerMenu').open=false;$('headerMenuToggle').focus()}
 });
-$('headerMenu').addEventListener('focusout',event=>{if(!event.currentTarget.contains(event.relatedTarget))event.currentTarget.open=false});
 document.addEventListener('click',event=>{if(!$('headerMenu').contains(event.target))$('headerMenu').open=false});
 for(const id of ['statisticsBtn','resultStatisticsBtn','setupStatisticsBtn'])$(id).addEventListener('click',event=>openElectionStatistics(id==='statisticsBtn'?$('headerMenuToggle'):event.currentTarget));
 $('statisticsClose').addEventListener('click',closeElectionStatistics);
@@ -2149,6 +2148,6 @@ window.addEventListener('planalto:profile-changed',()=>{
 initializeSavedGame();
 
 </script>
-<script src="./auth-config.js"></script>
-<script src="./auth.js"></script>
+<script src="./auth-config.js?v=2"></script>
+<script src="./auth.js?v=2" onerror="document.getElementById('accountStatus').textContent='Não foi possível carregar o login. Confira sua conexão ou continue como visitante.'"></script>
 </body></html>

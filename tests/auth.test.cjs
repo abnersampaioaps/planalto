@@ -73,6 +73,21 @@ test('failed SDK loading can be retried without inventing a session',async()=>{
  assert.equal(await controller.initialize(),true);assert.equal(controller.getState().ready,true);
  assert.equal(controller.getState().user,null);
 });
+test('a stalled SDK load reports a connection problem and permits retry',async()=>{
+ const f=fixture();let attempts=0;
+ const controller=createController({config,location,timeoutMs:10,loadSdk:()=>++attempts===1?new Promise(()=>{}):Promise.resolve(f.sdk)});
+ assert.equal(await controller.initialize(),false);
+ assert.equal(controller.getState().phase,'error');
+ assert.match(controller.getState().message,/conexão/);
+ assert.equal(await controller.initialize(),true);
+});
+test('a stalled auth observer times out instead of leaving login disabled',async()=>{
+ const f=fixture();f.sdk.onAuthStateChanged=()=>()=>{};
+ const controller=createController({config,location,timeoutMs:10,loadSdk:async()=>f.sdk});
+ assert.equal(await controller.initialize(),false);
+ assert.equal(controller.getState().busy,false);
+ assert.equal(controller.getState().phase,'error');
+});
 test('failed sign-out preserves the verified identity and reports failure',async()=>{
  const f=fixture({restored:{uid:'existing'},logoutError:Error('Offline')});
  const controller=createController({config,location,loadSdk:async()=>f.sdk});await controller.initialize();
