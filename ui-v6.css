@@ -634,6 +634,10 @@ button,select{font:inherit}button:focus-visible,select:focus-visible,summary:foc
 .statistics-metric{background:#fff;border:1px solid #d8e3ed;border-radius:8px;padding:20px}
 .statistics-metric strong{display:block;color:#116c62;font-size:32px;line-height:1.2;margin-bottom:7px;font-variant-numeric:tabular-nums}
 .statistics-metric span{font-size:12px;color:#526d86}
+.statistics-personal{margin-bottom:24px}
+.statistics-personal[hidden]{display:none}
+.statistics-personal .statistics-summary{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media(max-width:640px){.statistics-personal .statistics-summary{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .statistics-panel,.statistics-election,.statistics-empty{background:#fff;border:1px solid #d8e3ed;border-radius:8px;padding:24px;margin-bottom:20px}
 .statistics-page h2{color:#15395f;font-size:19px;margin:0 0 6px}
 .statistics-party{display:grid;grid-template-columns:90px minmax(40px,1fr) 155px;gap:16px;align-items:center;margin-top:18px;font-size:13px}

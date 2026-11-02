@@ -104,12 +104,13 @@
  function mount(root){
   const doc=root.document,$=id=>doc.getElementById(id);
   const overlay=$('accountOverlay');if(!overlay)return;
-  let trigger=null;
+  let trigger=null,startup=true;
   function render(state){
    const logged=Boolean(state.user);
    $('accountMenuBtn').textContent=logged?'Minha conta':'Entrar na conta';
    $('setupAccountBtn').textContent=logged?'Minha conta':'Entrar na conta';
    $('accountTitle').textContent=logged?'Sua conta':'Entre no Rumo ao Planalto';
+   $('accountClose').textContent=logged?'Continuar':'Continuar como visitante';
    $('accountProfile').hidden=!logged;
    $('accountName').textContent=state.user?.name||'';
    $('accountEmail').textContent=state.user?.email||'';
@@ -125,6 +126,7 @@
    $('accountRetryBtn').hidden=state.phase!=='error';
    $('accountOnlineLink').hidden=state.phase!=='unsupported';
    renderSync();
+   if(startup&&logged&&state.ready){startup=false;overlay.classList.add('hidden')}
   }
   function renderSync(){
    const save=root.PlanaltoSave,status=save?.getStatus();
@@ -138,11 +140,12 @@
   const controller=createController({config:root.PlanaltoNativeAuth&&root.PLANALTO_NATIVE_AUTH_CONFIGURED===false?null:root.PLANALTO_FIREBASE_CONFIG,location:root.location,native:root.PlanaltoNativeAuth,onChange:render,
    onSession:(user,{sdk,auth})=>root.PlanaltoSave?.setSession(user?.uid||null,user?root.PlanaltoCloud.firebaseAdapter(sdk,auth):null)});
   function open(button){
+   startup=false;
    trigger=button.id==='accountMenuBtn'?$('headerMenuToggle'):button;
    overlay.classList.remove('hidden');$('accountTitle').focus();
    controller.initialize();
   }
-  function close(){overlay.classList.add('hidden');if(trigger?.isConnected)trigger.focus();trigger=null}
+  function close(){startup=false;overlay.classList.add('hidden');if(trigger?.isConnected)trigger.focus();trigger=null}
   for(const id of ['accountMenuBtn','setupAccountBtn'])$(id).addEventListener('click',event=>open(event.currentTarget));
   $('accountClose').addEventListener('click',close);
   $('googleSignInBtn').addEventListener('click',()=>controller.signIn());
@@ -163,7 +166,7 @@
   });
   render(controller.getState());
   // Restore a session only after the site owner supplies an actual configuration.
-  if(configurationValid(root.PLANALTO_FIREBASE_CONFIG)&&(root.PlanaltoNativeAuth||supportedOrigin(root.location)))controller.initialize();
+  controller.initialize();
   return controller;
  }
  return {configurationValid,supportedOrigin,errorMessage,createController,mount};

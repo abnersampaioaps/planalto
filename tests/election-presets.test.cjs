@@ -18,6 +18,19 @@ test.beforeEach(() => {
 const run = expression => vm.runInContext(expression, context);
 const plain = expression => JSON.parse(JSON.stringify(run(expression)));
 
+test('player statistics count one applicable round per election and retain all-round records', () => {
+ run("game=newGame('Ciro Gomes','normal',10,['Ciro Gomes','Lula','Jair Bolsonaro'],false,'2026');game.firstResult={totalValid:100,ranked:[{id:'Lula',votes:45,pct:45},{id:'Jair Bolsonaro',votes:35,pct:35},{id:'Ciro Gomes',votes:20,pct:20}]};game.secondResult={totalValid:100,ranked:[{id:'Lula',votes:55,pct:55},{id:'Jair Bolsonaro',votes:45,pct:45}]};game.done=true;var eliminated=electionStatisticsSnapshot(game)");
+ assert.equal(run('eliminated.player.first.votes'),20);
+ assert.equal(run('eliminated.player.second'),null);
+ run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false,'2026');game.firstResult={totalValid:100,ranked:[{id:'Lula',votes:49,pct:49},{id:'Jair Bolsonaro',votes:40,pct:40}]};game.secondResult={totalValid:100,ranked:[{id:'Lula',votes:60,pct:60},{id:'Jair Bolsonaro',votes:40,pct:40}]};game.done=true;var winner=electionStatisticsSnapshot(game);var playerStats=summarizePlayerStatistics([eliminated,winner,{complete:true,winner:{id:'Lula'}},{...winner,complete:false}])");
+ assert.equal(run('playerStats.elections'),2);
+ assert.equal(run('playerStats.wins'),1);
+ assert.equal(run('playerStats.runoffs'),1);
+ assert.equal(run('playerStats.totalVotes'),80);
+ assert.equal(run('playerStats.bestVotes'),60);
+ assert.equal(run('playerStats.bestPct'),60);
+});
+
 test('statistics keep both round standings and the party at the time of the election', () => {
  run("game=newGame('Lula','normal',10,['Lula','Jair Bolsonaro'],false,'2026');game.firstResult={totalValid:100,ranked:[{id:'Lula',votes:45,pct:45},{id:'Jair Bolsonaro',votes:40,pct:40}]};game.secondResult={totalValid:100,ranked:[{id:'Jair Bolsonaro',votes:55,pct:55},{id:'Lula',votes:45,pct:45}]};game.done=true;recordElectionWinner();var completedStats=electionStatisticsSnapshot(game)");
  assert.equal(run('completedStats.complete'),true);
