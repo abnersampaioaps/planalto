@@ -30,13 +30,13 @@
 <header class="header">
 <div class="brand"><div class="symbol">★</div><div><div class="eyebrow">Simulador de estratégia eleitoral</div><div class="brandname">Rumo ao Planalto<span>.</span></div></div></div>
 <div class="header-stats">
-<div class="header-stat"><div class="header-label">Saldo disponível</div><div class="header-value" id="topMoney">R$ 250 mil</div><div class="header-bonus" id="topBonus">Bônus por liderança</div></div>
+<div class="header-stat"><div class="header-label">Saldo disponível</div><div class="header-value" id="topMoney">R$ 350 mil</div><div class="header-bonus" id="topBonus">Bônus por liderança</div></div>
 <div class="header-stat"><div class="header-label">Estados liderados</div><div class="header-value" id="topLeads">—</div></div>
 <div class="header-stat"><div class="header-label">Posição nacional</div><div class="header-value" id="topPosition">—</div></div>
 </div>
-<div class="header-actions"><span class="pill" id="phasePill">1º TURNO · 1/10</span><button class="linkbtn" id="rulesBtn">Regras</button><button class="linkbtn" id="newBtn">Nova eleição</button></div></header>
+<div class="header-actions"><span class="pill" id="phasePill">1º TURNO · 1/10</span><details class="header-menu" id="headerMenu"><summary id="headerMenuToggle" aria-label="Menu principal" title="Menu principal"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></summary><div class="header-menu-options" role="group" aria-label="Opções do jogo"><button class="linkbtn" id="accountMenuBtn">Entrar na conta</button><button class="linkbtn" id="statisticsBtn">Estatísticas</button><button class="linkbtn" id="rulesBtn">Regras</button><button class="linkbtn" id="newBtn">Nova eleição</button></div></details></div></header>
 <section class="hero"><div class="herohead"><div><div class="eyebrow">Eleições presidenciais fictícias</div><h1 id="heroTitle">Votos válidos · projeção nacional</h1><p>Percentuais calculados somente entre os candidatos que receberam votos</p></div><div class="miniinfo" id="heroNotice">No primeiro turno, vence quem obtiver a maioria absoluta dos votos válidos.</div></div><div id="standings" class="standings"></div></section>
-<main class="layout"><section class="panel map-panel"><div class="map-head"><div><div class="eyebrow">Tabuleiro eleitoral</div><h2>Mapa dos estados</h2></div><div class="legend" id="mapLegend">Toque no estado para investir</div></div><div class="map-tabs" role="tablist" aria-label="Camadas do mapa"><button id="tabMain" role="tab" aria-selected="true" aria-controls="campaignStatePanel">Mapa eleitoral</button><button id="tabMultipliers" role="tab" aria-selected="false" aria-controls="multiplierPanel">Multiplicadores</button></div><div class="mapbox"><svg id="map" viewBox="0 0 620 630" role="group" aria-label="Mapa interativo das 27 unidades federativas brasileiras"></svg></div><div class="mapfoot"><span id="mapMode">Mapa geográfico do Brasil · 27 UFs</span><button id="mapToggle" class="linkbtn">Ver cartograma</button></div></section><div class="right">
+<main class="layout"><section class="panel map-panel"><div class="map-head"><div><div class="eyebrow">Tabuleiro eleitoral</div><h2>Mapa dos estados</h2></div></div><div class="map-tabs" role="tablist" aria-label="Camadas do mapa"><button id="tabMain" role="tab" aria-selected="true" aria-controls="campaignStatePanel">Mapa eleitoral</button><button id="tabMultipliers" role="tab" aria-selected="false" aria-controls="multiplierPanel">Multiplicadores</button></div><div class="mapbox"><svg id="map" viewBox="0 0 620 630" role="group" aria-label="Mapa interativo das 27 unidades federativas brasileiras"></svg><div class="legend" id="mapLegend">Toque no estado para investir</div></div><div class="mapfoot"><span id="mapMode">Mapa geográfico do Brasil · 27 UFs</span><button id="mapToggle" class="linkbtn">Ver cartograma</button></div></section><div class="right">
 <section class="panel campaign-state" id="campaignStatePanel">
 <h2>Investimento estadual <span id="ufTag" class="eyebrow" style="float:right">SP</span></h2>
 <select id="stateSelect" class="input" aria-label="Selecionar estado"></select>
@@ -55,8 +55,8 @@
 </section>
 <section class="panel" id="multiplierPanel" hidden aria-labelledby="multiplierPanelTitle">
 <h2 id="multiplierPanelTitle">Multiplicadores <span id="multiplierUf" class="eyebrow" style="float:right">SP</span></h2>
-<p class="multiplier-summary">Promessas estaduais: <b>+×0,25</b> nas próximas ações (máx. ×2).</p>
-<p id="multiplierPenaltyNote" class="multiplier-penalty-note" aria-live="polite">Concentrar bônus pode reduzir outras UFs a ×0,9.</p>
+<p class="multiplier-summary">Promessas estaduais: <b>+0,25</b> no multiplicador de investimentos no estado</p>
+<p id="multiplierPenaltyNote" class="multiplier-penalty-note" aria-live="polite" hidden></p>
 <div class="multiplier-state"><strong id="multiplierStateName">São Paulo</strong><span>Seu multiplicador <b id="multiplierCurrent">×1</b></span></div>
 <div class="multiplier-action">
 <div class="multiplier-action-info"><h3>Promessa estadual</h3><p id="stateMultiplierEffect">SP · ×1 → ×1,25</p></div>
@@ -73,7 +73,7 @@
 </section>
 <section class="panel" id="electionHistoryPanel" hidden aria-labelledby="electionHistoryTitle"><h2 id="electionHistoryTitle">Histórico das eleições</h2><p class="small muted" id="electionHistoryCurrent"></p><div id="electionHistoryList" tabindex="0" role="region" aria-label="Vencedores das eleições anteriores"></div></section>
 </div>
-<details class="panel campaign-log"><summary>Detalhes e histórico de campanha</summary><div id="activity" class="log"></div></details></main><footer class="footer">Simulador independente, sem vínculo com o TSE ou com os partidos. Cadastro partidário de outubro de 2026 ou partido da eleição escolhida; falecidos usam a última filiação conhecida, e casos incertos são sinalizados; perfis de campanha fixos, definidos para esta simulação exclusivamente como mecânica de jogo. As promessas de campanha definem os multiplicadores durante a eleição; a votação de 2022 não determina os bônus. Cada estado começa sem votos atribuídos, e o ranking usa somente votos válidos simulados. Os pontos de influência podem superar o número de ações pagas por causa do bônus, até o teto de 10. Orçamento inicial de R$ 250 mil, mais R$ 250 mil por rodada e R$ 50 mil por estado liderado. Cartografia: <a href="https://github.com/henriquemalvar/br-geojson" target="_blank" rel="noopener">br-geojson</a>; logos partidários: <a href="https://github.com/avoarpj/partidos-brasil-svg" target="_blank" rel="noopener">partidos-brasil-svg (MIT)</a>.</footer></div>
+<details class="panel campaign-log"><summary>Detalhes e histórico de campanha</summary><div id="activity" class="log"></div></details></main><footer class="footer">Simulador independente, sem vínculo com o TSE ou com os partidos. Cadastro partidário de outubro de 2026 ou partido da eleição escolhida; falecidos usam a última filiação conhecida, e casos incertos são sinalizados; perfis de campanha fixos, definidos para esta simulação exclusivamente como mecânica de jogo. As promessas de campanha definem os multiplicadores durante a eleição; a votação de 2022 não determina os bônus. Cada estado começa sem votos atribuídos, e o ranking usa somente votos válidos simulados. Os pontos de influência podem superar o número de ações pagas por causa do bônus, até o teto de 10. Orçamento inicial de R$ 350 mil, mais R$ 300 mil por rodada e R$ 20 mil por estado liderado sozinho com pelo menos 3 pontos de influência, sem teto de renda. Cartografia: <a href="https://github.com/henriquemalvar/br-geojson" target="_blank" rel="noopener">br-geojson</a>; logos partidários: <a href="https://github.com/avoarpj/partidos-brasil-svg" target="_blank" rel="noopener">partidos-brasil-svg (MIT)</a>.</footer></div>
 <div class="overlay hidden" id="continuationOverlay"><section class="modal continuation-modal" role="dialog" aria-modal="true" aria-labelledby="continuationTitle">
 <header class="continuation-top">
 <div class="eyebrow">Próxima eleição</div>
@@ -99,7 +99,7 @@
 </section></div>
 <div class="overlay" id="setupOverlay"><section class="modal setup-modal" role="dialog" aria-modal="true" aria-labelledby="setupTitle">
 <div class="eyebrow" id="setupStepLabel">Etapa 1 de 2 · sua disputa</div>
-<h1 id="setupTitle" tabindex="-1">Escolha os candidatos</h1>
+<h1 id="setupTitle" tabindex="-1">Escolha os candidatos</h1><div class="setup-secondary-actions"><button class="linkbtn" id="setupStatisticsBtn">Ver estatísticas das partidas</button><button class="linkbtn" id="setupAccountBtn">Entrar na conta</button></div>
 <div id="setupStepCandidates">
 <p class="setup-opening">Escolha o tipo de disputa, ajuste os participantes e defina quem você vai controlar.</p>
 <div class="election-preset"><label for="chooseElection">Tipo de disputa</label><select class="input" id="chooseElection" aria-describedby="electionPresetHint"><option value="">Personalizada</option><option value="2026">2026</option><option value="2022">2022</option><option value="2018">2018</option><option value="2014">2014</option><option value="2010">2010</option><option value="2006">2006</option><option value="2002">2002</option></select><p id="electionPresetHint">O ano substitui as marcações. Depois, você pode ajustar a lista.</p></div>
@@ -120,26 +120,36 @@
 <div class="field"><label for="chooseTime">Rodadas por turno</label><select class="input" id="chooseTime" aria-describedby="roundsHint"><option value="6">Rápida · 6 rodadas</option><option value="10" selected>Clássica · 10 rodadas</option><option value="14">Longa · 14 rodadas</option></select><small class="setup-field-hint" id="roundsHint">Mesma duração nos dois turnos.</small></div>
 </div>
 <div class="optional-rules"><label class="support-choice"><input type="checkbox" id="chooseSupports" checked aria-describedby="supportsHint"><span><strong>Permitir compra de apoios</strong><small id="supportsHint">Você e a IA podem negociar apoios dos eliminados no 2º turno.</small></span></label><label class="support-choice"><input type="checkbox" id="chooseEndless"><span><strong>Poder continuar após 2026</strong><small>Após 2026 tudo pode acontecer, quem irá se manter no poder?</small></span></label><label class="support-choice"><input type="checkbox" id="chooseStrategies"><span><strong>Permitir estratégias de campanha</strong><small>Use ações especiais para atacar adversários, defender estados e mudar a disputa.</small></span></label></div>
-<details class="setup-details"><summary>Detalhes da disputa</summary><p id="perksDesc"></p><p>Os multiplicadores começam em ×1 e podem aumentar com promessas estaduais até ×2. Concentrações regionais podem reduzir outros estados a ×0,9. O Experiente se diferencia pela estratégia da IA, não por bônus pré-definidos.</p><h3>Como funciona a continuidade?</h3><p>Ao escolher um ano, você pode avançar pelas eleições com seu partido e acompanhar os vencedores no histórico. A opção “Poder continuar após 2026” libera eleições a cada quatro anos, sem limite, inclusive para partidas personalizadas.</p><p>O partido vencedor recebe R$ 100 mil extras por rodada na eleição seguinte. Se o mesmo candidato tentar um terceiro mandato consecutivo, sua renda fixa cai para R$ 150 mil por rodada, além dos bônus por estados, mas os multiplicadores seguem as mesmas regras de campanha dos demais. O segundo turno acontece apenas se ninguém vencer no primeiro.</p><h3>Adversários e estratégias</h3><ul id="opponentPreview"></ul></details>
+<details class="setup-details"><summary>Detalhes da disputa</summary><p id="perksDesc"></p><p>Os multiplicadores começam em ×1 e podem aumentar com promessas estaduais até ×2. A concentração acrescenta ×0,1 na mesma região ou eixo (até ×2,1) e reduz estados de fora a ×0,9. O Experiente se diferencia pela estratégia da IA, não por bônus pré-definidos.</p><h3>Como funciona a continuidade?</h3><p>Ao escolher um ano, você pode avançar pelas eleições com seu partido e acompanhar os vencedores no histórico. A opção “Poder continuar após 2026” libera eleições a cada quatro anos, sem limite, inclusive para partidas personalizadas.</p><p>O partido vencedor recebe R$ 75 mil extras por rodada na eleição seguinte. Se o mesmo candidato tentar um terceiro mandato consecutivo, sua renda fixa cai para R$ 200 mil por rodada, além dos bônus por estados, mas os multiplicadores seguem as mesmas regras de campanha dos demais. O segundo turno acontece apenas se ninguém vencer no primeiro.</p><h3>Adversários e estratégias</h3><ul id="opponentPreview"></ul></details>
 <div class="actions setup-options-actions"><button class="button" id="backSetupBtn">← Voltar</button><button class="button primary" id="startBtn">Começar eleição →</button></div>
 </div>
 </section></div>
-<div class="overlay hidden" id="resultOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="endTitle" style="max-width:560px"><div class="eyebrow" id="endCaption">Apuração eleitoral simulada</div><h1 id="endTitle">Resultado</h1><p id="endText"></p><div id="resultsList" style="margin:15px 0"></div><p class="micro muted" id="resultFoot">Percentuais exclusivamente sobre votos válidos simulados atribuídos a candidatos.</p><div class="actions"><button class="button" id="reviewBtn">Ver mapa</button><button class="button" id="resultMenuBtn" hidden>Iniciar nova partida</button><button class="button primary" id="resultMainBtn">Continuar →</button></div></section></div>
+<div class="overlay hidden" id="resultOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="endTitle" style="max-width:560px"><div class="eyebrow" id="endCaption">Apuração eleitoral simulada</div><h1 id="endTitle">Resultado</h1><p id="endText"></p><div id="resultsList" style="margin:15px 0"></div><p class="micro muted" id="resultFoot">Percentuais exclusivamente sobre votos válidos simulados atribuídos a candidatos.</p><div class="actions"><button class="button" id="resultStatisticsBtn">Estatísticas</button><button class="button" id="reviewBtn">Ver mapa</button><button class="button" id="resultMenuBtn" hidden>Iniciar nova partida</button><button class="button primary" id="resultMainBtn">Continuar →</button></div></section></div>
 <div class="overlay hidden" id="supportOverlay"><section class="modal support-modal" role="dialog" aria-modal="true" aria-labelledby="supportTitle"><div class="support-modal-list" id="supportListView"><div class="eyebrow">2º turno · decisão estratégica</div><h1 id="supportTitle">Apoios disponíveis</h1><p>Negocie parte da influência estadual dos candidatos eliminados. Cada finalista pode conquistar até três apoios, com custo progressivo; o ganho é limitado ao espaço que ainda resta em cada estado.</p><div class="support-rules"><span>Mesma orientação: <b>70%</b></span><span>Com o Centro: <b>50%</b></span><span>Esquerda × Direita: <b>30%</b></span></div><div id="supportSummary" class="support-summary"></div><div id="supportList" class="support-list"></div><div class="actions"><button class="button" id="closeSupport">Fechar</button></div></div><div class="support-modal-detail" id="supportDetailView" hidden><button class="linkbtn support-back" id="supportBack">← Todos os apoios</button><div id="supportDetail"></div><div class="actions"><button class="button" id="closeSupportDetail">Cancelar</button><button class="button primary" id="supportBuyBtn">Conquistar apoio</button></div></div></section></div>
+<div class="overlay hidden account-overlay" id="accountOverlay"><section class="modal account-modal" role="dialog" aria-modal="true" aria-labelledby="accountTitle" aria-describedby="accountStatus"><div class="eyebrow">Rumo ao Planalto · sua conta</div><h1 id="accountTitle" tabindex="-1">Entre no Rumo ao Planalto</h1><div id="accountProfile" class="account-profile" hidden><span id="accountInitial" class="account-initial" aria-hidden="true"></span><div><strong id="accountName"></strong><span id="accountEmail"></span></div></div><p id="accountStatus" role="status" aria-live="polite"></p><p class="account-local-note">Jogue como visitante ou entre para sincronizar sua partida e suas estatísticas. Cada conta tem seu próprio progresso; o visitante continua salvo neste dispositivo.</p><section id="accountSyncPanel" hidden><p id="accountSyncStatus" role="status" aria-live="polite"></p><button class="button" id="accountSyncRetry">Sincronizar agora</button><button class="button" id="accountImportGuest" hidden>Importar progresso do visitante</button><div id="accountSyncConflict" hidden><p>Os dois progressos são diferentes. Uma cópia de segurança local será preservada antes da substituição.</p><button class="button" id="accountUseCloud">Continuar progresso da nuvem</button><button class="button" id="accountUseLocal">Usar progresso deste dispositivo</button></div></section><a id="accountOnlineLink" class="account-online-link" href="https://abnersampaioaps.github.io/planalto/" target="_blank" rel="noopener noreferrer" hidden>Abrir a versão online ↗</a><div class="account-actions"><button class="button google-signin" id="googleSignInBtn" disabled>Entrar com Google</button><button class="button apple-signin" id="appleSignInBtn" disabled>Entrar com Apple</button><button class="button" id="googleSignOutBtn" hidden>Sair da conta</button><button class="button" id="accountRetryBtn" hidden>Tentar novamente</button><button class="button" id="accountClose">Voltar ao jogo</button></div></section></div>
+<div class="overlay hidden statistics-screen" id="statisticsOverlay"><section class="statistics-page" role="dialog" aria-modal="true" aria-labelledby="statisticsTitle"><header class="statistics-header"><div><div class="eyebrow">Memória eleitoral</div><h1 id="statisticsTitle" tabindex="-1">Estatísticas das partidas</h1><p>Partidos vencedores e os dois primeiros colocados de cada turno.</p></div><button class="button" id="statisticsClose">← Voltar ao jogo</button></header><div id="statisticsSummary" class="statistics-summary"></div><section class="statistics-panel" aria-labelledby="statisticsPartiesTitle"><h2 id="statisticsPartiesTitle">Vitórias por partido</h2><p class="statistics-caption">Eleições concluídas · partido do vencedor na época da disputa</p><div id="statisticsParties"></div></section><section aria-labelledby="statisticsElectionsTitle"><h2 id="statisticsElectionsTitle">Resultados por eleição</h2><p class="statistics-caption">Mais recentes primeiro · percentuais dos votos válidos simulados</p><div id="statisticsElections"></div></section><p id="statisticsStorageNote" class="statistics-caption"></p></section></div>
+<div class="overlay hidden" id="candidateActionsOverlay"><section class="modal candidate-actions-modal" role="dialog" aria-modal="true" aria-labelledby="candidateActionsTitle" aria-describedby="candidateActionsNotice"><div class="eyebrow">Disputa no estado</div><h1 id="candidateActionsTitle"></h1><p id="candidateActionsNotice"></p><div id="candidateActionsOptions" class="candidate-actions-options"></div><div class="actions"><button class="button" id="candidateActionsClose">Voltar ao mapa</button></div></section></div>
 <div class="overlay hidden" id="strategiesOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="strategiesTitle"><h1 id="strategiesTitle">Ações de campanha</h1><div class="actions" id="strategyTabs"><span class="strategy-active-tab">Estratégias</span><button class="button" id="strategySupports">Apoios do 1º turno</button></div><p id="strategyNotice"></p><div class="fields"><div class="field"><label for="strategyType">Estratégia</label><select class="input" id="strategyType"></select></div><div class="field"><label for="strategyUF">Estado</label><select class="input" id="strategyUF"></select></div><div class="field"><label for="strategyTarget">Adversário</label><select class="input" id="strategyTarget"></select></div></div><div class="field" id="strategyDirectionField" hidden><label for="strategyDirection">Calendário da apuração</label><select class="input" id="strategyDirection"><option value="advance">Encerrar na próxima rodada · R$ 1 milhão</option><option value="delay">Adiar em 4 rodadas · R$ 500 mil</option></select></div><p id="strategyPreview" aria-live="polite"></p><div class="actions"><button class="button" id="strategyClose">Fechar</button><button class="button primary" id="strategyConfirm">Confirmar estratégia</button></div></section></div>
+<div class="overlay hidden" id="campaignDuelOverlay"><section class="modal campaign-duel-modal" role="dialog" aria-modal="true" aria-labelledby="campaignDuelTitle" aria-describedby="campaignDuelRule">
+<div class="eyebrow" id="campaignDuelCaption"></div><h1 id="campaignDuelTitle" tabindex="-1"></h1><p id="campaignDuelRule"></p>
+<div class="campaign-duel-board" id="campaignDuelBoard"></div>
+<div class="campaign-duel-result" id="campaignDuelResult" role="status" aria-live="polite"></div>
+<div class="campaign-duel-footer"><span>Maior soma vence · empate favorece o defensor</span><button class="button primary" id="campaignDuelContinue">Continuar →</button></div>
+</section></div>
 <div class="overlay hidden" id="strategySummaryOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="strategySummaryTitle"><div class="eyebrow" id="strategySummaryCaption"></div><h1 id="strategySummaryTitle">Resumo das estratégias</h1><p>Ações realizadas nesta rodada e seus efeitos no momento da jogada.</p><div id="strategySummaryList"></div><div class="actions"><button class="button primary" id="strategySummaryClose">Continuar →</button></div></section></div>
 <div class="overlay hidden" id="rulesOverlay"><section class="modal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="eyebrow">Manual</div><h1 id="rulesTitle">Como jogar</h1>
 <p>O mapa começa neutro e sem investimentos. Internamente, cada estado possui uma reserva de 10 partes de apoio não atribuídas. O apoio bruto é a influência efetiva de cada candidato dividida pelo maior número entre 10 e a soma das influências efetivas de todos os candidatos naquele estado.</p>
-<p>Os perfis de campanha (Esquerda, Centro ou Direita) são <b>configurações fixas para esta simulação, definidas pelo usuário</b>, não classificações oficiais de pessoas reais. Os perfis continuam sendo utilizados nas negociações de apoios, mas não definem multiplicadores iniciais. Todos começam com multiplicador ×1 em cada estado; promessas compradas durante a eleição aumentam o multiplicador da própria candidatura em passos de 0,25 até ×2, inclusive no Experiente. A influência é calculada com precisão de 0,25 ponto. Ações e influência são contadas separadamente. O estado fecha quando uma candidatura atinge 10 pontos efetivos. A afinidade vale para o jogador e para a IA. Os adversários controlados pela IA podem adotar estratégias distintas: priorizam grandes colégios eleitorais, arrecadação, fechamento de estados, disputa de liderança ou defesa territorial. Todos respeitam os mesmos custos, limites e orçamento.</p>
+<p>Os perfis de campanha (Esquerda, Centro ou Direita) são <b>configurações fixas para esta simulação, definidas pelo usuário</b>, não classificações oficiais de pessoas reais. Os perfis continuam sendo utilizados nas negociações de apoios, mas não definem multiplicadores iniciais. Todos começam com multiplicador ×1 em cada estado; promessas compradas durante a eleição aumentam o multiplicador da própria candidatura em passos de 0,25 até ×2, inclusive no Experiente. O bônus de concentração pode elevar o multiplicador a ×2,1. A influência é calculada com precisão de até duas casas decimais. Ações e influência são contadas separadamente. O estado fecha quando uma candidatura atinge 10 pontos efetivos. A afinidade vale para o jogador e para a IA. Os adversários controlados pela IA podem adotar estratégias distintas: priorizam grandes colégios eleitorais, arrecadação, fechamento de estados, disputa de liderança ou defesa territorial. Todos respeitam os mesmos custos, limites e orçamento.</p>
 <p>Os votos não atribuídos ficam apenas nos cálculos: <b>nenhum gráfico exibe a parcela indecisa</b>. A porcentagem no topo é o total de votos atribuídos ao candidato dividido pelo total de votos válidos simulados atribuídos a todos os candidatos. Se ainda não houver nenhum voto, todos aparecem com 0%.</p>
-<p>Limite acumulado de 10 ações brutas por candidato em cada estado, mas o estado pode fechar antes caso a influência efetiva de alguém alcance 10. <b>Em todas as rodadas, exceto na última, no máximo 2 ações por estado e por candidato; somente na última rodada de cada turno eleitoral as ações por estado ficam livres</b> (respeitando o teto de 10, saldo e fechamento do estado). A mesma regra vale para todos e reinicia no 2º turno. <b>Assim que qualquer candidato alcançar 10 pontos de influência em um estado, esse estado é fechado para novos investimentos de todos</b>; os investimentos e votos já conquistados permanecem. Todos começam com R$ 250 mil e recebem R$ 250 mil por rodada, mais R$ 50 mil por estado que estejam liderando sozinhos. Empates não dão bônus.</p>
-<p>Na apuração, os votos não atribuídos não entram como válidos simulados. Quem obtiver mais de 50% dos votos válidos vence no primeiro turno; caso contrário, os dois mais votados avançam. <b>A duração escolhida no início vale para os dois turnos.</b> <b>Se todos os 27 estados forem fechados antes da última rodada, o turno é apurado imediatamente — exceto se ainda houver um apoio capaz de gerar influência.</b> Os investimentos pagos dos dois finalistas são preservados; as ações dos candidatos eliminados saem do mapa. Se <b>Apoios do 1º turno</b> estiver habilitado na configuração inicial, essas ações poderão ser negociadas: cada finalista pode conquistar até três apoios, por R$ 1 mi, R$ 2 mi e R$ 4 mi. Há no máximo uma negociação por finalista em cada rodada; quem estiver atrás na votação nacional recebe a primeira oportunidade de negociar. Cada apoio transfere até 70%, 50% ou 30% das ações estaduais do eliminado, conforme a afinidade entre os perfis; o teto de 10 pontos por estado continua valendo. Cada finalista pode comprar uma vez o apoio de cada eliminado. Quando comprador e eliminado tiverem o mesmo perfil, o apoio fica exclusivo e o outro finalista não pode negociá-lo; a IA segue as mesmas regras. <b>Na 1ª rodada do 2º turno, cada finalista recebe o saldo que sobrou do 1º turno + R$ 250 mil + R$ 50 mil por estado que liderar sozinho após a retirada dos eliminados. Os multiplicadores comprados também são preservados pelos finalistas.</b></p>
-<p>As estratégias de campanha não têm limite de utilizações por rodada ou por turno: podem ser repetidas enquanto houver saldo e condições válidas. Ataques consecutivos ao mesmo adversário e estado são permitidos; proteções já ativas não são cumulativas. A interferência na apuração, exclusiva da presidência, pode antecipar o encerramento do turno para o fim da próxima rodada (somente até a antepenúltima rodada) ou adiá-lo em 4 rodadas. A antecipação fica bloqueada nas duas últimas rodadas, sem cobrança de custo ou aplicação de penalidade. No segundo turno, a IA utiliza mais seu orçamento, busca oportunidades de voto, compra apoios quando vantajosos e pode executar diversas estratégias na mesma rodada.</p>
-<p>No Normal e no Experiente, a IA adapta o estilo de jogo conforme a vantagem ou desvantagem na votação e as rodadas restantes. Com vantagem, protege posições e economiza recursos; em disputa equilibrada, prioriza oportunidades de ganho; atrás, assume mais riscos; perto da apuração, usa os recursos disponíveis com mais intensidade. No Iniciante, permanece com o perfil fixo de comportamento.</p>
-<p>Na aba <b>Multiplicadores</b>, promessas estaduais aumentam em ×0,25 o rendimento dos próximos investimentos na UF escolhida. O custo começa em R$ 150 mil e cresce R$ 50 mil por melhoria anterior no estado. Se os 3 ou mais estados com bônus estiverem todos na mesma região, ou os 6 ou mais estados com bônus estiverem todos num único eixo (Sul, Sudeste e Centro-Oeste; ou Norte e Nordeste), os demais estados sem bônus rendem ×0,9 nas ações futuras. A penalidade não acumula nem altera pontos já conquistados e deixa de valer quando os bônus deixam de atender a esses critérios. Os multiplicadores acompanham os finalistas ao segundo turno, e a IA pode comprar as mesmas promessas.</p>
+<p>Limite acumulado de 10 ações brutas por candidato em cada estado, mas o estado pode fechar antes caso a influência efetiva de alguém alcance 10. <b>Em todas as rodadas, exceto na última, no máximo 2 ações por estado e por candidato; somente na última rodada de cada turno eleitoral as ações por estado ficam livres</b> (respeitando o teto de 10, saldo e fechamento do estado). A mesma regra vale para todos e reinicia no 2º turno. <b>Assim que qualquer candidato alcançar 10 pontos de influência em um estado, esse estado é fechado para novos investimentos de todos</b>; os investimentos e votos já conquistados permanecem. O caixa inicial padrão é de R$ 350 mil e a renda base é de R$ 300 mil por rodada, mais R$ 20 mil por estado liderado sozinho com pelo menos 3 pontos de influência. Empates não dão bônus. Não há teto de renda; o ajuste da presidência é somado ao caixa inicial e à renda de cada rodada.</p>
+<p>Na apuração, os votos não atribuídos não entram como válidos simulados. Quem obtiver mais de 50% dos votos válidos vence no primeiro turno; caso contrário, os dois mais votados avançam. <b>A duração escolhida no início vale para os dois turnos.</b> <b>Se todos os 27 estados forem fechados antes da última rodada, o turno é apurado imediatamente — exceto se ainda houver um apoio capaz de gerar influência.</b> Os investimentos pagos dos dois finalistas são preservados; as ações dos candidatos eliminados saem do mapa. Se <b>Apoios do 1º turno</b> estiver habilitado na configuração inicial, essas ações poderão ser negociadas: cada finalista pode conquistar até três apoios, por R$ 1 mi, R$ 2 mi e R$ 4 mi. Há no máximo uma negociação por finalista em cada rodada; quem estiver atrás na votação nacional recebe a primeira oportunidade de negociar. Cada apoio transfere até 70%, 50% ou 30% das ações estaduais do eliminado, conforme a afinidade entre os perfis; o teto de 10 pontos por estado continua valendo. Cada finalista pode comprar uma vez o apoio de cada eliminado. Quando comprador e eliminado tiverem o mesmo perfil, o apoio fica exclusivo e o outro finalista não pode negociá-lo; a IA segue as mesmas regras. <b>Na 1ª rodada do 2º turno, cada finalista recebe o saldo que sobrou do 1º turno + R$ 300 mil + R$ 20 mil por estado que liderar sozinho com pelo menos 3 pontos após a retirada dos eliminados, além do ajuste da presidência quando aplicável. Os multiplicadores comprados também são preservados pelos finalistas.</b></p>
+<p>Debate, ataque e defesa custam, respectivamente, 0,8 / 1,25 / 1 vez o preço do investimento estadual, arredondados para múltiplos de R$ 5 mil. As estratégias de campanha não têm limite de utilizações por rodada ou por turno: podem ser repetidas enquanto houver saldo e condições válidas. Ataques consecutivos ao mesmo adversário e estado são permitidos; proteções já ativas não são cumulativas. Debates e ataques usam dois dados de seis faces por candidato: a maior soma vence e empates favorecem o defensor. No debate, o vencedor recebe até 1 ponto do perdedor, respeitando os limites de 0 a 10. No ataque, a vitória do atacante retira até 2 pontos do alvo; a derrota retira até 1 ponto do atacante. A defesa concede um terceiro dado na próxima disputa neste estado e é consumida ao usá-lo; expira ao fim da rodada seguinte. A interferência na apuração, exclusiva da presidência, pode antecipar o encerramento do turno para o fim da próxima rodada (somente até a antepenúltima rodada) ou adiá-lo em 4 rodadas. A antecipação fica bloqueada nas duas últimas rodadas, sem cobrança de custo ou aplicação de penalidade. No segundo turno, a IA utiliza mais seu orçamento, busca oportunidades de voto, compra apoios quando vantajosos e pode executar diversas estratégias na mesma rodada.</p>
+<p>No Normal e no Experiente, a IA adapta o estilo de jogo conforme a vantagem ou desvantagem na votação e as rodadas restantes. Com vantagem, protege posições e economiza recursos; em disputa equilibrada, prioriza oportunidades de ganho; atrás, assume mais riscos; perto da apuração, usa os recursos disponíveis com mais intensidade. No Iniciante, o perfil fixo vale no primeiro turno. No segundo turno, todas as IAs adaptam suas decisões à disputa, aumentam o orçamento para estratégias e reduzem a reserva de dinheiro, inclusive quando ambos os finalistas são controlados pelo computador. Os perfis também diferenciam a preferência por ataques, debates e defesas; confrontos são escolhidos conforme o ganho esperado, considerando os dados e as proteções do alvo.</p>
+<p>Na aba <b>Multiplicadores</b>, promessas estaduais aumentam em ×0,25 o rendimento dos próximos investimentos na UF escolhida. As quatro melhorias custam, respectivamente, 0,8 / 1,1 / 1,5 / 2 vezes o preço do investimento estadual, arredondadas para múltiplos de R$ 5 mil e com mínimo de R$ 40 mil por compra. Se os 3 ou mais estados com bônus estiverem todos na mesma região, ou os 6 ou mais estados com bônus estiverem todos num único eixo (Sul, Sudeste e Centro-Oeste; ou Norte e Nordeste), somente os estados fora da região ou do eixo concentrado rendem ×0,9 nas ações futuras. Todos os estados dentro da área concentrada recebem +×0,1, inclusive os sem promessa (×1,1) e os que já atingiram ×2 (×2,1); quando ambas as condições forem atendidas, prevalece a regra por eixo. A penalidade não acumula nem altera pontos já conquistados e deixa de valer quando os bônus deixam de atender a esses critérios. Os multiplicadores acompanham os finalistas ao segundo turno, e a IA pode comprar as mesmas promessas.</p>
 <p>Esta é uma simulação fictícia. A parcela não atribuída do jogo não equivale à classificação oficial de votos nulos do TSE.</p>
 <div class="actions"><button class="button primary" id="closeRules">Entendi</button></div></section></div>
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="./cloud-save.js"></script>
 <script>
  'use strict';
 const STATES=[
@@ -263,7 +273,19 @@ function continuationPlan(saved){
  const year=saved.done?nextElectionYear(saved.electionYear,saved.endless):null;
  if(!year)return null;
  if(Number(year)>2026){
-  if(saved.nextElectionPlan?.year===year&&saved.nextElectionPlan.drawVersion===3)return JSON.parse(JSON.stringify(saved.nextElectionPlan));
+  if(saved.nextElectionPlan?.year===year&&saved.nextElectionPlan.drawVersion===3){
+   const plan=JSON.parse(JSON.stringify(saved.nextElectionPlan));
+   const conflictingSwitch=plan.partyChanges?.find(change=>change.id===plan.winner&&change.from!==plan.party&&change.to===plan.party);
+   if(plan.winner!==plan.player&&conflictingSwitch&&!plan.ids.includes(plan.winner)){
+    // Repair an old draw without rerolling its other candidates or parties.
+    plan.parties[plan.winner]=conflictingSwitch.from;
+    plan.partyChanges=plan.partyChanges.filter(change=>change!==conflictingSwitch);
+    plan.choices=plan.choices.filter(id=>id!==plan.winner);
+    plan.ids=uniquePartyRoster(plan,plan.player,[plan.player,plan.winner,...plan.ids]).slice(0,plan.ids.length);
+    saved.nextElectionPlan=plan;
+   }
+   return JSON.parse(JSON.stringify(plan));
+  }
   const plan=futureElectionPlan(saved,year);saved.nextElectionPlan=plan;return JSON.parse(JSON.stringify(plan));
  }
  const history=saved.electionHistory||[],winner=history.find(entry=>entry.year===String(saved.electionYear));
@@ -286,7 +308,7 @@ function drawPartySwitch(plan){
  const candidates=shuffled(PEOPLE.filter(person=>Object.hasOwn(plan.parties,person.id)&&person.id!==plan.player&&!person.celebrity).map(person=>person.id));
  for(const id of candidates){
   const family=FUTURE_PARTY_FAMILIES[campaignProfile(id)]||[];
-  const available=Object.values(FUTURE_PARTY_FAMILIES).flat().filter(party=>party!==plan.parties[id]);
+  const available=Object.values(FUTURE_PARTY_FAMILIES).flat().filter(party=>party!==plan.parties[id]&&(id!==plan.winner||party!==plan.party));
   const compatible=available.filter(party=>family.includes(party)),different=available.filter(party=>!family.includes(party));
   const preferDifferent=Math.random()<.2;
   const preferred=preferDifferent?different:compatible;
@@ -338,13 +360,80 @@ function setupPerson(id){
 }
 function eligibleCampaignCandidate(id){return !setupCampaign||setupPerson(id)?.party===setupCampaign.party}
 function recordElectionWinner(){
- if(!game.done||!game.electionYear)return;
+ if(!game.done)return;
  if(!game.secondResult&&!majority(game.firstResult))simulateAIRunoff();
  const result=game.secondResult||game.firstResult,winner=result?.ranked[0];
  if(!winner||!result.totalValid)return;
+ if(!game.electionYear)return;
+ const statistics=electionStatisticsSnapshot(game);
  game.electionHistory=(game.electionHistory||[]).filter(entry=>entry.year!==game.electionYear);
- game.electionHistory.push({year:game.electionYear,winner:winner.id,party:game.candidateParties[winner.id]});
+ game.electionHistory.push({year:game.electionYear,winner:winner.id,party:game.candidateParties[winner.id],statisticsId:statistics.id,statistics});
  game.electionHistory.sort((a,b)=>Number(a.year)-Number(b.year));
+}
+const ELECTION_STATISTICS_KEY='rumo_ao_planalto_statistics_v1';
+let statisticsSequence=0,electionStatisticsCache=[],statisticsStorageFailed=false,statisticsTrigger=null;
+function newStatisticsId(){return typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():Date.now().toString(36)+'-'+(++statisticsSequence)}
+function statisticsRound(result,parties){
+ if(!result?.totalValid||!Array.isArray(result.ranked))return null;
+ return result.ranked.slice(0,2).map(row=>({id:row.id,party:parties?.[row.id]||'Não registrado',pct:Number.isFinite(row.pct)?row.pct:null,votes:Number.isFinite(row.votes)?row.votes:null}));
+}
+function electionStatisticsSnapshot(saved){
+ if(!saved.firstResult)return null;
+ const previous=saved.electionHistory?.find(entry=>entry.year===saved.electionYear);
+ saved.statisticsId??=previous?.statisticsId||newStatisticsId();
+ const first=statisticsRound(saved.firstResult,saved.candidateParties),second=statisticsRound(saved.secondResult,saved.candidateParties);
+ const complete=Boolean(saved.done&&(second||majority(saved.firstResult)));
+ return {id:saved.statisticsId,year:saved.electionYear||null,first,second,complete,winner:complete?(second||first)?.[0]||null:null,runoff:second?'played':majority(saved.firstResult)?'not-needed':'pending',automaticRunoff:Boolean(saved.automaticRunoff)};
+}
+function collectElectionStatistics(saved){
+ const records=(saved.electionHistory||[]).map(entry=>{
+  entry.statisticsId??=entry.statistics?.id||newStatisticsId();
+  return entry.statistics||{id:entry.statisticsId,year:entry.year,complete:true,winner:{id:entry.winner,party:entry.party,pct:null,votes:null},first:null,second:null,runoff:'unknown'};
+ });
+ const current=electionStatisticsSnapshot(saved);
+ if(current){const index=records.findIndex(row=>row.id===current.id);if(index<0)records.push(current);else records[index]=current}
+ return records;
+}
+function readElectionStatistics(){
+ try{const data=JSON.parse(gameStorage().getItem(ELECTION_STATISTICS_KEY)||'null');if(Array.isArray(data?.records))electionStatisticsCache=data.records.filter(row=>row&&typeof row.id==='string')}catch(e){}
+ return electionStatisticsCache;
+}
+function syncElectionStatistics(){
+ const records=new Map(readElectionStatistics().map(row=>[row.id,row]));
+ for(const row of collectElectionStatistics(game))records.set(row.id,row);
+ electionStatisticsCache=[...records.values()];
+ try{gameStorage().setItem(ELECTION_STATISTICS_KEY,JSON.stringify({version:1,records:electionStatisticsCache}));statisticsStorageFailed=false}catch(e){statisticsStorageFailed=true}
+ return electionStatisticsCache;
+}
+function summarizeElectionStatistics(records){
+ const completed=records.filter(row=>row.complete&&row.winner);
+ const parties=new Map();
+ for(const row of completed){const party=row.winner.party||'Não registrado';parties.set(party,(parties.get(party)||0)+1)}
+ return {completed:completed.length,firstRoundWins:completed.filter(row=>row.runoff==='not-needed').length,runoffs:completed.filter(row=>row.runoff==='played').length,parties:[...parties].sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0],'pt-BR'))};
+}
+function statisticsPlacement(row,index){
+ if(!row)return '<p class="statistics-missing">Colocação não registrada.</p>';
+ return '<div class="statistics-placement"><span class="statistics-place">'+(index+1)+'º</span><span><strong>'+esc(row.id)+'</strong><small>'+esc(row.party)+'</small></span><b>'+(Number.isFinite(row.pct)?percent(row.pct):'—')+'</b></div>';
+}
+function renderElectionStatistics(){
+ const records=syncElectionStatistics(),summary=summarizeElectionStatistics(records);
+ $('statisticsSummary').innerHTML=[['Eleições concluídas',summary.completed],['Decididas no 1º turno',summary.firstRoundWins],['Com 2º turno registrado',summary.runoffs],['Partidos vencedores',summary.parties.length]].map(([label,value])=>'<div class="statistics-metric"><strong>'+value+'</strong><span>'+label+'</span></div>').join('');
+ $('statisticsParties').innerHTML=summary.parties.length?summary.parties.map(([party,count])=>'<div class="statistics-party"><strong>'+esc(party)+'</strong><div class="statistics-party-bar" aria-hidden="true"><span style="width:'+(100*count/summary.parties[0][1])+'%"></span></div><span>'+count+' vitória'+(count===1?'':'s')+' <small>· '+percent(100*count/summary.completed)+'</small></span></div>').join(''):'<p class="statistics-missing">Conclua uma eleição para ver os partidos vencedores.</p>';
+ $('statisticsElections').innerHTML=records.length?[...records].reverse().map(row=>{
+  const label=row.year?'Eleição '+row.year:'Eleição personalizada';
+  const round=(title,placements,empty)=>'<section class="statistics-round"><h3>'+title+'</h3>'+(Array.isArray(placements)?[0,1].map(i=>statisticsPlacement(placements[i],i)).join(''):'<p class="statistics-missing">'+empty+'</p>')+'</section>';
+  return '<article class="statistics-election"><header><div><h3>'+esc(label)+'</h3><p>'+(row.complete&&row.winner?'Eleito: <strong>'+esc(row.winner.id)+'</strong> · '+esc(row.winner.party):'1º turno registrado · eleição ainda sem resultado final')+'</p></div><span class="statistics-badge">'+(row.automaticRunoff?'2º turno automático':row.complete?'Concluída':'Parcial')+'</span></header><div class="statistics-rounds">'+round('1º turno',row.first,'As colocações deste turno não foram salvas no histórico antigo.')+round('2º turno',row.second,row.runoff==='not-needed'?'Não houve segundo turno: eleição decidida no primeiro.':row.runoff==='pending'?'Resultado ainda não registrado.':'As colocações deste turno não foram salvas no histórico antigo.')+'</div></article>';
+ }).join(''):'<div class="statistics-empty"><h3>Seu histórico começa na primeira apuração</h3><p>Os dois primeiros colocados de cada turno aparecerão aqui. Os resultados continuam disponíveis ao iniciar outra partida.</p></div>';
+ $('statisticsStorageNote').textContent=statisticsStorageFailed?'Não foi possível salvar as estatísticas neste navegador. Os dados estão disponíveis apenas nesta sessão.':'Resultados fictícios das suas partidas. No modo visitante, ficam neste dispositivo; com login, acompanhe a sincronização em Minha conta. Cada eleição conta uma vitória final por partido. Históricos antigos podem ter dados incompletos.';
+}
+function openElectionStatistics(trigger){
+ statisticsTrigger=trigger||document.activeElement;
+ renderElectionStatistics();persist();
+ $('statisticsOverlay').classList.remove('hidden');$('statisticsOverlay').scrollTop=0;$('statisticsTitle').focus();
+}
+function closeElectionStatistics(){
+ $('statisticsOverlay').classList.add('hidden');
+ if(statisticsTrigger?.isConnected)statisticsTrigger.focus();statisticsTrigger=null;
 }
 function renderElectionHistory(){
  const history=[...(game.electionHistory||[])].sort((a,b)=>Number(b.year)-Number(a.year));
@@ -474,23 +563,32 @@ const LULA_2022_BY_UF={
  PB:66.62,PR:37.60,PE:66.93,PI:76.86,RJ:43.47,RN:65.10,
  RS:43.65,RO:29.34,RR:23.92,SC:30.73,SP:44.76,SE:67.21,TO:51.36
 };
-// A non-stacking, forward-only penalty follows regional/axis concentration.
+// Concentration adds 0.1 inside its area and penalizes unboosted states outside.
+// Regional and axis effects never stack or change influence already earned.
 function multiplierLevel(id,uf){return Math.max(0,Math.min(4,Number(game?.multiplierLevels?.[uf]?.[id]||0)))}
 function stateAxis(region){return region==='Norte'||region==='Nordeste'?'Norte + Nordeste':'Sul + Sudeste + Centro-Oeste'}
 function concentrationStatus(id,extraUF=null){
  const boosted=STATES.filter(s=>multiplierLevel(id,s.uf)>0||s.uf===extraUF);
  if(!boosted.length)return {active:false,kind:null,count:0,area:null};
- if(boosted.length>=3&&boosted.every(s=>s.region===boosted[0].region))
-  return {active:true,kind:'region',count:boosted.length,area:boosted[0].region};
  if(boosted.length>=6&&boosted.every(s=>stateAxis(s.region)===stateAxis(boosted[0].region)))
   return {active:true,kind:'axis',count:boosted.length,area:stateAxis(boosted[0].region)};
+ if(boosted.length>=3&&boosted.every(s=>s.region===boosted[0].region))
+  return {active:true,kind:'region',count:boosted.length,area:boosted[0].region};
  return {active:false,kind:null,count:boosted.length,area:null};
 }
-function affinityMultiplier(id,uf){
- const level=multiplierLevel(id,uf);
- return level?1+level*.25:(concentrationStatus(id).active?.9:1);
+function concentrationPenalty(concentration,uf){
+ return concentration.active&&(concentration.kind==='axis'?stateAxis(byUF[uf].region):byUF[uf].region)!==concentration.area;
 }
-function stateMultiplierCost(id,uf){return 150000+50000*multiplierLevel(id,uf)}
+function concentratedMultiplier(level,concentration,uf){
+ const base=1+level*.25;
+ if(!concentration.active)return base;
+ if(concentrationPenalty(concentration,uf))return level?base:.9;
+ return Math.round((base+.1)*100)/100;
+}
+function affinityMultiplier(id,uf){return concentratedMultiplier(multiplierLevel(id,uf),concentrationStatus(id),uf)}
+function multiplierAfterPromise(id,uf){return concentratedMultiplier(Math.min(4,multiplierLevel(id,uf)+1),concentrationStatus(id,uf),uf)}
+function roundedStateCost(uf,factor){return Math.round(localCost(byUF[uf])*factor/5000)*5000}
+function stateMultiplierCost(id,uf){return Math.max(40000,roundedStateCost(uf,[.8,1.1,1.5,2][Math.min(3,multiplierLevel(id,uf))]))}
 function multiplierReason(id,national,uf){
  if(national)return 'O Programa Nacional foi removido. Utilize promessas estaduais.';
  if(!game||game.done||game.pendingSecond||!game.active.includes(id))return 'A campanha não está ativa.';
@@ -506,7 +604,7 @@ function buyMultiplier(id,national,uf){
  game.multiplierLevels[uf]??={};
  game.multiplierLevels[uf][id]=multiplierLevel(id,uf)+1;
  const concentration=concentrationStatus(id);
- addLog(who(id).short+' · Promessa estadual em '+byUF[uf].name+': +×0,25 por '+money(cost)+'.'+(concentration.active?' Concentração: ×0,9 nas UFs sem bônus.':''));
+ addLog(who(id).short+' · Promessa estadual em '+byUF[uf].name+': +×0,25 por '+money(cost)+'.'+(concentration.active?' Concentração: +×0,1 na área concentrada; ×0,9 '+(concentration.kind==='axis'?'somente nas UFs do outro eixo.':'somente nas UFs de outras regiões.'):''));
  return {targets:[uf],cost};
 }
 function legacyMultiplier(id,uf){
@@ -554,9 +652,9 @@ function partyIcon(id,person=null){
 const REGIONS=['Norte','Nordeste','Centro-Oeste','Sudeste','Sul'];
 const CARTO={RR:[4,1],AP:[8,1],AM:[3,3],PA:[7,3],AC:[1,5],RO:[3,5],TO:[7,6],MA:[9,3],PI:[10,4],CE:[12,3],RN:[14,3],PB:[14,4],PE:[13,5],AL:[14,6],SE:[14,7],BA:[11,7],MT:[5,7],GO:[7,9],DF:[8,8],MS:[5,10],MG:[10,10],ES:[12,10],RJ:[11,11],SP:[8,11],PR:[8,12],SC:[8,13],RS:[7,14]};
 const COLORS=['#ff7898','#f2ba62','#74c7fa','#ad90ff','#58e4c4','#b2d978','#ff9874','#d9a4ea','#f59cc8','#6ccac9','#d7b4ff','#a5d68a','#8ecbff','#f0a98b','#b09df0','#dacc75','#bc9e94','#80d8a1','#b9cee5','#edca9e','#afbecf','#9de3cf','#eab9a4'];
-const START_CASH=250000;
-const STATE_LEAD_BONUS=50000;
-const BASE_INCOME=250000, MAX_LOCAL=10, MAX_ROUND=2, RESERVE=10;
+const START_CASH=350000;
+const STATE_LEAD_BONUS=20000, STATE_INCOME_MIN_INFLUENCE=3;
+const BASE_INCOME=300000, MAX_LOCAL=10, MAX_ROUND=2, RESERVE=10;
 const SUPPORT_COSTS=[1000000,2000000,4000000], MAX_SUPPORTS=SUPPORT_COSTS.length, MAX_SUPPORTS_PER_ROUND=1;
 const byUF=Object.fromEntries(STATES.map(s=>[s.uf,s]));const $=id=>document.getElementById(id);
 const totalValid=STATES.reduce((a,s)=>a+s.valid,0);
@@ -629,14 +727,14 @@ function roundInvestmentLimitReached(id,uf){
  // Only the final round of either electoral phase lifts this per-round cap.
  return game.round<game.maxRounds && game.localUsed[uf][id]>=MAX_ROUND;
 }
-const PRESIDENT_BONUS=100000;
+const PRESIDENT_BONUS=75000;
 function thirdConsecutiveAttempt(id,year,history=[]){
  return Boolean(year)&&[4,8].every(offset=>history.some(entry=>Number(entry.year)===Number(year)-offset&&entry.winner===id));
 }
 function presidencyAdjustment(id,year,history){return thirdConsecutiveAttempt(id,year,history)?-100000:PRESIDENT_BONUS}
 function presidentBonus(id){return game.incumbent===id?presidencyAdjustment(id,game.electionYear,game.electionHistory):0}
 function projectionHeading(){return (game.electionYear?game.electionYear+' · ':'')+(game.phase===1?'Projeção nacional · votos válidos':'Segundo turno · votos válidos')}
-function income(id){return BASE_INCOME+STATE_LEAD_BONUS*STATES.filter(s=>leader(s)===id).length+presidentBonus(id)}
+function income(id){return BASE_INCOME+STATE_LEAD_BONUS*STATES.filter(s=>leader(s)===id&&totalInfluence(id,s.uf)>=STATE_INCOME_MIN_INFLUENCE).length+presidentBonus(id)}
 function localCost(s){return Math.round((28000+10700*Math.pow(s.weight,.76))/1000)*1000}
 function applyLocal(id,uf){const cost=localCost(byUF[uf]);
 if(game.done||game.pendingSecond||stateLockedBy(uf)||roundInvestmentLimitReached(id,uf)||totalInfluence(id,uf)>=MAX_LOCAL||game.cash[id]<cost)return false;
@@ -719,20 +817,21 @@ function buySupport(target,source){
  return {...offer,cost};
 }
 function addLog(line){game.log.unshift((game.phase===1?'1º':'2º')+' turno · rodada '+game.round+' · '+line);game.log=game.log.slice(0,6)}
-function persist(){if(!game)return;try{localStorage.setItem('rumo_ao_planalto_v8',JSON.stringify({game,selectedUF,mapMode}))}catch(e){}}
-function restore(){try{const o=JSON.parse(localStorage.getItem('rumo_ao_planalto_v8')||'null');if([8,9,10,11,12,13,14,15].includes(o?.game?.version)&&o.game.localTotal&&Array.isArray(o.game.active)&&o.game.all?.length>=2&&o.game.all?.length<=MAX_CANDIDATES){game=o.game;normalizePartyContext(game);ensureMultiplierLevels();ensureLocalInfluence();game.version=15;game.roundsPerTurn=game.roundsPerTurn||game.maxRounds;game.supportsEnabled=game.supportsEnabled!==false;game.eliminatedCandidates=game.eliminatedCandidates||[];game.supportDeals=game.supportDeals||{};game.supportLocks=game.supportLocks||{};if(game.phase===2){game.supportInfluence=game.supportInfluence||makeUses(game.active);game.supportRoundPurchases=game.supportRoundPurchases||Object.fromEntries(game.active.map(id=>[id,0]));game.supportPriority=game.supportPriority===undefined?supportPriorityCandidate():game.supportPriority;game.supportPriorityResolved=game.supportPriorityResolved===undefined?true:game.supportPriorityResolved}selectedUF=byUF[o.selectedUF]?o.selectedUF:'SP';mapMode=o.mapMode==='carto'?'carto':'geo';return true}}catch(e){}return false}
+function gameStorage(){return globalThis.PlanaltoSave?.storage||localStorage}
+function persist(){if(!game)return;syncElectionStatistics();try{gameStorage().setItem('rumo_ao_planalto_v8',JSON.stringify({game,selectedUF,mapMode}))}catch(e){}}
+function restore(){try{const o=JSON.parse(gameStorage().getItem('rumo_ao_planalto_v8')||'null');if([8,9,10,11,12,13,14,15].includes(o?.game?.version)&&o.game.localTotal&&Array.isArray(o.game.active)&&o.game.all?.length>=2&&o.game.all?.length<=MAX_CANDIDATES){game=o.game;normalizePartyContext(game);ensureMultiplierLevels();ensureLocalInfluence();game.version=15;game.roundsPerTurn=game.roundsPerTurn||game.maxRounds;game.supportsEnabled=game.supportsEnabled!==false;game.eliminatedCandidates=game.eliminatedCandidates||[];game.supportDeals=game.supportDeals||{};game.supportLocks=game.supportLocks||{};if(game.phase===2){game.supportInfluence=game.supportInfluence||makeUses(game.active);game.supportRoundPurchases=game.supportRoundPurchases||Object.fromEntries(game.active.map(id=>[id,0]));game.supportPriority=game.supportPriority===undefined?supportPriorityCandidate():game.supportPriority;game.supportPriorityResolved=game.supportPriorityResolved===undefined?true:game.supportPriorityResolved}selectedUF=byUF[o.selectedUF]?o.selectedUF:'SP';mapMode=o.mapMode==='carto'?'carto':'geo';persist();return true}}catch(e){}return false}
 function toast(msg){$('toast').textContent=msg;$('toast').classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('show'),2600)}
 // Each opponent has a different investment strategy; nobody receives extra money or votes.
 const AI_TACTICS=[
- {id:'popular',name:'Colégios populosos'},
- {id:'revenue',name:'Arrecadação estadual'},
- {id:'closure',name:'Conquista e fechamento'},
- {id:'challenge',name:'Disputa de lideranças'},
- {id:'defense',name:'Defesa territorial'},
- {id:'efficiency',name:'Custo-benefício'},
- {id:'open',name:'Estados em aberto'},
- {id:'pressure',name:'Pressão nos rivais'},
- {id:'consolidation',name:'Consolidação de base'}
+ {id:'popular',name:'Colégios populosos',attack:1,debate:1.15,defend:.9,strategyBudget:0},
+ {id:'revenue',name:'Arrecadação estadual',attack:.85,debate:1,defend:1,strategyBudget:-.06},
+ {id:'closure',name:'Conquista e fechamento',attack:1.1,debate:1.2,defend:1,strategyBudget:.02},
+ {id:'challenge',name:'Disputa de lideranças',attack:1.15,debate:1.4,defend:.8,strategyBudget:.06},
+ {id:'defense',name:'Defesa territorial',attack:.8,debate:1,defend:1.6,strategyBudget:-.04},
+ {id:'efficiency',name:'Custo-benefício',attack:1,debate:1,defend:1,strategyBudget:-.08},
+ {id:'open',name:'Estados em aberto',attack:.8,debate:1.25,defend:.75,strategyBudget:-.06},
+ {id:'pressure',name:'Pressão nos rivais',attack:1.5,debate:1.1,defend:.7,strategyBudget:.1},
+ {id:'consolidation',name:'Consolidação de base',attack:.9,debate:1.1,defend:1.35,strategyBudget:-.02}
 ];
 function drawAIStrategies(rivals){
  const result={};let pool=[];
@@ -754,9 +853,9 @@ function aiTactic(id){
  return AI_TACTICS[index<0?0:index%AI_TACTICS.length];
 }
 // A rival keeps its assigned personality but reacts to the national margin and deadline.
-// Easy is intentionally left on its existing fixed-tactic policy.
+// Every finalist adapts in the runoff, including beginners and AI-only elections.
 function aiCampaignPlan(id){
- if(game.difficulty==='easy')return null;
+ if(game.difficulty==='easy'&&game.phase!==2)return null;
  const projection=nationalResult(),mine=projection.tally[id]||0;
  const strongest=Math.max(0,...game.active.filter(candidate=>candidate!==id).map(candidate=>projection.tally[candidate]||0));
  const margin=projection.totalValid?100*(mine-strongest)/projection.totalValid:0;
@@ -780,7 +879,7 @@ function aiPriority(id,state,tactic,cost,plan=null){
  const simulatedReward=affinityMultiplier(id,uf);
  values[id]++;
  game.localInfluence[uf][id]+=simulatedReward;
- const nextLeader=leader(state),afterShares=shares(state);
+ const nextLeader=leader(state),afterShares=shares(state),nextInfluence=totalInfluence(id,uf);
  const lockNext=totalInfluence(id,uf)>=MAX_LOCAL?1:0;
  values[id]--;
  game.localInfluence[uf][id]-=simulatedReward;
@@ -801,7 +900,11 @@ function aiPriority(id,state,tactic,cost,plan=null){
    priority=5.2*voteEfficiency+0.35*capture+0.2*lockNext+0.2*progress;
    break;
   case 'revenue':
-   priority=1.8*voteEfficiency+4.2*capture+2.4*affordability
+   // Reward securing an income-producing lead, plus progress toward eligibility.
+   const earnsBefore=previousLeader===id&&mine>=STATE_INCOME_MIN_INFLUENCE;
+   const earnsAfter=nextLeader===id&&nextInfluence>=STATE_INCOME_MIN_INFLUENCE;
+   const revenueProgress=Math.max(0,Math.min(STATE_INCOME_MIN_INFLUENCE,nextInfluence)-Math.min(STATE_INCOME_MIN_INFLUENCE,mine));
+   priority=1.8*voteEfficiency+4.2*Number(earnsAfter&&!earnsBefore)+2.4*affordability*revenueProgress
      -1.2*contested*(1-canOvertake)-0.22*progress;
    break;
   case 'closure':
@@ -853,20 +956,28 @@ function aiPriority(id,state,tactic,cost,plan=null){
 function aiPlay(id){
  const tactic=aiTactic(id),plan=aiCampaignPlan(id);
  let actions=0;
- // Keep the beginner's existing policy. Normal and Experienced adapt spending
- // to the result and spend all usable campaign cash near the deadline.
+ // First-round beginners retain their fixed policy; all finalists commit their
+ // usable cash near the deadline and keep at most a small reserve before then.
  let factor=game.phase===2?1:game.difficulty==='easy'?.58:game.difficulty==='hard'?.95:.83;
  if(plan){
   const rates={
-   defend:game.phase===2?(plan.expert?.90:.82):(plan.expert?.78:.68),
-   contest:game.phase===2?(plan.expert?.98:.93):(plan.expert?.93:.86),
+   defend:game.phase===2?(plan.expert?.98:.95):(plan.expert?.78:.68),
+   contest:game.phase===2?1:(plan.expert?.93:.86),
    comeback:plan.expert?1:.98,
    sprint:1
   };
   factor=rates[plan.posture];
   if(plan.posture==='comeback'&&game.phase===2)factor=1;
  }
- const reserveCash=game.cash[id]*(1-factor);
+ const saving=aiSavingsReserve(id);
+ // Fulfil promised investments before evaluating unrelated opportunities.
+ const commitment=aiPromiseCommitment(id);
+ while(commitment&&commitment.remaining>0&&!roundInvestmentLimitReached(id,commitment.uf)&&game.cash[id]>=localCost(byUF[commitment.uf])+saving){
+  if(!applyLocal(id,commitment.uf))break;
+  commitment.remaining--;actions++;
+ }
+ aiPromiseCommitment(id);
+ const reserveCash=Math.max(saving,game.cash[id]*(1-factor));
  const actionCap=!plan?(game.round===game.maxRounds?MAX_LOCAL*STATES.length:game.phase===2?MAX_LOCAL*STATES.length:12)
   :plan.posture==='defend'&&game.phase===1?12
    :plan.posture==='contest'&&game.phase===1?(plan.expert?18:15)
@@ -886,64 +997,164 @@ function aiPlay(id){
  }
  return actions;
 }
-// Budget-aware multiplier purchases: an AI invests in the value of its own
-// upcoming paid actions rather than receiving any free permanent bonus.
-function aiMultiplierValue(id,uf){
- const raw=Number(game.localTotal[uf][id]||0);
- if(stateLockedBy(uf)||multiplierLevel(id,uf)>=4||raw>=MAX_LOCAL)return 0;
- const current=affinityMultiplier(id,uf),remaining=Math.max(0,game.maxRounds-game.round);
- const slotsNow=game.round===game.maxRounds?MAX_LOCAL-raw:Math.max(0,MAX_ROUND-(game.localUsed[uf]?.[id]||0));
- const futureActions=Math.min(MAX_LOCAL-raw,3,slotsNow+Math.min(remaining,2)*MAX_ROUND);
- if(futureActions<=0)return 0;
- const earned=totalInfluence(id,uf),nextMultiplier=1+(multiplierLevel(id,uf)+1)*.25;
- let value=Math.max(0,Math.min(MAX_LOCAL,earned+futureActions*nextMultiplier)-Math.min(MAX_LOCAL,earned+futureActions*current))*byUF[uf].valid;
- const before=concentrationStatus(id).active,after=concentrationStatus(id,uf).active;
- if(before!==after)for(const other of STATES){
-  if(other.uf===uf||multiplierLevel(id,other.uf)>0||stateLockedBy(other.uf))continue;
-  const actions=game.localTotal[other.uf]?.[id]||0;
-  if(actions>=MAX_LOCAL)continue;
-  value+=(after?-1:1)*Math.min(2,MAX_LOCAL-actions)*.1*other.valid;
- }
- return value;
+// Plans are ordinary save data. Revalidate them against the current turn and map.
+function aiPromiseCommitment(id){
+ const plan=game.aiPromisePlans?.[id];
+ if(!plan)return null;
+ if(plan.phase!==game.phase||!byUF[plan.uf]||plan.remaining<=0||stateLockedBy(plan.uf)||totalInfluence(id,plan.uf)>=MAX_LOCAL){delete game.aiPromisePlans[id];return null}
+ return plan;
 }
-function aiImproveMultipliers(id){
- if(game.done||game.pendingSecond)return 0;
- let purchases=0;
- for(let step=0;step<2;step++){
-  const reserve=game.round===game.maxRounds?0:game.phase===2?120000:180000,choices=[];
-  for(const state of STATES){
-   const uf=state.uf;
-   if(stateLockedBy(uf)||multiplierLevel(id,uf)>=4||(game.localTotal[uf][id]||0)===0)continue;
-   const cost=stateMultiplierCost(id,uf),value=aiMultiplierValue(id,uf);
-   if(game.cash[id]>=cost+reserve&&value>0)choices.push({uf,cost,score:value/cost});
-  }
-  choices.sort((a,b)=>b.score-a.score||a.cost-b.cost);
-  const best=choices[0];
-  if(!best||!Number.isFinite(best.score)||best.score<=0||!buyMultiplier(id,false,best.uf))break;
-  purchases++;
+function aiPromiseReserve(id){
+ const plan=aiPromiseCommitment(id);if(!plan)return 0;
+ const slots=game.round===game.maxRounds?MAX_LOCAL:Math.max(0,MAX_ROUND-(game.localUsed[plan.uf]?.[id]||0));
+ return Math.min(plan.remaining,slots)*localCost(byUF[plan.uf]);
+}
+function aiBestInvestment(id,available=game.cash[id],future=false){
+ let best=null;
+ for(const state of STATES){
+  const uf=state.uf,cost=localCost(state);
+  if(stateLockedBy(uf)||(!future&&roundInvestmentLimitReached(id,uf))||cost>available)continue;
+  const influence=totalInfluence(id,uf),gain=Math.min(MAX_LOCAL-influence,affinityMultiplier(id,uf));
+  if(gain<=0)continue;
+  const swing=aiVoteSwing(id,uf,{[id]:gain});
+  const score=swing/cost;
+  if(score>0&&(!best||score>best.score))best={uf,cost,score};
  }
- return purchases;
+ return best;
+}
+function aiSupportChoice(id){
+ const cost=nextSupportCost(id);
+ if(!canUseSupports()||!cost||supportRoundPurchaseCount(id)>=MAX_SUPPORTS_PER_ROUND)return null;
+ const alternative=aiBestInvestment(id,Infinity,true)?.score||0;
+ const choices=supportSources().filter(source=>!supportDeal(id,source)).map(source=>{
+  const offer=supportOffer(id,source);
+  const swing=Object.entries(offer.allocations).reduce((sum,[uf,points])=>sum+aiVoteSwing(id,uf,{[id]:points}),0);
+  return {type:'support',source,cost,score:swing/cost};
+ }).filter(choice=>choice.score>0&&choice.score>=alternative*1.1);
+ choices.sort((a,b)=>b.score-a.score||a.source.localeCompare(b.source));
+ return choices[0]||null;
+}
+function aiInterferenceChoice(id){
+ if(!game.strategiesEnabled||id!==game.incumbent||game.strategyEvents?.some(e=>e.phase===game.phase&&e.id===id&&e.type==='interference'))return null;
+ const projection=nationalResult(),mine=projection.ranked.find(r=>r.id===id),rival=projection.ranked.find(r=>r.id!==id);
+ const margin=(mine?.pct||0)-(rival?.pct||0),remaining=game.maxRounds-game.round;
+ const future=STATES.some(s=>!stateLockedBy(s.uf)&&totalInfluence(id,s.uf)<MAX_LOCAL);
+ const direction=margin>4?'advance':'delay';
+ if(direction==='advance'?(remaining<2||!rival?.votes):(margin>0||remaining>3||!future))return null;
+ const cost=campaignStrategyCost('interference',direction);
+ return {type:'interference',source:direction,cost,score:totalValid*(direction==='advance'?margin/100:.02)/cost};
+}
+function aiSavingsPlan(id){
+ game.aiSavingsPlans??={};
+ if(game.done||game.pendingSecond||game.lastChancePending){delete game.aiSavingsPlans[id];return null}
+ const cash=game.cash[id],remaining=game.maxRounds-game.round;
+ const choices=[aiSupportChoice(id),aiInterferenceChoice(id)].filter(Boolean).filter(choice=>{
+  const wait=Math.ceil(Math.max(0,choice.cost-cash)/Math.max(1,income(id)*.7));
+  const deadline=choice.type==='interference'&&choice.source==='advance'?remaining-2:remaining;
+  return wait<=Math.min(3,deadline);
+ });
+ choices.sort((a,b)=>b.score-a.score);
+ const goal=choices[0];
+ if(!goal){delete game.aiSavingsPlans[id];return null}
+ const previous=game.aiSavingsPlans[id];
+ if(previous?.phase===game.phase&&previous.round===game.round&&previous.type===goal.type&&previous.source===goal.source&&previous.cost===goal.cost)return previous;
+ const usable=Math.max(0,cash-aiPromiseReserve(id));
+ const sameGoal=previous?.phase===game.phase&&previous.type===goal.type&&previous.source===goal.source&&previous.cost===goal.cost;
+ const carried=sameGoal?Math.min(usable,previous.reserve):0;
+ const reserve=Math.min(usable,cash>=goal.cost?goal.cost:carried+(usable-carried)*.7);
+ return game.aiSavingsPlans[id]={...goal,phase:game.phase,round:game.round,reserve};
+}
+function aiSavingsReserve(id){return aiSavingsPlan(id)?.reserve||0}
+// Buy only a financed sequence whose marginal votes repay the promise's cost.
+function aiPromiseProposal(id,uf,reserved=aiSavingsReserve(id),planning=null){
+ const state=byUF[uf],raw=game.localTotal[uf]?.[id]||0;
+ if(!raw||stateLockedBy(uf)||multiplierLevel(id,uf)>=4||roundInvestmentLimitReached(id,uf))return null;
+ const cost=stateMultiplierCost(id,uf),local=localCost(state),cash=game.cash[id]-reserved;
+ const current=affinityMultiplier(id,uf),next=multiplierAfterPromise(id,uf),influence=totalInfluence(id,uf);
+ const remaining=game.maxRounds-game.round,slots=game.round===game.maxRounds?MAX_LOCAL:MAX_ROUND-(game.localUsed[uf]?.[id]||0);
+ const horizon=Math.min(remaining,2),funds=cash-cost+(planning?.income??income(id))*horizon*.5;
+ const actions=Math.max(0,Math.min(MAX_LOCAL-raw,slots+horizon*MAX_ROUND,Math.floor(funds/local),Math.ceil((MAX_LOCAL-influence)/next)));
+ const immediate=Math.min(actions,slots);
+ if(!immediate||cash<cost+immediate*local)return null;
+ const beforePoints=Math.min(MAX_LOCAL-influence,actions*current),afterPoints=Math.min(MAX_LOCAL-influence,actions*next);
+ let value=aiVoteSwing(id,uf,{[id]:afterPoints})-aiVoteSwing(id,uf,{[id]:beforePoints});
+ // Count concentration effects only on existing positions we can also finance.
+ const before=concentrationStatus(id),after=concentrationStatus(id,uf);
+ let otherFunds=Math.max(0,funds-actions*local);
+ const others=STATES.filter(s=>s.uf!==uf&&game.localTotal[s.uf]?.[id]>0&&!stateLockedBy(s.uf)).sort((a,b)=>b.valid/localCost(b)-a.valid/localCost(a));
+ for(const other of others){
+  if(otherFunds<localCost(other))continue;
+  const level=multiplierLevel(id,other.uf),old=concentratedMultiplier(level,before,other.uf),updated=concentratedMultiplier(level,after,other.uf);
+  value+=aiVoteSwing(id,other.uf,{[id]:updated})-aiVoteSwing(id,other.uf,{[id]:old});
+  otherFunds-=localCost(other);
+ }
+ const alternative=planning?.alternative??(aiBestInvestment(id,cash,true)?.score||0);
+ if(value<=0||value/cost<alternative)return null;
+ return {uf,cost,value,score:value/cost,actions};
+}
+function aiMultiplierValue(id,uf){return aiPromiseProposal(id,uf)?.value||0}
+function aiImproveMultipliers(id){
+ if(game.done||game.pendingSecond||aiPromiseCommitment(id))return 0;
+ const reserved=aiSavingsReserve(id);
+ const planning={income:income(id),alternative:aiBestInvestment(id,game.cash[id]-reserved,true)?.score||0};
+ const choices=STATES.map(state=>aiPromiseProposal(id,state.uf,reserved,planning)).filter(Boolean).sort((a,b)=>b.score-a.score||a.cost-b.cost);
+ const best=choices[0];
+ if(!best||!buyMultiplier(id,false,best.uf))return 0;
+ game.aiPromisePlans??={};game.aiPromisePlans[id]={phase:game.phase,uf:best.uf,remaining:best.actions};
+ return 1;
 }
 function aiBuySupports(id){
- const cost=nextSupportCost(id);
- if(!canUseSupports()||!cost||supportRoundPurchaseCount(id)>=MAX_SUPPORTS_PER_ROUND||game.cash[id]<cost)return 0;
- const choices=supportSources().filter(source=>!supportDeal(id,source)).map(source=>({source,offer:supportOffer(id,source)})).filter(choice=>choice.offer.transferred>0&&choice.offer.estimatedVotes>0);
- if(!choices.length)return 0;
- choices.sort((a,b)=>b.offer.estimatedVotes-a.offer.estimatedVotes||b.offer.transferred-a.offer.transferred||a.source.localeCompare(b.source));
- return buySupport(id,choices[0].source)?1:0;
+ const choice=aiSupportChoice(id);
+ if(choice&&game.cash[id]>=choice.cost+aiPromiseReserve(id)&&buySupport(id,choice.source)){
+  if(game.aiSavingsPlans)delete game.aiSavingsPlans[id];
+  return 1;
+ }
+ aiSavingsPlan(id);return 0;
 }
 const CAMPAIGN_STRATEGIES={
- debate:{name:'Debate regional',cost:400000,description:'50% de chance de retirar 1 ponto do adversário e ganhar até 1 ponto.'},
- attack:{name:'Ataque ao candidato',cost:600000,description:'Retira até 2 pontos do adversário. Uma defesa bloqueia o ataque inteiro.'},
- defend:{name:'Defesa de campanha',cost:250000,description:'Bloqueia a próxima ação ofensiva de qualquer candidato neste estado, até o fim da rodada seguinte.'},
+ debate:{name:'Debate regional',costFactor:.8,description:'Cada candidato lança 2 dados. A maior soma vence e recebe até 1 ponto do perdedor. Empates favorecem o candidato desafiado.'},
+ attack:{name:'Ataque ao candidato',costFactor:1.25,description:'Cada candidato lança 2 dados. Se o atacante vencer, o alvo perde até 2 pontos; se perder ou empatar, o atacante perde até 1 ponto.'},
+ defend:{name:'Defesa de campanha',costFactor:1,description:'Concede 1 dado extra ao defender o próximo ataque ou debate neste estado. Consumida na disputa; expira ao fim da rodada seguinte.'},
  interference:{name:'Interferência nas eleições',cost:500000,description:'Exclusiva da presidência: antecipa (R$ 1 milhão) a apuração para o fim da próxima rodada ou adia (R$ 500 mil) a apuração do turno atual em 4 rodadas. A antecipação só é permitida até a antepenúltima rodada. Não altera o ano da eleição nem a duração dos próximos turnos.'}
 };
-function campaignStrategyCost(type,direction){return type==='interference'?(direction==='advance'?1000000:500000):CAMPAIGN_STRATEGIES[type]?.cost}
+function campaignStrategyCost(type,direction,uf){return type==='interference'?(direction==='advance'?1000000:500000):roundedStateCost(uf,CAMPAIGN_STRATEGIES[type]?.costFactor)}
 function strategyKey(id,uf){return JSON.stringify([id,uf])}
+function campaignDefenseActive(id,uf){return (game.strategyDefenses?.[strategyKey(id,uf)]||0)>=game.round}
+function rollCampaignDice(count){return Array.from({length:count},()=>1+Math.floor(Math.random()*6))}
+function campaignDuelChanges(type,id,target,uf,attackerWins){
+ if(type==='attack')return attackerWins?{[target]:-Math.min(2,totalInfluence(target,uf))}:{[id]:-Math.min(1,totalInfluence(id,uf))};
+ const winner=attackerWins?id:target,loser=attackerWins?target:id;
+ const points=Math.min(1,totalInfluence(loser,uf),MAX_LOCAL-totalInfluence(winner,uf));
+ return {[loser]:-points,[winner]:points};
+}
+function campaignDiceWinChance(defended){
+ const sums=count=>{
+  let distribution=[1];
+  for(let die=0;die<count;die++){
+   const next=Array(distribution.length+6).fill(0);
+   distribution.forEach((ways,sum)=>{for(let face=1;face<=6;face++)next[sum+face]+=ways});distribution=next;
+  }
+  return distribution;
+ };
+ const attack=sums(2),defense=sums(defended?3:2);
+ let wins=0;attack.forEach((ways,sum)=>{for(let other=0;other<sum;other++)wins+=ways*(defense[other]||0)});
+ return wins/(36*(defended?216:36));
+}
+const CAMPAIGN_DICE_CHANCES=[campaignDiceWinChance(false),campaignDiceWinChance(true)];
+function resolveCampaignDuel(type,id,target,uf){
+ const defenseUsed=campaignDefenseActive(target,uf);
+ const attackerDice=rollCampaignDice(2),defenderDice=rollCampaignDice(defenseUsed?3:2);
+ const attackerTotal=attackerDice.reduce((sum,n)=>sum+n,0),defenderTotal=defenderDice.reduce((sum,n)=>sum+n,0);
+ const attackerWins=attackerTotal>defenderTotal,winner=attackerWins?id:target;
+ if(defenseUsed)delete game.strategyDefenses[strategyKey(target,uf)];
+ const changes=campaignDuelChanges(type,id,target,uf,attackerWins);
+ for(const [candidate,points] of Object.entries(changes))if(points)changeStrategyInfluence(candidate,uf,points);
+ return {attackerDice,defenderDice,attackerTotal,defenderTotal,defenseUsed,winner,tied:attackerTotal===defenderTotal};
+}
 function strategyReason(id,type,uf,target){
  const action=CAMPAIGN_STRATEGIES[type];
  if(!game.strategiesEnabled||game.done||game.pendingSecond||!game.active.includes(id)||!byUF[uf]||!action)return 'Estratégias indisponíveis.';
- if(game.cash[id]<campaignStrategyCost(type,target))return 'Saldo insuficiente.';
+ if(game.cash[id]<campaignStrategyCost(type,target,uf))return 'Saldo insuficiente.';
  if(type==='interference'){
   if(id!==game.incumbent)return 'Apenas o atual representante da presidência pode usar esta estratégia.';
   if(!['advance','delay'].includes(target))return 'Escolha antecipar ou adiar a apuração.';
@@ -983,8 +1194,8 @@ function buyCampaignStrategy(id,type,uf,target){
 
  const before=Object.fromEntries(game.active.map(candidate=>[candidate,totalInfluence(candidate,uf)]));
  game.strategyUses??={};game.strategyRounds??={};game.strategyDefenses??={};game.strategyAttacks??={};
- game.cash[id]-=campaignStrategyCost(type,target);game.strategyUses[id]=(game.strategyUses[id]||0)+1;game.strategyRounds[id]=game.round;
- let outcome='',nationalPenalty=null;
+ game.cash[id]-=campaignStrategyCost(type,target,uf);game.strategyUses[id]=(game.strategyUses[id]||0)+1;game.strategyRounds[id]=game.round;
+ let outcome='',nationalPenalty=null,duel=null;
  if(type==='interference'){
   nationalPenalty=interferencePenalty(id);
   for(const item of nationalPenalty.allocations)changeStrategyInfluence(id,item.uf,-item.points);
@@ -993,19 +1204,113 @@ function buyCampaignStrategy(id,type,uf,target){
   const previous=game.maxRounds;game.maxRounds=interferenceDeadline(target);
   outcome='apuração '+(target==='advance'?'antecipada':'adiada')+' da rodada '+previous+' para a rodada '+game.maxRounds+'; projeção de '+percent(nationalPenalty.before)+' para '+percent(nationalPenalty.after)+' (−'+fmtInvestment(nationalPenalty.loss)+' p.p.)';
  }
- else if(type==='defend'){game.strategyDefenses[strategyKey(id,uf)]=game.round+1;outcome='proteção ativada';}
+ else if(type==='defend'){game.strategyDefenses[strategyKey(id,uf)]=game.round+1;outcome='defesa ativada: um dado extra na próxima disputa';}
  else{
   const key=strategyKey(target,uf);game.strategyAttacks[key]=game.round;
-  if((game.strategyDefenses[key]||0)>=game.round){delete game.strategyDefenses[key];outcome='bloqueado pela defesa de '+target;}
-  else if(type==='debate'&&Math.random()>=.5)outcome='debate sem mudança de influência';
-  else{const lost=changeStrategyInfluence(target,uf,type==='attack'?-2:-1);if(type==='debate')changeStrategyInfluence(id,uf,lost);outcome=target+' perdeu '+lost+' ponto(s)';}
+  duel=resolveCampaignDuel(type,id,target,uf);
+  outcome=duel.winner+' venceu nos dados ('+duel.attackerTotal+' a '+duel.defenderTotal+(duel.tied?'; empate favorece o defensor':'')+')';
  }
  addLog(id+' · '+CAMPAIGN_STRATEGIES[type].name+(type==='interference'?' em todo o país':' em '+byUF[uf].name)+': '+outcome+'.');
  game.strategyEvents??=[];
- game.strategyEvents.push({phase:game.phase,round:game.round,id,type,uf,target,outcome,nationalPenalty,effects:nationalPenalty?nationalPenalty.allocations.map(item=>({id,uf:item.uf,points:-item.points})):game.active.map(candidate=>({id:candidate,points:totalInfluence(candidate,uf)-before[candidate]})).filter(effect=>effect.points!==0)});
+ game.strategyEvents.push({phase:game.phase,round:game.round,id,type,uf,target,outcome,nationalPenalty,duel,effects:nationalPenalty?nationalPenalty.allocations.map(item=>({id,uf:item.uf,points:-item.points})):game.active.map(candidate=>({id:candidate,points:totalInfluence(candidate,uf)-before[candidate]})).filter(effect=>effect.points!==0)});
  return true;
 }
 function strategyRoundEvents(phase,round){return (game.strategyEvents||[]).filter(event=>event.phase===phase&&event.round===round)}
+function campaignDiePips(value){
+ const pips={1:[5],2:[1,9],3:[1,5,9],4:[1,3,7,9],5:[1,3,5,7,9],6:[1,3,4,6,7,9]};
+ return Array.from({length:9},(_,i)=>'<i aria-hidden="true"'+(pips[value]?.includes(i+1)?' class="is-pip"':'')+'></i>').join('');
+}
+function campaignDieMarkup(value,extra=false){
+ return '<span class="campaign-die'+(extra?' is-extra':'')+(value==null?' is-pending':'')+'" role="img" aria-label="Dado'+(extra?' extra de defesa':'')+': '+(value??'aguardando lançamento')+'">'+campaignDiePips(value)+'</span>';
+}
+function campaignDuelSummary(event){
+ const duel=event.duel;
+ return '<div class="campaign-dice-summary"><span>'+esc(who(event.id).short)+': <b>'+duel.attackerDice.join(' + ')+' = '+duel.attackerTotal+'</b></span><span>'+esc(who(event.target).short)+': <b>'+duel.defenderDice.join(' + ')+' = '+duel.defenderTotal+'</b>'+(duel.defenseUsed?' · dado extra de defesa':'')+'</span></div>';
+}
+let campaignDuelTimer=null;
+function animateCampaignDice(duel,reveal){
+ const dice=[...$('campaignDuelBoard').querySelectorAll('.campaign-die')];
+ const totals=[...$('campaignDuelBoard').querySelectorAll('.campaign-duel-total')];
+ const values=[...duel.attackerDice,...duel.defenderDice],settled=[0,0],sums=[0,0];
+ // Alternate candidates; the extra defense die is the last reveal.
+ const order=[0,2,1,3,...(duel.defenseUsed?[4]:[])];
+ const reduced=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ const settle=index=>{
+  const die=dice[index],side=index<2?0:1;
+  die.innerHTML=campaignDiePips(values[index]);
+  die.classList.remove('is-pending','is-tumbling');die.classList.add('is-settled');
+  die.setAttribute('aria-label','Dado'+(index===4?' extra de defesa':'')+': '+values[index]);
+  sums[side]+=values[index];settled[side]++;
+  totals[side].querySelector('strong').textContent=sums[side];
+  totals[side].querySelector('span').textContent=settled[side]===(side===0?2:duel.defenderDice.length)?'Soma dos dados':'Soma parcial';
+ };
+ if(reduced){order.forEach(settle);reveal();return}
+ const roll=position=>{
+  const index=order[position],die=dice[index];let frame=0;
+  const frames=position===order.length-1?11:8;
+  die.classList.remove('is-pending');die.classList.add('is-tumbling');
+  die.setAttribute('aria-label','Dado em movimento');
+  const tick=()=>{
+   // Visual cycling never consumes the gameplay random generator or rerolls the result.
+   die.innerHTML=campaignDiePips([1,4,2,6,3,5][(frame+index)%6]);
+   if(++frame<frames){campaignDuelTimer=setTimeout(tick,80);return}
+   settle(index);
+   campaignDuelTimer=setTimeout(()=>position+1<order.length?roll(position+1):reveal(),180);
+  };
+  tick();
+ };
+ roll(0);
+}
+function showCampaignDuel(event){
+ const duel=event.duel,overlay=$('campaignDuelOverlay');
+ clearTimeout(campaignDuelTimer);
+ $('strategiesOverlay').classList.add('hidden');
+ $('campaignDuelCaption').textContent=event.phase+'º turno · rodada '+event.round;
+ $('campaignDuelTitle').textContent=CAMPAIGN_STRATEGIES[event.type].name+' - '+byUF[event.uf].name;
+ $('campaignDuelRule').textContent=event.type==='debate'?'Um ponto de influência em disputa. O vencedor recebe até 1 ponto do perdedor.':'Vitória do atacante: o alvo perde até 2 pontos. Vitória do defensor: o atacante perde até 1 ponto.';
+ $('campaignDuelBoard').innerHTML=[{id:event.id,dice:duel.attackerDice,total:duel.attackerTotal,role:'Desafiante'},{id:event.target,dice:duel.defenderDice,total:duel.defenderTotal,role:'Defensor'}].map((side,index)=>
+  '<section class="campaign-duel-side'+(side.id===duel.winner?' is-winner':'')+'"><div class="campaign-duel-role">'+side.role+(side.id===game.player?' · você':'')+'</div><div class="campaign-duel-person">'+partyIcon(side.id)+'<strong>'+esc(who(side.id).short)+'</strong></div><div class="campaign-duel-dice">'+side.dice.map((value,i)=>campaignDieMarkup(null,index===1&&i===2)).join('')+'</div><div class="campaign-duel-total"><span>Soma dos dados</span><strong>—</strong></div><span class="campaign-duel-tag">'+(index===1&&duel.defenseUsed?'Defesa ativa · +1 dado':'2 dados de campanha')+'</span></section>'
+ ).join('');
+ $('campaignDuelResult').innerHTML='<strong>'+esc(who(duel.winner).short)+' venceu'+(duel.tied?' no desempate':'')+'</strong><div>'+ (event.effects.length?event.effects.map(effect=>'<span>'+esc(who(effect.id).short)+' <b class="'+(effect.points>0?'gain':'loss')+'">'+(effect.points>0?'+':'')+fmtInvestment(effect.points)+' ponto'+(Math.abs(effect.points)===1?'':'s')+'</b></span>').join(''):'<span>Nenhuma alteração de influência nesta disputa.</span>')+'</div>';
+ overlay.classList.remove('hidden');overlay.classList.add('is-rolling');
+ $('campaignDuelResult').setAttribute('aria-hidden','true');
+ $('campaignDuelContinue').disabled=true;
+ $('campaignDuelContinue').textContent='Continuar →';
+ $('campaignDuelTitle').focus();
+ const reveal=()=>{overlay.classList.remove('is-rolling');$('campaignDuelResult').removeAttribute('aria-hidden');$('campaignDuelContinue').disabled=false;$('campaignDuelContinue').focus()};
+ animateCampaignDice(duel,reveal);
+}
+function closeCampaignDuel(){
+ const overlay=$('campaignDuelOverlay');
+ if(overlay.classList.contains('hidden')||$('campaignDuelContinue').disabled)return;
+ clearTimeout(campaignDuelTimer);overlay.classList.add('hidden');
+ if(game.pendingCampaignDuels){
+  const pending=game.pendingCampaignDuels;
+  pending.index++;
+  if(pending.index<pending.events.length){persist();showPendingCampaignDuel();return}
+  delete game.pendingCampaignDuels;
+  if(pending.kind==='lastChance')finishLastChance();else finishAIRound(pending.phase,pending.round);
+  return;
+ }
+ if(!game.lastChancePending&&allStatesLocked()){concludePhase();return}
+ $('strategiesOverlay').classList.remove('hidden');renderStrategyPreview();$('strategyClose').focus();
+}
+function queueDefensiveDuels(firstEvent,kind,phase,round){
+ const events=(game.strategyEvents||[]).slice(firstEvent).filter(event=>event.duel&&event.target===game.player&&event.id!==game.player);
+ if(!events.length)return false;
+ // Persist already-resolved rolls and the deferred round transition. Reloads
+ // resume the presentation instead of running the AI or paying income twice.
+ game.pendingCampaignDuels={events,index:0,kind,phase,round};
+ persist();showPendingCampaignDuel();return true;
+}
+function showPendingCampaignDuel(){
+ const pending=game.pendingCampaignDuels;if(!pending)return;
+ $('strategySummaryOverlay').classList.add('hidden');
+ $('resultOverlay').classList.add('hidden');
+ showCampaignDuel(pending.events[pending.index]);
+ $('campaignDuelCaption').textContent+=' · Disputa '+(pending.index+1)+' de '+pending.events.length;
+ $('campaignDuelContinue').textContent=pending.index+1<pending.events.length?'Próxima disputa →':'Continuar rodada →';
+}
 function interferenceDeadline(direction){return direction==='delay'?game.maxRounds+4:game.round+1}
 function queueStrategySummary(phase,round){
  const events=strategyRoundEvents(phase,round),key=phase+':'+round;
@@ -1014,7 +1319,7 @@ function queueStrategySummary(phase,round){
  game.strategySummary={phase,round,events};return true;
 }
 function strategySummaryRows(events){
-return events.map(event=>'<article class="strategy-summary-row"><strong>'+esc(event.id)+(event.id===game.player?' · você':'')+'</strong><div>'+esc(CAMPAIGN_STRATEGIES[event.type]?.name||(event.type==='mobilize'?'Mobilização de base':event.type==='nationalPromise'?'Programa Nacional':'Estratégia anterior'))+' · '+((event.type==='interference'||event.type==='nationalPromise')?'Todo o país':esc(byUF[event.uf].name)+' ('+esc(event.uf)+')')+'</div><p>'+esc(event.outcome)+'.</p><div class="strategy-summary-effects">'+(event.effects.length?event.effects.map(effect=>'<span>'+esc(effect.id)+(effect.uf?' · '+esc(byUF[effect.uf].name)+' ('+esc(effect.uf)+')':'')+': <b>'+(effect.points>0?'+':'')+fmtInvestment(effect.points)+' ponto(s)</b></span>').join(''):'<span>Sem alteração de pontos.</span>')+'</div></article>').join('');
+return events.map(event=>'<article class="strategy-summary-row"><strong>'+esc(event.id)+(event.id===game.player?' · você':'')+'</strong><div>'+esc(CAMPAIGN_STRATEGIES[event.type]?.name||(event.type==='mobilize'?'Mobilização de base':event.type==='nationalPromise'?'Programa Nacional':'Estratégia anterior'))+' · '+((event.type==='interference'||event.type==='nationalPromise')?'Todo o país':esc(byUF[event.uf].name)+' ('+esc(event.uf)+')')+'</div>'+(event.duel?campaignDuelSummary(event):'')+'<p>'+esc(event.outcome)+'.</p><div class="strategy-summary-effects">'+(event.effects.length?event.effects.map(effect=>'<span>'+esc(effect.id)+(effect.uf?' · '+esc(byUF[effect.uf].name)+' ('+esc(effect.uf)+')':'')+': <b>'+(effect.points>0?'+':'')+fmtInvestment(effect.points)+' ponto(s)</b></span>').join(''):'<span>Sem alteração de pontos.</span>')+'</div></article>').join('');
 }
 function renderStrategySummary(){
  const summary=game.strategySummary;
@@ -1037,16 +1342,21 @@ function aiVoteSwing(id,uf,changes){
 }
 function aiCampaignStrategy(id){
  if(!game.strategiesEnabled||game.done||game.pendingSecond)return 0;
- const plan=aiCampaignPlan(id),startingCash=game.cash[id];
+ const plan=aiCampaignPlan(id),tactic=aiTactic(id),startingCash=game.cash[id];
+ const goal=aiSavingsPlan(id),promiseReserve=aiPromiseReserve(id);
+ if(goal?.type==='interference'&&game.cash[id]>=goal.cost+promiseReserve&&!strategyReason(id,'interference','SP',goal.source)){
+  if(buyCampaignStrategy(id,'interference','SP',goal.source)){delete game.aiSavingsPlans[id];return 1}
+ }
+ const reserved=(goal?.reserve||0)+promiseReserve;
  const defaultShare=game.phase===2?.65:.35;
  const sharesByPosture={
-  defend:game.phase===2?(plan?.expert?.36:.30):(plan?.expert?.27:.20),
-  contest:game.phase===2?(plan?.expert?.57:.50):(plan?.expert?.43:.35),
-  comeback:game.phase===2?(plan?.expert?.85:.78):(plan?.expert?.65:.55),
+  defend:game.phase===2?(plan?.expert?.56:.50):(plan?.expert?.27:.20),
+  contest:game.phase===2?(plan?.expert?.72:.65):(plan?.expert?.43:.35),
+  comeback:game.phase===2?(plan?.expert?.94:.88):(plan?.expert?.65:.55),
   sprint:game.phase===2?.95:.90
  };
- const budgetShare=plan?sharesByPosture[plan.posture]:defaultShare;
- const offensiveWeight=plan?.posture==='defend'?.65:plan?.posture==='comeback'?1.35:plan?.posture==='sprint'?1.65:1;
+ const budgetShare=Math.max(.15,Math.min(.95,(plan?sharesByPosture[plan.posture]:defaultShare)+tactic.strategyBudget));
+ const offensiveWeight=plan?.posture==='defend'?(game.phase===2?1:.65):plan?.posture==='comeback'?1.35:plan?.posture==='sprint'?1.65:1;
  let spent=0,used=0;
  // Reaching the per-round state cap does not mean the candidate has run out
  // of investment opportunities in future rounds.
@@ -1058,33 +1368,53 @@ function aiCampaignStrategy(id){
   const budget=plan
    ?(futureInvestments()&&!plan.late?startingCash*budgetShare:startingCash)
    :(canInvest()?startingCash*budgetShare:startingCash);
-  const available=Math.min(game.cash[id],budget-spent);
-  if(available<250000)break;
-  const choices=[];
+  const available=Math.min(game.cash[id]-reserved,budget-spent);
+  const alternative=aiBestInvestment(id,Math.max(0,game.cash[id]-reserved))?.score||0;
+  if(available<Math.min(...STATES.map(state=>campaignStrategyCost('debate',null,state.uf))))break;
+  const choices=[],opponentAlternatives={};
+  // The AI changes the deadline at most once per turn, so repeated calls or
+  // saved games cannot cause an endless cycle of postponements.
+  if(id===game.incumbent&&!game.strategyEvents?.some(event=>event.phase===game.phase&&event.id===id&&event.type==='interference')){
+   const projection=nationalResult(),mine=projection.ranked.find(row=>row.id===id);
+   const rival=projection.ranked.find(row=>row.id!==id),margin=(mine?.pct||0)-(rival?.pct||0);
+   const direction=margin>4?'advance':'delay',cost=campaignStrategyCost('interference',direction);
+   const useful=direction==='advance'?projection.totalValid>0:margin<=0&&game.maxRounds-game.round<=2&&futureInvestments();
+   if(useful&&cost<=available&&!strategyReason(id,'interference','SP',direction)){
+    choices.push({type:'interference',uf:'SP',target:direction,cost,score:totalValid*(direction==='advance'?margin/100:.02)/cost});
+   }
+  }
   for(const state of STATES){
    const uf=state.uf,mine=totalInfluence(id,uf);
    for(const target of game.active){
     if(target===id||totalInfluence(target,uf)<=0)continue;
-    // A blocked offensive action would spend money only to remove a shield.
-    if((game.strategyDefenses?.[strategyKey(target,uf)]||0)>=game.round)continue;
     for(const type of ['attack','debate']){
-     const cost=campaignStrategyCost(type);
+     const cost=campaignStrategyCost(type,null,uf);
      if(cost>available||strategyReason(id,type,uf,target))continue;
-     const lost=Math.min(type==='attack'?2:1,totalInfluence(target,uf));
-     const changes=type==='attack'?{[target]:-lost}:{[target]:-lost,[id]:Math.min(lost,MAX_LOCAL-mine)};
-     const swing=aiVoteSwing(id,uf,changes)*(type==='debate'?.5:1);
-     if(swing>0)choices.push({type,uf,target,cost,score:swing/cost*offensiveWeight});
+     const chance=CAMPAIGN_DICE_CHANCES[Number(campaignDefenseActive(target,uf))];
+     const swing=chance*aiVoteSwing(id,uf,campaignDuelChanges(type,id,target,uf,true))
+      +(1-chance)*aiVoteSwing(id,uf,campaignDuelChanges(type,id,target,uf,false));
+     if(swing>0&&swing/cost>=alternative*.95)choices.push({type,uf,target,cost,score:swing/cost*offensiveWeight*tactic[type]});
     }
    }
    // Protect high-value contested states when the opponent can afford to attack.
-   const defenseCost=campaignStrategyCost('defend');
-   if(game.phase===2&&defenseCost<=available&&mine>0&&!strategyReason(id,'defend',uf,id)){
-    const atRisk=game.active.some(target=>target!==id&&totalInfluence(target,uf)>0&&game.cash[target]>=400000);
-    if(atRisk){
-     const risk=plan?.posture==='defend'?.70:plan?.posture==='contest'?.3:.12;
-     const preventedLoss=-aiVoteSwing(id,uf,{[id]:-Math.min(2,mine)})*risk;
-     if(preventedLoss>0)choices.push({type:'defend',uf,target:id,cost:defenseCost,score:preventedLoss/defenseCost*(plan?.posture==='defend'?1.5:1)});
+   const defenseCost=campaignStrategyCost('defend',null,uf);
+   if(game.round<game.maxRounds&&defenseCost<=available&&mine>0&&!strategyReason(id,'defend',uf,id)){
+    // Value one likely incoming duel; do not sum attacks a single defense cannot cover.
+    let preventedLoss=0;
+    for(const target of game.active.filter(other=>other!==id)){
+     for(const type of ['attack','debate']){
+      const cost=campaignStrategyCost(type,null,uf);
+      if(game.cash[target]<cost)continue;
+      const win=campaignDuelChanges(type,target,id,uf,true),lose=campaignDuelChanges(type,target,id,uf,false);
+      const attackValue=CAMPAIGN_DICE_CHANCES[0]*aiVoteSwing(target,uf,win)+(1-CAMPAIGN_DICE_CHANCES[0])*aiVoteSwing(target,uf,lose);
+      const opponentAlternative=opponentAlternatives[target]??(opponentAlternatives[target]=aiBestInvestment(target)?.score||0);
+      if(attackValue<=0||attackValue/cost<opponentAlternative*.95)continue;
+      const protection=(CAMPAIGN_DICE_CHANCES[0]-CAMPAIGN_DICE_CHANCES[1])*(aiVoteSwing(id,uf,lose)-aiVoteSwing(id,uf,win));
+      preventedLoss=Math.max(preventedLoss,protection*.7);
+     }
     }
+    if(preventedLoss>0&&preventedLoss/defenseCost*tactic.defend>=alternative)
+     choices.push({type:'defend',uf,target:id,cost:defenseCost,score:preventedLoss/defenseCost*tactic.defend});
    }
   }
   choices.sort((a,b)=>b.score-a.score||a.uf.localeCompare(b.uf));
@@ -1102,23 +1432,67 @@ function beginLastChance(){
  addLog('Última chance: renda da próxima rodada recebida por todos os candidatos.');return true;
 }
 function resolveLastChance(){
+ if(game.pendingCampaignDuels)return;
+ const firstEvent=game.strategyEvents?.length||0,phase=game.phase,round=game.round;
  game.lastChancePending=false;
  for(const id of game.active.filter(id=>id!==game.player))aiCampaignStrategy(id);
  $('strategiesOverlay').classList.add('hidden');
+ if(queueDefensiveDuels(firstEvent,'lastChance',phase,round))return;
+ finishLastChance();
+}
+function finishLastChance(){
  if(allStatesLocked()){concludePhase();return}
  render();persist();toast('A disputa foi reaberta. Continue nesta rodada, sem novo pagamento de renda.');
 }
-function openStrategies(){
+let candidateActionContext=null,candidateActionTrigger=null;
+function canOpenCandidateActions(target,uf){
+ return Boolean(game?.strategiesEnabled&&!game.done&&!game.pendingSecond&&game.active.includes(game.player)&&target!==game.player&&game.active.includes(target)&&byUF[uf]);
+}
+function investmentCandidateName(id,uf){
+ const label='<i class="standing-dot" style="background:'+color(id)+'"></i><span>'+esc(who(id).short)+(id===game.player?' <small>· você</small>':'')+'</span>';
+ return canOpenCandidateActions(id,uf)
+  ?'<button type="button" class="invest-name candidate-action-trigger" data-campaign-target="'+esc(id)+'" aria-haspopup="dialog" aria-label="Debater ou atacar '+esc(who(id).short)+' em '+esc(byUF[uf].name)+'" title="Debater ou atacar neste estado">'+label+'</button>'
+  :'<div class="invest-name">'+label+'</div>';
+}
+function openCandidateActions(target,uf,trigger=null){
+ if(!canOpenCandidateActions(target,uf))return false;
+ candidateActionContext={target,uf};candidateActionTrigger=trigger;
+ $('candidateActionsTitle').textContent=who(target).short+' — '+byUF[uf].name;
+ $('candidateActionsNotice').textContent='Escolha uma ação contra este candidato. Você verá os detalhes antes de confirmar. '+(campaignDefenseActive(target,uf)?'Defesa ativa: o adversário lança 3 dados contra seus 2.':'Cada candidato lança 2 dados. Empates favorecem o defensor.');
+ $('candidateActionsOptions').innerHTML=['debate','attack'].map(type=>{
+  const reason=strategyReason(game.player,type,uf,target);
+  const description=type==='debate'?'O vencedor recebe até 1 ponto do perdedor.':'Se você vencer, o alvo perde até 2 pontos. Se perder, você perde até 1 ponto.';
+  return '<button type="button" class="candidate-action-option" data-campaign-action="'+type+'"'+(reason?' disabled':'')+'><span class="candidate-action-heading"><strong>'+CAMPAIGN_STRATEGIES[type].name+'</strong><b>'+money(campaignStrategyCost(type,null,uf))+'</b></span><span>'+description+'</span>'+(reason?'<small>'+esc(reason)+'</small>':'<small>Ver detalhes →</small>')+'</button>';
+ }).join('');
+ $('candidateActionsOverlay').classList.remove('hidden');
+ ($('candidateActionsOptions').querySelector('button:not(:disabled)')||$('candidateActionsClose')).focus();
+ return true;
+}
+function closeCandidateActions(restoreFocus=true){
+ $('candidateActionsOverlay').classList.add('hidden');candidateActionContext=null;
+ if(restoreFocus&&candidateActionTrigger?.isConnected)candidateActionTrigger.focus();
+ candidateActionTrigger=null;
+}
+function chooseCandidateAction(type){
+ const context=candidateActionContext;
+ if(!context||!['debate','attack'].includes(type)||!canOpenCandidateActions(context.target,context.uf))return false;
+ if(strategyReason(game.player,type,context.uf,context.target)){openCandidateActions(context.target,context.uf,candidateActionTrigger);return false}
+ closeCandidateActions(false);openStrategies({...context,type});return true;
+}
+function openStrategies(selection=null){
  $('strategiesOverlay').classList.remove('hidden');
  $('strategiesTitle').textContent=game.supportsEnabled?'Ações de campanha':'Estratégias de campanha';
  $('strategyTabs').hidden=!game.supportsEnabled;
  $('strategyUF').innerHTML=STATES.map(s=>'<option value="'+s.uf+'"'+(s.uf===selectedUF?' selected':'')+'>'+esc(s.name)+'</option>').join('');
  $('strategyTarget').innerHTML=game.active.filter(id=>id!==game.player).map(id=>'<option>'+esc(id)+'</option>').join('');
- $('strategyType').innerHTML=Object.entries(CAMPAIGN_STRATEGIES).filter(([key])=>key!=='interference'||game.incumbent===game.player).map(([key,a])=>'<option value="'+key+'">'+a.name+' · '+(key==='interference'?'R$ 500 mil / R$ 1 milhão':money(a.cost))+'</option>').join('');
+ $('strategyType').innerHTML=Object.entries(CAMPAIGN_STRATEGIES).filter(([key])=>key!=='interference'||game.incumbent===game.player).map(([key,a])=>'<option value="'+key+'">'+a.name+' · '+(key==='interference'?'R$ 500 mil / R$ 1 milhão':money(campaignStrategyCost(key,null,selectedUF)))+'</option>').join('');
+ if(selection){$('strategyUF').value=selection.uf;$('strategyTarget').value=selection.target;$('strategyType').value=selection.type}
  renderStrategyPreview();
+ if(selection)$('strategyConfirm').focus();
 }
 function renderStrategyPreview(){
  const type=$('strategyType').value,uf=$('strategyUF').value,target=$('strategyTarget').value,a=CAMPAIGN_STRATEGIES[type],offensive=type==='attack'||type==='debate';
+ for(const option of $('strategyType').options){const key=option.value;option.textContent=CAMPAIGN_STRATEGIES[key].name+' · '+(key==='interference'?'R$ 500 mil / R$ 1 milhão':money(campaignStrategyCost(key,null,uf)))}
  $('strategyTarget').disabled=!offensive;
  $('strategyDirectionField').hidden=type!=='interference';
  $('strategyUF').closest('.field').hidden=type==='interference';
@@ -1127,7 +1501,8 @@ function renderStrategyPreview(){
  $('strategySupports').hidden=!game.supportsEnabled;$('strategySupports').disabled=!canUseSupports();
  const id=offensive?target:game.player,before=totalInfluence(id,uf),after=type==='attack'?Math.max(0,before-2):type==='debate'?Math.max(0,before-1):before;
  const reason=strategyReason(game.player,type,uf,target);
- $('strategyPreview').textContent=a.description+' '+(type==='defend'?'':id+': '+fmtInvestment(before)+' → '+fmtInvestment(after)+' pontos'+(type==='debate'?' em caso de sucesso':'')+'. ')+(offensive?'Uma defesa ativa pode bloquear o efeito. ':'')+'Saldo: '+money(game.cash[game.player])+'. Usadas neste turno: '+(game.strategyUses?.[game.player]||0)+' (sem limite). '+reason;
+ $('strategyPreview').textContent=a.description+' '+(type==='defend'?'':id+': '+fmtInvestment(before)+' → '+fmtInvestment(after)+' pontos'+(offensive?' se você vencer':'')+'. ')+(offensive?(campaignDefenseActive(target,uf)?'Defesa ativa: o adversário joga com 3 dados contra seus 2. ':'2 dados para cada candidato. '):'')+'Saldo: '+money(game.cash[game.player])+'. Usadas neste turno: '+(game.strategyUses?.[game.player]||0)+' (sem limite). '+reason;
+ $('strategyConfirm').textContent=(offensive?'Lançar dados':'Confirmar estratégia')+' · '+money(campaignStrategyCost(type,$('strategyDirection').value,uf));
  $('strategyConfirm').disabled=Boolean(reason);
 
  $('strategyClose').textContent=game.lastChancePending?'Seguir para a apuração':'Fechar';
@@ -1140,10 +1515,11 @@ function renderStrategyPreview(){
  }
 }
 function nextTurn(){
+ if(game.pendingCampaignDuels)return;
  if(game.lastChancePending){resolveLastChance();return}
  if(game.pendingSecond){makeSecondRound();return}
  if(game.done)return;
- const endedPhase=game.phase,endedRound=game.round;
+ const endedPhase=game.phase,endedRound=game.round,firstEvent=game.strategyEvents?.length||0;
  if(game.phase===2&&game.supportPriority===game.player&&!game.supportPriorityResolved)game.supportPriorityResolved=true;
  let total=0,supports=0,strategies=0,boosts=0;
  for(const id of game.active){
@@ -1151,12 +1527,16 @@ function nextTurn(){
   if(id!==game.player){supports+=aiBuySupports(id);boosts+=aiImproveMultipliers(id);strategies+=aiCampaignStrategy(id);total+=aiPlay(id)}
  }
  addLog('As IAs executaram '+total+' investimentos, '+strategies+' estratégias e '+boosts+' promessas de campanha.'+(supports?' Também conquistaram '+supports+' apoio'+(supports===1?'':'s')+'.':''));
+ if(queueDefensiveDuels(firstEvent,'round',endedPhase,endedRound))return;
+ finishAIRound(endedPhase,endedRound);
+}
+function finishAIRound(endedPhase,endedRound){
  if(allStatesLocked()||game.round===game.maxRounds){concludePhase();return}
  for(const id of game.active)game.cash[id]+=income(id);
  game.round++;game.localUsed=makeUses(game.active);
  const prioritySupports=startSupportRound();
  queueStrategySummary(endedPhase,endedRound);render();persist();
- toast('Nova rodada: renda de R$ 250 mil + bônus por estados recebida.'+(prioritySupports?' A IA negociou um apoio com prioridade.':''));
+ toast('Nova rodada: renda de R$ 300 mil + bônus por estados recebida.'+(prioritySupports?' A IA negociou um apoio com prioridade.':''));
 }
 function concludePhase(){
  const phase=game.phase,round=game.round;
@@ -1201,7 +1581,7 @@ function makeSecondRound(automatic=false){
  // Carry each finalist's unspent first-turn balance into the runoff.
  const remainingCash=Object.fromEntries(finalists.map(id=>[id,game.cash[id]]));
  game.phase=2;game.pendingSecond=false;game.done=false;game.active=finalists;game.round=1;game.maxRounds=game.roundsPerTurn||game.maxRounds;
- game.strategyUses={};game.strategyRounds={};game.strategyDefenses={};game.strategyAttacks={};game.lastChanceUsed=false;game.lastChancePending=false;
+ game.strategyUses={};game.strategyRounds={};game.strategyDefenses={};game.strategyAttacks={};game.lastChanceUsed=false;game.lastChancePending=false;game.aiPromisePlans={};game.aiSavingsPlans={};
  game.localTotal=carried;
  game.localInfluence=copyLevels(game.localInfluence,finalists);
  game.multiplierLevels=copyLevels(game.multiplierLevels,finalists);
@@ -1355,6 +1735,10 @@ function buySelectedSupport(){
 }
 function render(){
  if(!game)return;
+ if(game.pendingCampaignDuels){
+  if($('campaignDuelOverlay').classList.contains('hidden'))showPendingCampaignDuel();
+  return;
+ }
  renderStrategySummary();
  if(game.lastChancePending&&$('strategiesOverlay').classList.contains('hidden')&&$('supportOverlay').classList.contains('hidden'))openStrategies();
  renderElectionHistory();
@@ -1379,7 +1763,7 @@ function render(){
  $('stateLimit').textContent=(game.round===game.maxRounds?'Última rodada: sem limite por estado':used+'/'+MAX_ROUND+' na rodada')+' · '+invested+' ações · '+fmtInvestment(effective)+'/10 de influência'+(supported?' · +'+fmtInvestment(supported)+' em apoios':'');
  $('myInvest').textContent=fmtInvestment(effective)+' pontos de influência ('+invested+' ações realizadas'+(supported?' + apoios':'')+')';
  $('stateLeader').textContent=winner?who(winner).short:(total?'Empate':'Sem líder');
- $('investmentRoster').innerHTML=game.active.map(c=>{const support=supportPoints(c,state.uf),lvl=totalInfluence(c,state.uf),raw=row[c]||0,tint=color(c),mult=affinityMultiplier(c,state.uf),attributions=supportAttribution(c,state.uf),supportNote=attributions.map(({source,amount})=>'+'+fmtInvestment(amount)+' de apoio de '+who(source).short).concat((game.strategyEffects?.[state.uf]?.[c]||0)?[fmtInvestment(game.strategyEffects[state.uf][c])+' pontos por estratégias']:[],(game.strategyDefenses?.[strategyKey(c,state.uf)]||0)>=game.round?['Defesa ativa']:[]).join(' · '),title=raw+' ações · '+fmtInvestment(effectiveInvestment(c,state.uf))+' pontos já conquistados · próxima ação ×'+fmtInvestment(mult)+(supportNote?' · '+supportNote:'');return '<div class="investment-row" role="listitem"><div class="invest-name"><i class="standing-dot" style="background:'+tint+'"></i><span>'+esc(who(c).short)+(c===id?' <small>· você</small>':'')+'</span></div><div class="invest-track" role="progressbar" aria-label="'+esc(who(c).short)+'" aria-valuemin="0" aria-valuemax="10" aria-valuenow="'+lvl+'"><span style="width:'+(lvl/MAX_LOCAL*100)+'%;background:'+tint+'"></span></div><b title="'+esc(title)+'">'+fmtInvestment(lvl)+(supportNote?'<small class="support-earned">'+esc(supportNote)+'</small>':'')+'</b></div>'}).join('');
+ $('investmentRoster').innerHTML=game.active.map(c=>{const support=supportPoints(c,state.uf),lvl=totalInfluence(c,state.uf),raw=row[c]||0,tint=color(c),mult=affinityMultiplier(c,state.uf),attributions=supportAttribution(c,state.uf),supportNote=attributions.map(({source,amount})=>'+'+fmtInvestment(amount)+' de apoio de '+who(source).short).concat((game.strategyEffects?.[state.uf]?.[c]||0)?[fmtInvestment(game.strategyEffects[state.uf][c])+' pontos por estratégias']:[],(game.strategyDefenses?.[strategyKey(c,state.uf)]||0)>=game.round?['Defesa ativa']:[]).join(' · '),title=raw+' ações · '+fmtInvestment(effectiveInvestment(c,state.uf))+' pontos já conquistados · próxima ação ×'+fmtInvestment(mult)+(supportNote?' · '+supportNote:'');return '<div class="investment-row" role="listitem">'+investmentCandidateName(c,state.uf)+'<div class="invest-track" role="progressbar" aria-label="'+esc(who(c).short)+'" aria-valuemin="0" aria-valuemax="10" aria-valuenow="'+lvl+'"><span style="width:'+(lvl/MAX_LOCAL*100)+'%;background:'+tint+'"></span></div><b title="'+esc(title)+'">'+fmtInvestment(lvl)+(supportNote?'<small class="support-earned">'+esc(supportNote)+'</small>':'')+'</b></div>'}).join('');
  const cost=localCost(state),limitRound=roundInvestmentLimitReached(id,state.uf),limitTotal=effective>=MAX_LOCAL,lockOwner=stateLockedBy(state.uf);
  $('stateLockNote').hidden=!lockOwner;
  $('stateLockNote').textContent=lockOwner?'Estado fechado: '+who(lockOwner).short+' chegou a 10 pontos de influência. Resultados anteriores permanecem.':'';
@@ -1393,22 +1777,25 @@ function render(){
   ?'Influência de '+fmtInvestment(invested)+' ações: '+fmtInvestment(earnedPoints)+' pontos acumulados'+(bonusPoints>0?' (+'+fmtInvestment(bonusPoints)+' de bônus de ações anteriores)':'')+'.'
   :'Nenhum investimento realizado ainda.';
  $('costHint').textContent=influenceCalculation+' Próximo investimento: ×'+fmtInvestment(multiplier)+'. Promessas não alteram investimentos anteriores. '+(supported||(game.strategyEffects?.[state.uf]?.[id]||0)?'Apoios e estratégias são contabilizados separadamente. ':'')+(game.round===game.maxRounds?'Última rodada: ações livres. ':'Até 2 ações por estado nesta rodada. ')+'Fecha aos 10 pontos de influência.';
- $('turnHint').textContent='Nova rodada: R$ 250 mil + R$ 50 mil por estado liderado.'+(game.incumbent?(presidentBonus(game.incumbent)<0?' '+who(game.incumbent).short+' tem renda fixa reduzida a R$ 150 mil/rodada pela tentativa de terceiro mandato consecutivo.':' '+who(game.incumbent).short+' recebe +R$ 100 mil por rodada como atual presidente.'):'');
+ $('turnHint').textContent='Nova rodada: R$ 300 mil + R$ 20 mil por estado liderado sozinho com pelo menos 3 pontos. Sem teto de renda.'+(game.incumbent?(presidentBonus(game.incumbent)<0?' '+who(game.incumbent).short+' tem renda fixa reduzida a R$ 200 mil/rodada pela tentativa de terceiro mandato consecutivo.':' '+who(game.incumbent).short+' recebe +R$ 75 mil por rodada como atual presidente.'):'');
  $('campaignStatePanel').hidden=mapTab!=='main';
  $('multiplierPanel').hidden=mapTab!=='multipliers';
  $('tabMain').setAttribute('aria-selected',String(mapTab==='main'));
  $('tabMultipliers').setAttribute('aria-selected',String(mapTab==='multipliers'));
- $('mapLegend').textContent=mapTab==='main'?'Cinza = sem liderança única':'Laranja ×0,9 · cinza ×1 · verde até ×2';
+ $('mapLegend').innerHTML=(mapTab==='main'
+  ?[['#c3ccd7','Cinza','Sem liderança única']]
+  :[[multiplierColor(0,true),'Laranja','×0,9'],[multiplierColor(0),'Cinza','×1'],[multiplierColor(4),'Verde','×1,1 a ×2,1']])
+  .map(([color,name,label])=>'<span class="map-legend-item"><span class="map-legend-swatch" style="background:'+color+'" role="img" aria-label="'+name+'"></span>'+label+'</span>').join('');
  renderMultiplierPanel();
  recolor();renderSupportPanel();
 }
 function color(id){const index=who(id)?.index;return index===undefined?'#9bb0c8':COLORS[index]||'hsl('+Math.round(index*137.508%360)+' 54% 46%)'}
-function multiplierColor(level,penalized=false){return penalized?'#e0a77f':(['#bcc9d5','#99d2bf','#6bc6ad','#389f89','#176d65'][level]||'#bcc9d5')}
+function multiplierColor(level,penalized=false,concentrated=false){return penalized?'#e0a77f':concentrated&&level===0?'#c4e5d9':(['#bcc9d5','#99d2bf','#6bc6ad','#389f89','#176d65'][level]||'#bcc9d5')}
 function recolor(){
  document.querySelectorAll('#map .territory').forEach(el=>{
   const s=byUF[el.dataset.uf];if(!s)return;
   const lead=leader(s),mine=affinityMultiplier(game.player,s.uf);
-  el.setAttribute('fill',mapTab==='multipliers'?multiplierColor(multiplierLevel(game.player,s.uf),mine<1):(lead?color(lead):'#c3ccd7'));
+  el.setAttribute('fill',mapTab==='multipliers'?multiplierColor(multiplierLevel(game.player,s.uf),mine<1,mine>1):(lead?color(lead):'#c3ccd7'));
   el.classList.toggle('selected',s.uf===selectedUF);
   el.classList.toggle('locked',Boolean(stateLockedBy(s.uf)));
   const title=el.querySelector('title');
@@ -1418,12 +1805,14 @@ function recolor(){
 function renderMultiplierPanel(){
  const uf=selectedUF,id=game.player,state=byUF[uf];
  const current=affinityMultiplier(id,uf),stateCost=stateMultiplierCost(id,uf),concentration=concentrationStatus(id);
+ const nearConcentration=!concentration.active&&STATES.some(s=>multiplierLevel(id,s.uf)===0&&concentrationStatus(id,s.uf).active);
  const stateReason=multiplierReason(id,false,uf);
  $('multiplierUf').textContent=uf;
  $('multiplierStateName').textContent=state.name;
  $('multiplierCurrent').textContent='×'+fmtInvestment(current);
- $('stateMultiplierEffect').textContent=uf+' · ×'+fmtInvestment(current)+' → ×'+fmtInvestment(Math.min(2,1+(multiplierLevel(id,uf)+1)*.25));
- $('multiplierPenaltyNote').textContent=concentration.active?'Concentração em '+concentration.area+' ('+concentration.count+' UFs com bônus): ×0,9 nas demais UFs sem bônus.':'3+ UFs na mesma região ou 6+ no mesmo eixo causam ×0,9 nas demais UFs sem bônus.';
+ $('stateMultiplierEffect').textContent=uf+' · ×'+fmtInvestment(current)+' → ×'+fmtInvestment(multiplierAfterPromise(id,uf));
+ $('multiplierPenaltyNote').textContent=concentration.active?'Concentração em '+concentration.area+' ('+concentration.count+' UFs com promessa): ×0,1 extras em toda a região concentrada; decaimento para ×0,9 nos demais estados.\n💡 Dica: desenvolva o multiplicador em um estado mais distante para reverter o impacto de concentração.':'💡 Dica: concentrar os multiplicadores na mesma região pode impactar negativamente as outras áreas.';
+ $('multiplierPenaltyNote').hidden=!concentration.active&&!nearConcentration;
  $('multiplierRoster').innerHTML=game.active.map(candidate=>'<div class="multiplier-entry'+(candidate===id?' you':'')+'" role="listitem"><span>'+esc(who(candidate).short)+(candidate===id?' · você':'')+'</span><strong>×'+fmtInvestment(affinityMultiplier(candidate,uf))+'</strong></div>').join('');
  $('buyStateMultiplier').textContent='Comprar · '+money(stateCost);
  $('buyStateMultiplier').disabled=Boolean(stateReason);
@@ -1644,7 +2033,7 @@ function renderContinuation(){
  $('continuationRoster').innerHTML=continuationCandidates(plan).map(id=>{
   const person={...continuationPerson(plan,id),...(id===plan.controlled&&id===plan.celebrity?{party:plan.party}:{})},checked=plan.selected.includes(id),locked=id===plan.controlled||id===plan.winner;
   const conflict=!checked&&plan.selected.some(other=>continuationParty(plan,other,plan.controlled)===person.party);
-  const note=conflict?(person.party===plan.party?'Troque no seletor acima':'Partido já representado'):id===bonusCandidate?(thirdConsecutiveAttempt(id,plan.year,plan.history)?'Terceiro mandato · R$ 150 mil/rodada':(id===plan.winner?'Presidente atual':'Bônus da presidência')+' · +R$ 100 mil/rodada'):id===plan.controlled?'Seu candidato':plan.formerWinners?.includes(id)?'Ex-presidente':id===plan.player&&!ELECTION_PRESETS[plan.year]?.includes(id)?'Mantido da eleição anterior':'';
+  const note=conflict?(person.party===plan.party?'Troque no seletor acima':'Partido já representado'):id===bonusCandidate?(thirdConsecutiveAttempt(id,plan.year,plan.history)?'Terceiro mandato · R$ 200 mil/rodada':(id===plan.winner?'Presidente atual':'Bônus da presidência')+' · +R$ 75 mil/rodada'):id===plan.controlled?'Seu candidato':plan.formerWinners?.includes(id)?'Ex-presidente':id===plan.player&&!ELECTION_PRESETS[plan.year]?.includes(id)?'Mantido da eleição anterior':'';
   const switched=transferList.find(change=>change.id===id);
   return '<label class="continuation-entry'+(checked?' is-selected':'')+(locked?' is-fixed':'')+'"><input type="checkbox" value="'+esc(id)+'"'+(checked?' checked':'')+(locked||conflict||(!checked&&plan.selected.length>=(plan.future?10:MAX_CANDIDATES))?' disabled':'')+'>'+partyIcon(id,person)+'<span>'+esc(person.short)+' <small>('+esc(person.party)+')</small>'+(note?'<small class="continuation-note">'+esc(note)+'</small>':'')+(switched?'<small class="continuation-note continuation-moved">Transferido · '+esc(switched.from)+' → '+esc(switched.to)+'</small>':'')+'</span></label>';
  }).join('');
@@ -1679,15 +2068,47 @@ $('buyStateMultiplier').addEventListener('click',()=>purchasePlayerMultiplier(fa
 
 $('multiplierNextTurn').addEventListener('click',nextTurn);$('stateSelect').addEventListener('change',e=>selectUF(e.target.value));$('mapToggle').addEventListener('click',()=>{if(mapMode==='geo')showCartogram();else loadGeo();persist()});document.addEventListener('keydown',e=>{if(e.key==='Escape')$('rulesOverlay').classList.add('hidden')});
 $('resultMenuBtn').addEventListener('click',newPrompt);
+$('headerMenu').addEventListener('click',event=>{
+ if(event.target.closest('button')){$('headerMenu').open=false;$('headerMenuToggle').focus()}
+},true);
+$('headerMenu').addEventListener('keydown',event=>{
+ if(event.key==='Escape'&&$('headerMenu').open){event.preventDefault();event.stopPropagation();$('headerMenu').open=false;$('headerMenuToggle').focus()}
+});
+$('headerMenu').addEventListener('focusout',event=>{if(!event.currentTarget.contains(event.relatedTarget))event.currentTarget.open=false});
+document.addEventListener('click',event=>{if(!$('headerMenu').contains(event.target))$('headerMenu').open=false});
+for(const id of ['statisticsBtn','resultStatisticsBtn','setupStatisticsBtn'])$(id).addEventListener('click',event=>openElectionStatistics(id==='statisticsBtn'?$('headerMenuToggle'):event.currentTarget));
+$('statisticsClose').addEventListener('click',closeElectionStatistics);
+$('statisticsOverlay').addEventListener('keydown',event=>{
+ if(event.key==='Escape'){event.stopPropagation();closeElectionStatistics()}
+ if(event.key==='Tab'){event.preventDefault();$('statisticsClose').focus()}
+});
+$('investmentRoster').addEventListener('click',event=>{const button=event.target.closest('[data-campaign-target]');if(button)openCandidateActions(button.dataset.campaignTarget,selectedUF,button)});
+$('candidateActionsOptions').addEventListener('click',event=>{const button=event.target.closest('[data-campaign-action]');if(button&&!button.disabled)chooseCandidateAction(button.dataset.campaignAction)});
+$('candidateActionsClose').addEventListener('click',()=>closeCandidateActions());
+$('candidateActionsOverlay').addEventListener('click',event=>{if(event.target===$('candidateActionsOverlay'))closeCandidateActions()});
+$('candidateActionsOverlay').addEventListener('keydown',event=>{
+ if(event.key==='Escape'){event.stopPropagation();closeCandidateActions()}
+ if(event.key==='Tab'){
+  const buttons=[...$('candidateActionsOverlay').querySelectorAll('button:not(:disabled)')],first=buttons[0],last=buttons.at(-1);
+  if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus()}
+  else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus()}
+ }
+});
 $('strategySummaryClose').addEventListener('click',()=>{delete game.strategySummary;$('strategySummaryOverlay').classList.add('hidden');persist();const target=game.lastChancePending?'strategyType':game.done||game.pendingSecond?'resultMainBtn':'nextBtn';$(target).focus()});
 $('strategySupports').addEventListener('click',()=>{game.openingSupports=true;openSupportOverlay();delete game.openingSupports;$('strategiesOverlay').classList.add('hidden')});
 for(const id of ['strategyType','strategyUF','strategyTarget','strategyDirection'])$(id).addEventListener('change',renderStrategyPreview);
 $('strategyConfirm').addEventListener('click',()=>{
  if(buyCampaignStrategy(game.player,$('strategyType').value,$('strategyUF').value,$('strategyType').value==='interference'?$('strategyDirection').value:$('strategyTarget').value)){
-  if(game.lastChancePending){render();persist();renderStrategyPreview();return}
   render();persist();renderStrategyPreview();
-  if(allStatesLocked()){$('strategiesOverlay').classList.add('hidden');concludePhase()}
+  const event=game.strategyEvents.at(-1);
+  if(event.duel){showCampaignDuel(event);return}
+  if(!game.lastChancePending&&allStatesLocked()){$('strategiesOverlay').classList.add('hidden');concludePhase()}
  }
+});
+$('campaignDuelContinue').addEventListener('click',closeCampaignDuel);
+$('campaignDuelOverlay').addEventListener('keydown',event=>{
+ if(event.key==='Escape'){event.stopPropagation();closeCampaignDuel()}
+ if(event.key==='Tab'){event.preventDefault();$('campaignDuelContinue').focus()}
 });
 $('strategyClose').addEventListener('click',()=>{if(game.lastChancePending)resolveLastChance();else $('strategiesOverlay').classList.add('hidden')});
 $('chooseEndless').addEventListener('change',updatePreview);
@@ -1704,7 +2125,19 @@ $('continuationRoster').addEventListener('change',event=>{
 });
 $('continuationStart').addEventListener('click',startContinuation);
 $('continuationBack').addEventListener('click',()=>{setupCampaign=null;$('continuationOverlay').classList.add('hidden');$('resultOverlay').classList.remove('hidden');$('resultMainBtn').focus()});
+function initializeSavedGame(){
 if(geo)showGeo();else showCartogram();if(restore()){$('setupOverlay').classList.add('hidden');if(mapMode==='carto')showCartogram();else if(geo)showGeo();if(game.pendingSecond){showOutcome('Apuração do 1º turno','Você avançou ao 2º turno!',game.firstResult,earlyClosureMessage(1)+'Ninguém superou metade dos votos válidos. Avançam os dois mais votados.',true)}else if(game.done&&game.secondResult){showOutcome('Apuração do 2º turno','Eleição encerrada!',game.secondResult,earlyClosureMessage(2)+'Segundo turno: venceu quem conquistou mais votos válidos nesta nova votação.',false)}else if(game.done&&game.firstResult){showOutcome('Apuração do 1º turno',majority(game.firstResult)?'Eleição decidida no 1º turno!':'Você não avançou ao 2º turno',game.firstResult,earlyClosureMessage(1)+(majority(game.firstResult)?'O primeiro colocado obteve maioria absoluta dos votos válidos.':'Ninguém obteve maioria absoluta e sua candidatura não avançou.'),false)}}else{game=newGame(PEOPLE[0].id,'normal',10)}render();
+}
+window.addEventListener('planalto:profile-will-change',()=>persist());
+window.addEventListener('planalto:profile-changed',()=>{
+ clearTimeout(campaignDuelTimer);candidateActionContext=null;selectedSupportCandidate=null;setupCampaign=null;electionStatisticsCache=[];statisticsStorageFailed=false;
+ for(const overlay of document.querySelectorAll('.overlay'))if(overlay.id!=='accountOverlay')overlay.classList.add('hidden');
+ $('setupOverlay').classList.remove('hidden');
+ initializeSavedGame();
+});
+initializeSavedGame();
 
 </script>
+<script src="./auth-config.js"></script>
+<script src="./auth.js"></script>
 </body></html>

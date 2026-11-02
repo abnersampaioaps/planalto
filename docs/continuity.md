@@ -6,7 +6,7 @@ A trava vale apenas ao preparar e iniciar a próxima eleição, inclusive histó
 
 O elenco inicial da continuidade prioriza o candidato controlado, depois o presidente e depois os demais nomes. Duplicatas de partido ficam desmarcadas. Trocar pelo seletor substitui o representante do partido, em vez de acrescentar outro; o nome anterior só pode voltar pela troca no seletor. Nos demais partidos, é necessário desmarcar o representante selecionado antes de marcar outra opção disponível.
 
-Se o presidente ocupar a vaga do partido do jogador e for substituído, não participa da nova eleição, mas transfere os R$ 100 mil extras por rodada ao substituto do mesmo partido, incluindo a primeira rodada e o segundo turno. O histórico de sua vitória é preservado. A mesma regra vale para celebridades escolhidas para representar esse partido. A validação de início também rejeita partidos repetidos, independentemente do estado dos controles.
+Se o presidente ocupar a vaga do partido do jogador e for substituído, não participa da nova eleição, mas transfere os R$ 75 mil extras por rodada ao substituto do mesmo partido, incluindo a primeira rodada e o segundo turno. O histórico de sua vitória é preservado. A mesma regra vale para celebridades escolhidas para representar esse partido. A validação de início também rejeita partidos repetidos, independentemente do estado dos controles.
 
 ## Interface da próxima eleição e mercado de transferências (V8.21)
 
@@ -34,9 +34,9 @@ No menu inicial, um ano específico limita a seleção aos seus participantes: p
 
 A campanha só pode comprar **promessas estaduais**. A estratégia Programa Nacional e o botão correspondente foram removidos. Os estados que já tiverem bônus acima de ×1 — inclusive os herdados da eleição anterior — contam para a concentração.
 
-Se **3 ou mais estados com bônus** pertencerem **todos à mesma região**, ou **6 ou mais** estiverem **todos no mesmo eixo** (Norte + Nordeste ou Sul + Sudeste + Centro-Oeste), as UFs **sem bônus positivo** passam a usar **×0,9 nos próximos investimentos**. A penalidade é individual de cada candidato e **nunca acumula duas vezes**. Compras em regiões/eixos diferentes podem desfazer essa concentração; o multiplicador dos estados sem bônus retorna a ×1 quando as condições deixam de valer.
+Se **3 ou mais estados com bônus** pertencerem **todos à mesma região**, somente as UFs **de outras regiões** passam a usar **×0,9 nos próximos investimentos**; todos os estados da região concentrada recebem +×0,1. Quando **6 ou mais** estiverem **todos no mesmo eixo** (Norte + Nordeste ou Sul + Sudeste + Centro-Oeste), a regra por eixo prevalece: somente as UFs **do outro eixo** recebem ×0,9; todos os estados do eixo concentrado recebem +×0,1. A penalidade é individual de cada candidato e **nunca acumula duas vezes**. Compras em regiões/eixos diferentes podem desfazer essa concentração; o multiplicador dos estados sem bônus retorna a ×1 quando as condições deixam de valer.
 
-Os pontos já conquistados permanecem inalterados mesmo quando a penalidade é ativada ou desativada. Os estados com multiplicadores positivos mantêm o valor correspondente, de ×1,25 a ×2. A cor laranja do mapa identifica estados penalizados. A regra também se aplica ao início de uma nova eleição se o candidato já herdou multiplicadores em estados concentrados.
+Os pontos já conquistados permanecem inalterados mesmo quando a penalidade é ativada ou desativada. O acréscimo vale inclusive sem promessa estadual (×1 → ×1,1) e no teto comprado (×2 → ×2,1). Ele não se acumula entre região e eixo, não conta como promessa para ativar concentração e desaparece quando ela termina. Os níveis comprados ou herdados permanecem intactos. A cor laranja do mapa identifica estados penalizados. A regra também se aplica ao início de uma nova eleição se o candidato já herdou multiplicadores em estados concentrados.
 
 ## Multiplicadores herdados do último segundo turno
 
@@ -50,7 +50,7 @@ A regra também considera o segundo turno disputado automaticamente pelas IAs qu
 
 O vencedor anterior usa o partido oficial da eleição seguinte quando constar no elenco daquele ano. Fora desse elenco, mantém a filiação com que venceu. Isso também vale para o vencedor controlado pelo jogador: nesse caso, seu partido na continuidade acompanha a mudança oficial. O histórico anterior não é reescrito, e o bônus permanece ligado ao candidato, não ao partido.
 
-O vencedor anterior recebe R$ 100 mil extras em cada rodada da eleição seguinte (jogador ou IA), incluindo a primeira rodada e as rodadas do segundo turno em que participar. O bônus soma-se à renda normal e à liderança de estados, não aumenta a cada vitória e não acompanha o partido se o jogador trocar de candidato. Ao perder, deixa de recebê-lo na eleição posterior. Partidas avulsas não concedem esse benefício.
+O vencedor anterior recebe R$ 75 mil extras em cada rodada da eleição seguinte (jogador ou IA), incluindo a primeira rodada e as rodadas do segundo turno em que participar. O bônus soma-se à renda normal e à liderança de estados, não aumenta a cada vitória e não acompanha o partido se o jogador trocar de candidato. Ao perder, deixa de recebê-lo na eleição posterior. Partidas avulsas não concedem esse benefício.
 
 Todos os vencedores registrados na trajetória ficam disponíveis nas continuações como ex-presidentes, mesmo fora do elenco oficial daquele ano. Apenas o vencedor mais recente tem presença obrigatória; antigos vencedores podem ser desmarcados. O limite continua sendo 13 participantes: se não houver vagas, desmarque alguém antes de incluir um ex-presidente. Suas filiações registradas na trajetória são preservadas.
 

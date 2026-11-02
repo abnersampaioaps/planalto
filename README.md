@@ -6,6 +6,32 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 
 **Jogar:** https://abnersampaioaps.github.io/planalto/
 
+## Login opcional com Google
+
+A integração com Firebase Authentication está preparada no menu e na tela inicial. **Ainda é necessário criar o projeto, habilitar o provedor Google e preencher `auth-config.js`**: veja o [guia de ativação](docs/google-login.md).
+
+O acesso inclui restauração da sessão, nome/e-mail da conta e logout. O login exige HTTPS ou localhost autorizado; abrir `index.html` por `file://` continua permitindo jogar, mas não autenticar. Partidas e estatísticas permanecem locais, sem sincronização ou separação por conta. Os testes do fluxo usam um SDK simulado; a validação real depende da configuração do projeto.
+
+## Simulações de balanceamento
+
+O [relatório visual de 132 partidas](docs/simulation-report.html) reúne gráficos, achados, recomendações e limitações. Os [resultados completos](docs/simulation-results.json) e o [resumo numérico](docs/simulation-summary.json) registram a versão do código analisada.
+
+Após as melhorias de planejamento, a [comparação de 24 partidas](docs/ai-improvements.md) registra os resultados antes/depois, a preservação dos perfis e a redução no uso de ataques e defesas.
+
+O simulador em `scripts/simulate-economy.cjs` executa as regras de produção com todos os candidatos controlados pela IA e sem acessar o salvamento do navegador. Para repetir o estudo: `node scripts/simulate-economy.cjs > docs/simulation-results.json`. O relatório pode ser reconstruído com `python3 scripts/report-simulations.py` (requer Matplotlib). Os experimentos desativam compras apenas dentro da simulação; não alteram as regras do jogo.
+
+## Economia atualizada
+
+- Caixa inicial padrão de **R$ 350 mil** e renda base de **R$ 300 mil por rodada**.
+- Cada UF liderada sem empate, com **pelo menos 3 pontos de influência**, rende **R$ 20 mil por rodada**, sem teto de renda. O bônus é recalculado conforme a influência atual, inclusive após estratégias e na entrada do segundo turno.
+- Presidência: **+R$ 75 mil** no caixa inicial e por rodada. A tentativa de terceiro mandato consecutivo mantém o ajuste de −R$ 100 mil: caixa inicial de R$ 250 mil e renda fixa de R$ 200 mil, mais estados.
+- O investimento estadual mantém seu preço. Debate, ataque e defesa custam **0,8 / 1,25 / 1 vez** esse preço, arredondados para múltiplos de R$ 5 mil.
+- As quatro promessas estaduais custam **0,8 / 1,1 / 1,5 / 2 vezes** o investimento da UF, também arredondadas para R$ 5 mil, com **mínimo de R$ 40 mil** por compra.
+- Jogador e IA pagam os mesmos preços. Os seletores mostram o preço da UF escolhida. A IA de arrecadação considera a consolidação dos 3 pontos para obter renda.
+- Partidas salvas preservam saldo, influência e melhorias já compradas. Os novos custos valem para compras futuras e a nova renda para os próximos pagamentos. Apoios, interferência e regras dos dados continuam com seus valores e condições anteriores.
+
+Os valores desta seção substituem os preços históricos registrados nas versões abaixo. A revisão original e as sugestões ainda não implementadas estão em [docs/economy-review.md](docs/economy-review.md).
+
 ## Seleção por eleição — 2002 a 2026
 
 - Na primeira etapa, **Selecionar por eleição** marca os candidatos de 2002, 2006, 2010, 2014, 2018, 2022 ou os 12 personagens de 2026 já cadastrados. Trocar o ano substitui a seleção anterior; alterar as caixas permite personalizar a disputa.
@@ -21,7 +47,53 @@ Simulador independente de estratégia eleitoral brasileira para navegador e celu
 
 Referências dos grupos: [2002 — Agência Brasil](https://memoria.ebc.com.br/agenciabrasil//node/581939), [2006 — relatório do TSE](https://sintse.tse.jus.br/documentos/2006/Out/19/tse-publicacao-em-secretaria/resolucao-no-22-444-de-9-de-outubro-de-2006-eleicoes-2006-presidente-e-vice-presidente-da-republica), resultados de [2010](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2010), [2014](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2014), [2018](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2018) e [2022](https://pt.wikipedia.org/wiki/Elei%C3%A7%C3%A3o_presidencial_no_Brasil_em_2022). O grupo de 2026 conserva a lista existente no jogo.
 
-Validação: `node --test tests/election-presets.test.cjs`.
+Validação: `node --test tests/*.test.cjs`.
+
+Os testes usam um contexto isolado e sorteio reproduzível por caso. Cenários com investimentos registram tanto as ações pagas quanto a influência acumulada, conforme o modelo atual do jogo.
+
+- A IA presidencial considera interferência: antecipar com vantagem superior a 4 pontos percentuais ou adiar quando estiver empatada ou atrás, a até três rodadas do fim e com estados ainda disponíveis para investir. Pode planejar uma reserva para essa compra e respeita custos e pré-requisitos. Cada IA usa interferência no máximo uma vez por turno, inclusive após recarregar uma partida.
+- Transferências do presidente para o partido do jogador são excluídas do sorteio para preservar as duas vagas. Sorteios salvos com esse conflito desfazem a transferência incompatível e reinserem o presidente, sem refazer o sorteio.
+
+## Planejamento da IA após o estudo de balanceamento
+
+- Ataques e debates passam por uma comparação de ganho esperado de margem de votos por real com o melhor investimento disponível. As preferências dos nove perfis continuam escolhendo entre oportunidades competitivas; uma pequena tolerância de 5% preserva variedade.
+- Promessas exigem uma sequência financiável de investimentos e retorno marginal comparável ao investimento direto. A IA considera até duas rodadas futuras, os limites estaduais e efeitos de concentração em posições existentes que consegue financiar. Compra no máximo uma promessa por avaliação e conclui o plano antes de comprar outra.
+- A sequência planejada é salva com a partida. Os investimentos da UF recebem prioridade, e sua verba é protegida de estratégias. Se a UF fechar, ou começar outro turno eleitoral, o compromisso é descartado e o dinheiro é liberado.
+- A IA pode acumular recursos para um apoio de bom retorno ou uma interferência presidencial útil. Guarda 70% dos recursos novos disponíveis, preservando a reserva anterior, quando o objetivo parece alcançável em até três rodadas e dentro do prazo. Compras com saldo suficiente seguem os requisitos normais.
+- A reserva é reavaliada conforme a oferta, o resultado e o calendário. É liberada se o apoio ficar indisponível, a estratégia deixar de ser útil ou não houver tempo para alcançar o custo. Pode coexistir com investimentos regulares, mas não consome a verba comprometida com uma promessa.
+- Defesas consideram o valor de uma provável disputa: capacidade de pagamento, vantagem esperada do desafiante e alternativas de investimento. Uma defesa não recebe valor por bloquear vários ataques, pois só protege uma disputa.
+- A intensidade maior no segundo turno e a adaptação por perfil permanecem. Não foram alterados preços, renda sem teto, regras de dados, presença mínima ou ordem de atuação.
+
+## Perfis da IA e disputa do segundo turno
+
+- Os nove perfis preservam suas prioridades de investimento e agora também diferenciam o orçamento e a preferência por ataques, debates e defesas. Pressão nos rivais favorece ataques; Disputa de lideranças favorece debates; Defesa territorial e Consolidação de base dão mais peso à proteção. Preferências não tornam uma disputa desfavorável automaticamente vantajosa: a IA considera os resultados possíveis dos dados, a defesa e os pontos disponíveis.
+- Todas as finalistas aumentam o esforço no segundo turno, em qualquer dificuldade e também nas eleições entre duas IAs. A adaptação considera vantagem, desvantagem e proximidade da apuração. No Iniciante, o comportamento fixo fica restrito ao primeiro turno.
+- Fora dos compromissos com promessas e reservas para apoios ou interferência, uma finalista com vantagem guarda no máximo 5% do saldo restante ao investir (2% no Experiente); empatada, atrás ou perto da apuração pode empregar todo o saldo utilizável. Limites por estado e custos continuam iguais aos do jogador. O orçamento de estratégias também aumenta no segundo turno, mantendo diferenças por perfil.
+- A IA considera defesa nos dois turnos quando há uma disputa economicamente plausível, inclusive sem presença prévia do desafiante na UF. Evita comprar defesa na rodada final. Uma promessa na última rodada precisa financiar os investimentos previstos naquela UF e oferecer retorno marginal competitivo.
+- Ataques e debates, defesas, promessas, apoios e interferência presidencial continuam sujeitos às opções habilitadas, saldo e requisitos. A IA não é obrigada a usar todas as ações em cada rodada.
+- Validação automatizada inclui os nove perfis nas três dificuldades, escolhas diferentes diante do mesmo cenário, agressividade de quem lidera e de quem está atrás, defesa, gastos sem saldo negativo e finalistas após a eliminação do jogador. Isso não substitui a avaliação do equilíbrio em partidas reais.
+
+## Estatísticas das partidas
+
+O botão **Estatísticas**, disponível no cabeçalho, na configuração inicial e na apuração, abre uma tela própria dentro do jogo, sem interromper a partida. Ela reúne vitórias por partido, totais de eleições concluídas e os dois primeiros colocados de cada turno, com partido e percentual dos votos válidos simulados.
+
+- Uma vitória por partido corresponde ao resultado final da eleição. Liderar o primeiro turno e vencer o segundo não conta duas vezes.
+- Eleições decididas no primeiro turno indicam que não houve segundo turno. Apurações parciais não entram na contagem de vitórias.
+- O partido é preservado conforme a filiação naquela eleição. Mudanças posteriores não reescrevem o histórico.
+- O arquivo de estatísticas usa a chave local `rumo_ao_planalto_statistics_v1`, separada do salvamento da partida. Continua disponível após iniciar outro jogo e não duplica registros ao recarregar. Limpar os dados do navegador remove esse histórico.
+- Históricos antigos são importados com os dados disponíveis. Colocações não salvas aparecem como não registradas, sem inferir finalistas ou percentuais.
+- Segundo turno automático após eliminação do jogador também é registrado, inclusive em eleições personalizadas. Uma falha de armazenamento é informada na tela; os dados ficam disponíveis na sessão.
+
+## Disputas de campanha com dados
+
+- Na lista **Influência por candidato**, o nome de cada adversário abre um popup com debate e ataque naquele estado. As opções mostram preço, efeito e impedimentos; escolher uma delas abre a confirmação com estado e alvo preenchidos, sem cobrança antecipada. O atalho aparece durante a eleição quando as estratégias estão habilitadas e aceita teclado, Escape e fechamento pelo fundo.
+- Debate regional e ataque ao candidato usam **2 dados de seis faces por participante**. A maior soma vence; em empate, vence o candidato desafiado.
+- No debate, o vencedor recebe até **1 ponto** do perdedor, limitado pelos pontos disponíveis e pelo teto de 10 do vencedor.
+- No ataque, a vitória do atacante retira até **2 pontos do alvo**; a derrota retira até **1 ponto do atacante**. O custo é pago independentemente do resultado.
+- Uma defesa ativa concede **1 dado extra ao defensor**, inclusive em debates. É consumida na disputa e, se não for usada, expira ao fim da rodada seguinte. Não bloqueia automaticamente a ação.
+- O painel da ação humana mostra dados, somas, vencedor e mudanças efetivas de influência, com animação curta e respeito à preferência por movimento reduzido. Fechar o painel não lança novos dados nem cobra novamente.
+- Jogador e IA seguem a mesma resolução. A IA avalia o ganho esperado considerando vitória, derrota e dado extra. Os dados ficam registrados no resumo da rodada e na partida salva; eventos antigos continuam legíveis.
+- Ao encerrar a rodada, ataques e debates da IA contra o jogador são exibidos em sequência, com os dados já resolvidos, antes do resumo ou da apuração. Disputas apenas entre IAs permanecem no resumo. A última chance segue o mesmo fluxo. A fila e seu progresso são salvos: recarregar retoma a disputa pendente sem novas cobranças, sorteios ou pagamentos de renda.
 
 ## V8.21 — continuidade limpa, sorteio e mercado de transferências
 
@@ -37,10 +109,10 @@ Validação: `node --test tests/election-presets.test.cjs`.
 
 - **Programa Nacional removido** do seletor de estratégias, do mapa de multiplicadores e das decisões da IA. Compras antigas permanecem no histórico da partida salva, mas não podem ser repetidas. Só as **promessas estaduais** continuam disponíveis.
 - Para cada candidatura, considera-se o conjunto de UFs com **bônus positivo comprado ou herdado** (nível acima de ×1), independentemente da intensidade do bônus.
-- **Regra regional:** se houver **3 ou mais UFs com bônus e todas estiverem na mesma região** (Norte, Nordeste, Centro-Oeste, Sudeste ou Sul), os estados **sem bônus** terão multiplicador **×0,9** nas próximas ações.
-- **Regra por eixo:** se houver **6 ou mais UFs com bônus e todas pertencerem ao mesmo eixo** — Norte + Nordeste ou Sul + Sudeste + Centro-Oeste —, os estados **sem bônus** terão multiplicador **×0,9** nas próximas ações.
-- As penalidades **não se acumulam**: mesmo quando uma condição coincide com outra, o menor multiplicador é ×0,9. Estados com bônus mantêm ×1,25 a ×2 e nunca recebem a penalidade.
-- A concentração é **dinâmica**: adicionar uma promessa em outra região/eixo pode desativar a penalidade. Ao sair da concentração, multiplicadores sem bônus voltam a ×1. Os pontos de influência já conquistados não são recalculados; somente futuros investimentos usam o multiplicador vigente na hora da ação.
+- **Regra regional:** se houver **3 ou mais UFs com bônus e todas estiverem na mesma região** (Norte, Nordeste, Centro-Oeste, Sudeste ou Sul), somente os estados **de outras regiões** terão multiplicador **×0,9** nas próximas ações. Todos os estados da região concentrada recebem **+×0,1**: ×1 vira ×1,1, e ×2 vira ×2,1.
+- **Regra por eixo:** se houver **6 ou mais UFs com bônus e todas pertencerem ao mesmo eixo** — Norte + Nordeste ou Sul + Sudeste + Centro-Oeste —, somente os estados **do outro eixo** terão multiplicador **×0,9** nas próximas ações. Todos os estados do eixo concentrado recebem **+×0,1**, inclusive os sem promessa estadual. A regra por eixo prevalece quando também houver concentração regional.
+- As penalidades **não se acumulam**: mesmo quando uma condição coincide com outra, o menor multiplicador é ×0,9. O bônus de +×0,1 também não se acumula entre região e eixo. O teto comprado continua ×2 (quatro melhorias); com concentração, o multiplicador efetivo chega a ×2,1. Só estados com melhorias compradas ou herdadas contam para os limites de concentração.
+- A concentração é **dinâmica**: adicionar uma promessa em outra região/eixo pode desativar a penalidade. Ao sair da concentração, o acréscimo de ×0,1 desaparece e estados sem promessas voltam a ×1. Os pontos de influência já conquistados não são recalculados; somente futuros investimentos usam o multiplicador vigente na hora da ação.
 - Ações no estado penalizado rendem corretamente **0,9 ponto**, com precisão decimal (sem arredondar para 1). Comprar a primeira promessa nesse estado faz suas próximas ações renderem **×1,25**, não ×1,15.
 - O **mapa de multiplicadores** mostra UFs penalizadas em **laranja** e as com bônus no gradiente verde existente. O painel mostra a concentração ativa e os seus efeitos.
 - A **IA** continua adquirindo apenas promessas estaduais com seu orçamento, avaliando o benefício futuro e estimando possíveis perdas por uma nova concentração.

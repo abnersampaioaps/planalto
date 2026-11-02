@@ -1,0 +1,20 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /players/{uid}/saves/current {
+      function owner() { return request.auth != null && request.auth.uid == uid; }
+      function validData() {
+        let d = request.resource.data;
+        return d.keys().hasOnly(['version', 'revision', 'data', 'updatedAt'])
+          && d.version == 1 && d.revision is int && d.revision > 0
+          && d.updatedAt == request.time
+          && d.data.keys().hasOnly(['game', 'statistics'])
+          && (d.data.game == null || (d.data.game is string && d.data.game.size() < 850000))
+          && (d.data.statistics == null || (d.data.statistics is string && d.data.statistics.size() < 850000));
+      }
+      allow read, delete: if owner();
+      allow create: if owner() && validData() && request.resource.data.revision == 1;
+      allow update: if owner() && validData() && request.resource.data.revision == resource.data.revision + 1;
+    }
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "partidas": 132,
+  "principal": 54,
+  "segundos_turnos": 96,
+  "violacoes": 0,
+  "margens_medias_normal": {
+    "baseline": 18.955982408856094,
+    "no-promises": 22.73940730687058,
+    "no-strategies": 5.604964581152629,
+    "investments-only": 2.6642553369579947
+  },
+  "eleicoes_apertadas_normal": {
+    "baseline": 2,
+    "no-promises": 2,
+    "no-strategies": 9,
+    "investments-only": 15
+  },
+  "promessas_sem_investimento_posterior_pct": 48.64918553833929,
+  "confrontos_sem_presenca_pct": 95.9535020600353,
+  "ordem_vencedor_alterado": 5,
+  "pares_ordem": 8,
+  "acoes_principal": {
+    "debate": 6568,
+    "promise": 5034,
+    "local": 4197,
+    "attack": 228,
+    "defend": 117,
+    "support": 0
+  },
+  "gastos_principal": {
+    "localSpent": 312806000,
+    "promiseSpent": 457205000,
+    "strategySpent": 497925000
+  }
+}
