@@ -118,7 +118,7 @@
    $('googleSignInBtn').hidden=logged;
    $('googleSignInBtn').disabled=!state.ready||state.busy;
    $('googleSignInBtn').textContent=state.busy?'Aguarde…':'Entrar com Google';
-   $('appleSignInBtn').hidden=logged;
+   $('appleSignInBtn').hidden=logged||(!root.PlanaltoNativeAuth&&!root.PLANALTO_APPLE_WEB_ENABLED);
    $('appleSignInBtn').disabled=!state.ready||state.busy;
    $('googleSignOutBtn').hidden=!logged;
    $('googleSignOutBtn').disabled=state.busy;

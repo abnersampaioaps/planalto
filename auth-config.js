@@ -1,12 +1,11 @@
-// Configuração PÚBLICA do aplicativo Web no Firebase. Veja docs/google-login.md.
-// Nunca coloque aqui uma chave privada, client secret ou conta de serviço.
-// Mantenha null até criar o projeto e habilitar Authentication > Google.
-window.PLANALTO_FIREBASE_CONFIG = null;
-
-// Exemplo de formato (substitua o null acima pelo objeto do seu projeto):
-// {
-//   apiKey: 'CONFIGURACAO_PUBLICA_DO_FIREBASE',
-//   authDomain: 'seu-projeto.firebaseapp.com',
-//   projectId: 'seu-projeto',
-//   appId: 'ID_DO_APLICATIVO_WEB'
-// }
+// Configuração pública do aplicativo Web Firebase. Não inclui segredos.
+window.PLANALTO_FIREBASE_CONFIG = {
+  "apiKey": "AIzaSyB8QsNAfYDAEB5iJ0uLtBij_3sQsqSno6Q",
+  "authDomain": "rumo-ao-planalto.firebaseapp.com",
+  "projectId": "rumo-ao-planalto",
+  "storageBucket": "rumo-ao-planalto.firebasestorage.app",
+  "messagingSenderId": "418049676456",
+  "appId": "1:418049676456:web:505161fe7e7dd060345e9d"
+};
+// O acesso Apple na web exige cadastro adicional no Apple Developer.
+window.PLANALTO_APPLE_WEB_ENABLED = false;
